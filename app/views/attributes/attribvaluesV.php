@@ -35,20 +35,18 @@
         <div class="table">
           <div class="thead">
             <div class="tr">
-              <div class="th" id="dl_sort_1" style="width: 150px;">Attribute Value Id<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-              <div class="th" id="dl_sort_2">Attribute Value<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+              <div class="th" id="dl_sort_1">Attribute Value<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
               <div class="th">Action</div>
             </div>
           </div>
           <div class="tbody" id="dl_tbl_body">
             <div class="tr" data-row-id="1">
-              <div class="td">1</div>
               <div class="td">AttributeValue_1</div>
               <div class="td">
-                <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Attribute Value">
+                <a class="yellow mr-1" role="button" title="Edit Attribute Value">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="tbl_btn_delt btn red" role="button" title="Delete Attribute Value">
+                <a class="btn red" role="button" title="Delete Attribute Value">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
@@ -155,7 +153,7 @@
     dataList.refreshData();
   }
 
-  let addAtval = new FormHandler('add_atval', 'add_atval_msg', urlroot + 'addAttribval');
+  let addAtval = new FormHandler('add_atval', 'add_atval_msg', `${urlroot}addAttribval`);
   addAtval.setCallback(atvalAdded);
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -165,15 +163,15 @@
     showHide('mod_editatval');
   }
 
-  let editAtval = new FormHandler('edit_atval', 'edit_atval_msg', urlroot + 'editAttribval');
+  let editAtval = new FormHandler('edit_atval', 'edit_atval_msg', `${urlroot}editAttribval`);
   editAtval.setCallback(atvalEdited);
 
-  function editAttributeLoader() {
+  function editAttribvalLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
-    let dataElem = this.parentElement.parentElement.getElementsByClassName("td");
+    let dataElem = this.parentElement.parentElement.getElementsByTagName("span");
     // console.log(dataElem);
     document.getElementById("edit_atval_id").value = rowId;
-    document.getElementById("edit_atval_name").value = dataElem[1].dataset.value;
+    document.getElementById("edit_atval_name").value = dataElem[0].textContent;
     showHide('mod_editatval');
     // console.log(dataSet);
   }
@@ -184,10 +182,10 @@
     showHide('mod_deltatval');
   }
 
-  let deltAtval = new FormHandler('delt_atval', 'delt_atval_msg', urlroot + 'deleteAttribval');
+  let deltAtval = new FormHandler('delt_atval', 'delt_atval_msg', `${urlroot}deleteAttribval`);
   deltAtval.setCallback(atvalDeleted);
 
-  function deltAttributeLoader() {
+  function deltAttribvalLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
     document.getElementById("delt_atval_id").value = rowId;
     showHide('mod_deltatval');
@@ -195,36 +193,61 @@
   /////////////////////////////////////////////////////////////////////////////////
 
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Attribute Value"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Attribute Value"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["atval_id"];
+
+    // create Brand Name column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td";
+    tblRow.appendChild(tblData1);
+    let span1 = document.createElement("span");
+    span1.textContent = dataRow["atval_name"];
+    tblData1.appendChild(span1);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Attribute Value";
+    btnEdit.onclick = editAttribvalLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Attribute Value";
+    btnDelt.onclick = deltAttribvalLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["atval_id"];
-      // tblRow.dataset.rowId = i;
-
-      createTblData(tblRow, result[i]["atval_id"], result[i]["atval_id"]);
-      createTblData(tblRow, result[i]["atval_name"], result[i]["atval_name"]);
-      createTblData(tblRow, btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_edit", editAttributeLoader);
-    setEventsByClass("tbl_btn_delt", deltAttributeLoader);
   }
 
-
-  let dataList = new DataList(urlroot + "getAttribvalDataset", displayData);
+  let dataList = new DataList(`${urlroot}getAttribvalDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
-  dataList.setSortHeader("dl_sort_1", "dl_sort_2");
+  dataList.setSortHeader("dl_sort_1");
   dataList.setSearch('dl_search_inp', 'dl_search_btn');
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

@@ -5,6 +5,9 @@ class Brands extends Controller
 
   public function __construct()
   {
+    if (!isLoggedIn()) {
+      redirect('auth/index');
+    }
     $this->userModel = $this->model('BrandM');
   }
 

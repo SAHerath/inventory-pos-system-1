@@ -22,3 +22,7 @@ define("MAIL_USER", "supunanuradhaherath@gmail.com");   // sender username full 
 define("MAIL_PSWD", "hdwxphtdvafpudmp");      // password or appkey(gmail)
 
 // define("MAIL_CONT", "");    // content file path
+
+// session configurations
+define('SESS_EXPIRE', 1800);    // 30mins
+define('SESS_RENEW', 1800);     // 30mins

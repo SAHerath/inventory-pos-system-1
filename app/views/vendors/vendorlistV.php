@@ -48,13 +48,13 @@
               <div class="td">abc@xyz.com</div>
               <div class="td">Inactive</div>
               <div class="td">
-                <a class="tbl_btn_view btn green mr-1" role="button" title="View more">
+                <a class="btn green mr-1" role="button" title="View more">
                   <i class="fas fa-eye"></i>
                 </a>
-                <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Vendor">
+                <a class="btn yellow mr-1" role="button" title="Edit Vendor">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="tbl_btn_delt btn red" role="button" title="Delete Vendor">
+                <a class="btn red" role="button" title="Delete Vendor">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
@@ -123,7 +123,7 @@
     showHide('mod_deltvendr');
   }
 
-  let deltVendr = new FormHandler('delt_vendr', 'delt_vendr_msg', urlroot + 'deleteVendor');
+  let deltVendr = new FormHandler('delt_vendr', 'delt_vendr_msg', `${urlroot}deleteVendor`);
   deltVendr.setCallback(vendrDeleted);
 
   function deltVendorLoader() {
@@ -133,37 +133,91 @@
   }
   /////////////////////////////////////////////////////////////////////////////////
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnViewHtml = '<a class="tbl_btn_view btn green mr-1" role="button" title="View more info"><i class="fas fa-eye"></i></a>';
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Vendor"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Vendor"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["vendr_id"];
+
+    // create Vendor Name column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td";
+    tblRow.appendChild(tblData1);
+    let span1 = document.createElement("span");
+    span1.textContent = dataRow["vendr_name"];
+    tblData1.appendChild(span1);
+
+    // create Phone column
+    let tblData2 = document.createElement("div");
+    tblData2.className = "td";
+    tblRow.appendChild(tblData2);
+    let span2 = document.createElement("span");
+    span2.textContent = dataRow["vendr_phone"];
+    tblData2.appendChild(span2);
+
+    // create Email column
+    let tblData3 = document.createElement("div");
+    tblData3.className = "td";
+    tblRow.appendChild(tblData3);
+    let span3 = document.createElement("span");
+    span3.textContent = dataRow["vendr_email"];
+    tblData3.appendChild(span3);
+
+    // create status column
+    let tblData4 = document.createElement("div");
+    tblData4.className = "td";
+    tblRow.appendChild(tblData4);
+    let span4 = document.createElement("span");
+    span4.textContent = (dataRow["brand_state"] == "1") ? "Active" : "Inactive";
+    tblData4.appendChild(span4);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create view button
+    let btnView = document.createElement("a");
+    btnView.className = "btn-sm green mr-md-1";
+    btnView.title = "View Vendor";
+    btnView.onclick = viewVendorLoader;
+    tblDataAct.appendChild(btnView);
+    let icoView = document.createElement("i");
+    icoView.className = "fas fa-eye";
+    btnView.appendChild(icoView);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Vendor";
+    btnEdit.onclick = editVendorLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Vendor";
+    btnDelt.onclick = deltVendorLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["vendr_id"];
-      // tblRow.dataset.rowId = i;
-
-      createTblData(tblRow, result[i]["vendr_name"], result[i]["vendr_name"]);
-      createTblData(tblRow, result[i]["vendr_phone"], result[i]["vendr_phone"]);
-      createTblData(tblRow, result[i]["vendr_email"], result[i]["vendr_email"]);
-      createTblData(tblRow, (result[i]["vendr_state"] == 1) ? "Active" : "Inactive", result[i]["vendr_state"]);
-      createTblData(tblRow, btnViewHtml + btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_view", viewVendorLoader);
-    setEventsByClass("tbl_btn_edit", editVendorLoader);
-    setEventsByClass("tbl_btn_delt", deltVendorLoader);
   }
 
-
-  let dataList = new DataList(urlroot + "getVendorDataset", displayData);
+  let dataList = new DataList(`${urlroot}getVendorDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
   dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3", "dl_sort_4");

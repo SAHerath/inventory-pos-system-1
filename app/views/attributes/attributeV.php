@@ -33,25 +33,23 @@
         <div class="table">
           <div class="thead">
             <div class="tr">
-              <div class="th" id="dl_sort_1" style="width: 150px;">Attribute Id<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-              <div class="th" id="dl_sort_2">Attribute Name<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-              <div class="th" id="dl_sort_3">Total Values<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+              <div class="th" id="dl_sort_1">Attribute Name<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+              <div class="th" id="dl_sort_2">Total Values<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
               <div class="th">Action</div>
             </div>
           </div>
           <div class="tbody" id="dl_tbl_body">
             <div class="tr" data-row-id="1">
-              <div class="td">1</div>
               <div class="td">Attribute_1</div>
               <div class="td">Inactive</div>
               <div class="td">
-                <a class="tbl_btn_view btn green mr-1" role="button" title="View Attribute Values">
+                <a class="btn green mr-1" role="button" title="View Attribute Values">
                   <i class="fas fa-eye"></i>
                 </a>
-                <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Attribute">
+                <a class="btn yellow mr-1" role="button" title="Edit Attribute">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="tbl_btn_delt btn red" role="button" title="Delete Attribute">
+                <a class="btn red" role="button" title="Delete Attribute">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
@@ -159,7 +157,7 @@
     dataList.refreshData();
   }
 
-  let addAttrb = new FormHandler('add_attrb', 'add_attrb_msg', urlroot + 'addAttribute');
+  let addAttrb = new FormHandler('add_attrb', 'add_attrb_msg', `${urlroot}addAttribute`);
   addAttrb.setCallback(attrbAdded);
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -176,15 +174,15 @@
     showHide('mod_editattrb');
   }
 
-  let editAttrb = new FormHandler('edit_attrb', 'edit_attrb_msg', urlroot + 'editAttribute');
+  let editAttrb = new FormHandler('edit_attrb', 'edit_attrb_msg', `${urlroot}editAttribute`);
   editAttrb.setCallback(attrbEdited);
 
   function editAttributeLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
-    let dataElem = this.parentElement.parentElement.getElementsByClassName("td");
+    let dataElem = this.parentElement.parentElement.getElementsByTagName("span");
     // console.log(dataElem);
     document.getElementById("edit_attrb_id").value = rowId;
-    document.getElementById("edit_attrb_name").value = dataElem[1].dataset.value;
+    document.getElementById("edit_attrb_name").value = dataElem[0].textContent;
     showHide('mod_editattrb');
     // console.log(dataSet);
   }
@@ -195,7 +193,7 @@
     showHide('mod_deltattrb');
   }
 
-  let deltAttrb = new FormHandler('delt_attrb', 'delt_attrb_msg', urlroot + 'deleteAttribute');
+  let deltAttrb = new FormHandler('delt_attrb', 'delt_attrb_msg', `${urlroot}deleteAttribute`);
   deltAttrb.setCallback(attrbDeleted);
 
   function deltAttributeLoader() {
@@ -206,39 +204,79 @@
   /////////////////////////////////////////////////////////////////////////////////
 
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnViewHtml = '<a class="tbl_btn_view btn green mr-1" role="button" title="View Attribute Values"><i class="fas fa-eye"></i></a>';
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Attribute"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Attribute"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["attrb_id"];
+
+    // create Brand Name column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td";
+    tblRow.appendChild(tblData1);
+    let span1 = document.createElement("span");
+    span1.textContent = dataRow["attrb_name"];
+    tblData1.appendChild(span1);
+
+    // create Status column
+    let tblData2 = document.createElement("div");
+    tblData2.className = "td";
+    tblRow.appendChild(tblData2);
+    let span2 = document.createElement("span");
+    span2.textContent = dataRow["value_total"];
+    tblData2.appendChild(span2);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create view button
+    let btnView = document.createElement("a");
+    btnView.className = "btn-sm green mr-md-1";
+    btnView.title = "View Attribute";
+    btnView.onclick = viewAttributeLoader;
+    tblDataAct.appendChild(btnView);
+    let icoView = document.createElement("i");
+    icoView.className = "fas fa-eye";
+    btnView.appendChild(icoView);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Attribute";
+    btnEdit.onclick = editAttributeLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Attribute";
+    btnDelt.onclick = deltAttributeLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["attrb_id"];
-      // tblRow.dataset.rowId = i;
-
-      createTblData(tblRow, result[i]["attrb_id"], result[i]["attrb_id"]);
-      createTblData(tblRow, result[i]["attrb_name"], result[i]["attrb_name"]);
-      createTblData(tblRow, result[i]["value_total"], result[i]["value_total"]);
-      createTblData(tblRow, btnViewHtml + btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_view", viewAttributeLoader);
-    setEventsByClass("tbl_btn_edit", editAttributeLoader);
-    setEventsByClass("tbl_btn_delt", deltAttributeLoader);
   }
 
 
-  let dataList = new DataList(urlroot + "getAttributeDataset", displayData);
+  let dataList = new DataList(`${urlroot}getAttributeDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
-  dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3");
+  dataList.setSortHeader("dl_sort_1", "dl_sort_2");
   dataList.setSearch('dl_search_inp', 'dl_search_btn');
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

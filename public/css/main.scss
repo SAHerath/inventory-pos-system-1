@@ -618,9 +618,9 @@ a {
 
   .main-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     /* Where the magic happens */
-    grid-auto-rows: 6rem;
+    grid-auto-rows: 8rem;
     grid-gap: 1.25rem;
     margin: 1.25rem;
   }
@@ -636,11 +636,22 @@ a {
 
 
 .overviewcard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem;
-  background-color: #16bd6971;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+  // padding: 1.25rem;
+  background-color: rgba($blue, 0.4);
+
+  span {
+    font-size: 1.5rem;
+    user-select: none;
+  }
+
+  i {
+    font-size: 4rem;
+    // opacity: 0.5;
+    color: rgba(0, 0, 0, 0.5);
+  }
 }
 
 .card {

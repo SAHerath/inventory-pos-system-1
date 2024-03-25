@@ -327,16 +327,24 @@
   flex-direction: row;
   flex-wrap: wrap;
 
-  &.center {
+  &.center-h {
     justify-content: center;
   }
-
-  &.left{
+  &.start-h{
     justify-content: flex-start;
   }
-
-  &.right{
+  &.end-h{
     justify-content: flex-end;
+  }
+
+  &.center-v {
+    align-items: center;
+  }
+  &.start-v{
+    align-items: flex-start;
+  }
+  &.end-v{
+    align-items: flex-end;
   }
 }
 

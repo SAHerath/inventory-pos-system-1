@@ -88,6 +88,11 @@ function showHide(modalId) {
   document.getElementById(modalId).classList.toggle("active");
 }
 
+
+function goBack() {
+  location.href = urlroot;
+}
+
 function goToTop() {
   let actElem = document.activeElement;
   actElem.blur();
@@ -417,6 +422,10 @@ class FormHandler {
             if (!form_fields[i].childElementCount) {
               console.log("fieldset invalied");
             }
+          }
+        } else if (form_fields[i].type == "checkbox") {
+          if (form_fields[i].checked) {
+            this.formData.append(key, form_fields[i].value);
           }
         } else {
           this.formData.append(key, form_fields[i].value);

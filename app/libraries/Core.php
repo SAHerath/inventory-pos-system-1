@@ -7,7 +7,7 @@
 
 class Core
 {
-  protected $currentController = 'Pages';  // first value of url, default 'Pages'
+  protected $currentController = 'Auth';  // first value of url, default 'Auth'
   protected $currentMethod = 'index';   // second value of url, fefault 'index'
   protected $params = [];   // from third to end values
 
@@ -36,8 +36,8 @@ class Core
         $this->currentMethod = $url[1];
         unset($url[1]);
       } else {
-
-        exit('Error! : Requested method not found!');
+        redirect('auth/error');
+        // exit('Error! : Requested method not found!');
       }
     }
 

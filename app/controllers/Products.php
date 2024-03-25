@@ -5,6 +5,9 @@ class Products extends Controller
 {
   public function __construct()
   {
+    if (!isLoggedIn()) {
+      redirect('auth/index');
+    }
     $this->userModel = $this->model('ProductM');
   }
 
@@ -44,7 +47,7 @@ class Products extends Controller
       'image' => []
     ];
 
-    $validator2 = "/^[1-9]\d*$/";   // filter any number except 0
+    $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
 
     // validate product id
     if (empty($prodtId) || !preg_match($validator2, $prodtId)) {
@@ -116,7 +119,7 @@ class Products extends Controller
       'title' => 'product_view'
     ];
 
-    $validator2 = "/^[1-9]\d*$/";   // filter any number except 0
+    $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
 
     // validate product id
     if (empty($prodtId) || !preg_match($validator2, $prodtId)) {
@@ -155,10 +158,10 @@ class Products extends Controller
 
   public function getAttributVal($attrib_id = null)
   {
-    $pattern2 = "/^[1-9]\d*$/";   // filter any number except 0
+    $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
     $attrib_id = trim($attrib_id);
     // validate attribute id
-    if (empty($attrib_id) || !preg_match($pattern2, $attrib_id)) {
+    if (empty($attrib_id) || !preg_match($validator2, $attrib_id)) {
       exit('Error! : No valied Attribute Id found.');
     } else {
       $data = ['atval' => ''];

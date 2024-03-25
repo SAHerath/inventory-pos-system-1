@@ -5,12 +5,15 @@ class Attributes extends Controller
 
   public function __construct()
   {
+    if (!isLoggedIn()) {
+      redirect('auth/index');
+    }
     // echo '<pre>';
     // var_dump(get_declared_classes());
     // var_dump(get_parent_class('Attribute'));
     // echo '</pre>';
     $this->userModel = $this->model('AttributeM');
-    session_start();
+    // session_start();
   }
 
   public function index()

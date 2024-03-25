@@ -45,10 +45,10 @@
                 <div class="td">Location_1</div>
                 <div class="td">Location_Address</div>
                 <div class="td">
-                  <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Location">
+                  <a class="btn yellow mr-1" role="button" title="Edit Location">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="tbl_btn_delt btn red" role="button" title="Delete Location">
+                  <a class="btn red" role="button" title="Delete Location">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>
@@ -164,7 +164,7 @@
     dataList.refreshData();
   }
 
-  let addLocat = new FormHandler('add_locat', 'add_locat_msg', urlroot + 'addLocation');
+  let addLocat = new FormHandler('add_locat', 'add_locat_msg', `${urlroot}addLocation`);
   addLocat.setCallback(locatAdded);
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -174,16 +174,16 @@
     showHide('mod_editlocat');
   }
 
-  let editLocat = new FormHandler('edit_locat', 'edit_locat_msg', urlroot + 'editLocation');
+  let editLocat = new FormHandler('edit_locat', 'edit_locat_msg', `${urlroot}editLocation`);
   editLocat.setCallback(locatEdited);
 
   function editLocationLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
-    let dataElem = this.parentElement.parentElement.getElementsByClassName("td");
+    let dataElem = this.parentElement.parentElement.getElementsByTagName("span");
     // console.log(dataElem);
     document.getElementById("edit_locat_id").value = rowId;
-    document.getElementById("edit_locat_name").value = dataElem[0].dataset.value;
-    document.getElementById("edit_locat_address").value = dataElem[1].dataset.value;
+    document.getElementById("edit_locat_name").value = dataElem[0].textContent;
+    document.getElementById("edit_locat_address").value = dataElem[1].textContent;
     showHide('mod_editlocat');
     // console.log(dataSet);
   }
@@ -194,7 +194,7 @@
     showHide('mod_deltlocat');
   }
 
-  let deltlocat = new FormHandler('delt_locat', 'delt_locat_msg', urlroot + 'deleteLocation');
+  let deltlocat = new FormHandler('delt_locat', 'delt_locat_msg', `${urlroot}deleteLocation`);
   deltlocat.setCallback(locatDeleted);
 
   function deltLocationLoader() {
@@ -205,32 +205,66 @@
   /////////////////////////////////////////////////////////////////////////////////
 
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Location"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Location"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["locat_id"];
+
+    // create Location Name column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td";
+    tblRow.appendChild(tblData1);
+    let span1 = document.createElement("span");
+    span1.textContent = dataRow["locat_name"];
+    tblData1.appendChild(span1);
+
+    // create Address column
+    let tblData2 = document.createElement("div");
+    tblData2.className = "td";
+    tblRow.appendChild(tblData2);
+    let span2 = document.createElement("span");
+    span2.textContent = dataRow["locat_address"];
+    tblData2.appendChild(span2);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Location";
+    btnEdit.onclick = editLocationLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Location";
+    btnDelt.onclick = deltLocationLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["locat_id"];
-      // tblRow.dataset.rowId = i;
-      createTblData(tblRow, result[i]["locat_name"], result[i]["locat_name"]);
-      createTblData(tblRow, result[i]["locat_address"], result[i]["locat_address"]);
-      createTblData(tblRow, btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_edit", editLocationLoader);
-    setEventsByClass("tbl_btn_delt", deltLocationLoader);
   }
 
-
-  let dataList = new DataList(urlroot + "getLocationDataset", displayData);
+  let dataList = new DataList(`${urlroot}getLocationDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
   dataList.setSortHeader("dl_sort_1", "dl_sort_2");

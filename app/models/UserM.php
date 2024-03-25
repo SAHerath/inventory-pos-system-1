@@ -16,68 +16,129 @@ class UserM
     }
   }
 
-  public function login($username, $password)
+  public function getRoleList()
   {
-    $query = "SELECT * FROM tabl_user WHERE user_username = :usen";
-    $param = ['usen' => $username];
+    $query = "SELECT role_code, role_name FROM tabl_role WHERE role_state = 'active'";
+    if ($this->db->runQuery($query)) {
+      return $this->db->getResults(DB_MULTIPLE);
+    } else {
+      return false;
+    }
+  }
 
+  public function create($param)
+  {
+    $query = "INSERT INTO tabl_user(user_role_code, user_username, user_password, user_first_name, user_last_name, user_birthday, user_gender, user_address, user_phone, user_photo, user_status) 
+               VALUES(:usersrole, :usersusname, :userspasswd, :usersfirname, :userslasname, :usersbirthd, :usersgender, :usersaddres, :usersphone, :usersimage, :usersstate)";
+
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_COUNT);
+    } else {
+      return false;
+    }
+  }
+
+  public function update($param)
+  {
+    if (isset($param['userspasswd'])) {
+      $query = "UPDATE tabl_user 
+      SET user_role_code=:usersrole, user_username=:usersusname, user_password=:userspasswd, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
+      WHERE user_code=:usersid";
+    } else {
+      $query = "UPDATE tabl_user 
+      SET user_role_code=:usersrole, user_username=:usersusname, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
+      WHERE user_code=:usersid";
+    }
+
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_COUNT);
+    }
+  }
+
+  public function remove($param)
+  {
+    $query = "DELETE FROM tabl_user WHERE user_code = :usersid";
+
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_COUNT);
+    }
+  }
+
+  public function findUsername($username)
+  {
+    $query = "SELECT COUNT(user_code) AS count, user_code FROM tabl_user WHERE user_username = :username";
+    $param = ['username' => $username];
+
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_SINGLE);
+    } else {
+      return false;
+    }
+  }
+
+  public function getUser($rowId)
+  {
+    $query = "SELECT * FROM tabl_user WHERE user_code = :userid";
+    $param = ['userid' => $rowId];
     if ($this->db->runQuery($query, $param)) {
       $row = $this->db->getResults(DB_SINGLE);
-
-      if ($row) {
-        if (password_verify($password, $row->user_password)) {
-          return $row;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+      unset($row['user_password']);
+      return $row;
     }
   }
 
-  public function createUser($data)
+  public function getRowCount($searchVal = null)
   {
-    $query = "INSERT INTO tabl_user(user_role_code, user_username, user_password, user_first_name, user_last_name, user_birthday, user_gender, user_address, user_phone, user_active, user_photo) 
-               VALUES(:rolc, :usen, :pass, :fnam, :lnam, :bday, :gend, :addr, :phon, :accs, :fili)";
-    // VALUES(:opt_role, :txt_username, :pas_password, :txt_fname, :txt_lname, :dte_birthday, :opt_gender, :txt_address, :tel_phone, :opt_accstat, :fil_image)";
-
-    $param = [
-      'rolc' => $data['opt_role'],
-      'usen' => $data['txt_username'],
-      'pass' => $data['pas_password'],
-      'fnam' => $data['txt_fname'],
-      'lnam' => $data['txt_lname'],
-      'bday' => $data['dte_birthday'],
-      'gend' => $data['opt_gender'],
-      'addr' => $data['txt_address'],
-      'phon' => $data['tel_phone'],
-      'accs' => $data['opt_accstat'],
-      'fili' => $data['fil_image']
-    ];
+    if ($searchVal) {
+      // $query = "SELECT COUNT(*) FROM songs_taylorswift WHERE (title LIKE :search) OR (album LIKE :search)";
+      $query = "SELECT COUNT(*) FROM tabl_user U LEFT JOIN tabl_role R ON U.user_role_code = R.role_code WHERE (U.user_first_name LIKE :search) OR (U.user_last_name LIKE :search) OR (U.user_username LIKE :search) OR (R.role_name LIKE :search) OR (U.user_status LIKE :search)";
+      $param = ['search' => '%' . $searchVal . '%'];
+    } else {
+      $query = "SELECT COUNT(*) FROM tabl_user";
+      $param = [];
+    }
 
     if ($this->db->runQuery($query, $param)) {
-      return $this->db->getResults(DB_COUNT);
+      $count = $this->db->getResults(DB_SINGLE);
+      return $count['COUNT(*)'];
+    } else {
+      return false;
     }
   }
 
-  public function findByUsername($username)
+  public function getRows($data)
   {
-    $query = "SELECT * FROM tabl_user WHERE user_username = :usen";
-    $param = ['usen' => $username];
+    // var_dump($data);
+    $sortType = "ASC";
+    if ($data['sort_type'] == '1') {
+      $sortType = "DESC";
+    }
+
+    if ($data['search_val']) {
+      $query = "SELECT U.user_code AS users_id, U.user_first_name AS users_fname, U.user_last_name AS users_lname, U.user_username AS users_usrname, R.role_name AS users_role, U.user_status AS users_state 
+      FROM tabl_user U LEFT JOIN tabl_role R ON U.user_role_code = R.role_code WHERE (U.user_first_name LIKE :search) OR (U.user_last_name LIKE :search) OR (U.user_username LIKE :search) OR (R.role_name LIKE :search) OR (U.user_status LIKE :search) 
+      ORDER BY :ordcol $sortType LIMIT :offset, :rowcon";
+
+      $param = [
+        'ordcol' => $data['sort_col'],
+        'rowcon' => $data['max_rows'],
+        'offset' => $data['row_offset'],
+        'search' => '%' . $data['search_val'] . '%'
+      ];
+    } else {
+      $query = "SELECT U.user_code AS users_id, U.user_first_name AS users_fname, U.user_last_name AS users_lname, U.user_username AS users_usrname, R.role_name AS users_role, U.user_status AS users_state
+      FROM tabl_user U LEFT JOIN tabl_role R ON U.user_role_code = R.role_code ORDER BY :ordcol $sortType LIMIT :offset, :rowcon";
+      $param = [
+        'ordcol' => $data['sort_col'],
+        'rowcon' => $data['max_rows'],
+        'offset' => $data['row_offset'],
+      ];
+    }
 
     if ($this->db->runQuery($query, $param)) {
-      return $this->db->getResults(DB_COUNT);
+      return $this->db->getResults(DB_MULTIPLE);
+    } else {
+      return false;
     }
-  }
-
-  public function getUsers()
-  {
-    $query = "SELECT * FROM users";
-  }
-
-  public function getLastUserId()
-  {
-    return $this->db->lastId();
   }
 }

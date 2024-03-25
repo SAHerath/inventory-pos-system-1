@@ -4,22 +4,509 @@ class Users extends Controller
 {
   public function __construct()
   {
+    if (!isLoggedIn()) {
+      redirect('auth/index');
+    }
     $this->userModel = $this->model('UserM');
   }
 
   public function index()
   {
-    exit('Error! : Invalid method');
+    $data = [
+      'title' => 'user_list'
+    ];
+    $this->view('users/userlistV', $data);
   }
 
-  public function userlist()
+  public function add()
   {
+    $data = [
+      'title' => 'user_add'
+    ];
+
+    $data['roles'] = $this->userModel->getRoleList();
+
+    $this->view('users/useraddV', $data);
   }
+
+  public function edit($userId)
+  {
+    $userId = trim($userId);
+    $data = [
+      'title' => 'user_edit'
+    ];
+    $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+
+    // validate product id
+    if (empty($userId) || !preg_match($validator2, $userId)) {
+      exit('Error! : No valied Order Id found. ');
+    } else {
+      $data['roles'] = $this->userModel->getRoleList();
+      $data['users'] = $this->userModel->getUser($userId);
+
+      // echo '<pre>';
+      // var_dump($data);
+      // echo '</pre>';
+
+      $this->view('users/usereditV', $data);
+    }
+  }
+
+  public function addUser()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      // var_dump($_POST);
+      $param = [
+        'usersfirname' => trim($_POST['users_fname']),
+        'userslasname' => trim($_POST['users_lname']),
+        'usersbirthd' => trim($_POST['users_birthday']),
+        'usersgender' => trim($_POST['users_gender']),
+        'usersaddres' => trim($_POST['users_address']),
+        'usersphone' => trim($_POST['users_phone']),
+        'usersrole' => trim($_POST['users_role']),
+        'usersusname' => trim($_POST['users_username']),
+        'userspasswd' => trim($_POST['users_password']),
+        'userscnpass' => trim($_POST['users_confpass']),
+        'usersstate' => trim($_POST['users_acstatus']),
+        'usersimage' => ''
+      ];
+
+      $data = [
+        'state' => 'invalid',
+        'frm_msg' => []
+      ];
+
+      $validator0 = ['jpeg', 'png', 'gif'];  // filter image types
+      $validator1 = "/^[a-zA-Z0-9 _-]*$/";   // filter only lowercase/uppercase/numbers/space/underscor/dash
+      $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+      $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
+      $validator4 = "/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/";  // must include atleast one upercase, lowercase, number. lenght 8 to 20
+      $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
+
+      // validate image
+      $fileData = validateFiles('users_image', 1, $validator0);
+      if (empty($fileData['error'])) {
+        $data['frm_msg']['users_image'] = 'Image: File not found';
+      } elseif ($fileData['error'] != 'NoError') {
+        $data['frm_msg']['users_image'] = 'Image: ' . $fileData['error'];
+      }
+
+      // validate first name
+      if (empty($param['usersfirname'])) {
+        $data['frm_msg']['users_fname'] = 'First Name: Field is empty';
+      } elseif (!preg_match($validator1, $param['usersfirname'])) {
+        $data['frm_msg']['users_fname'] = 'First Name: Can only contain letters and numbers';
+      }
+
+      // validate last name
+      if (!preg_match($validator1, $param['userslasname'])) {
+        $data['frm_msg']['users_lname'] = 'Last Name: Can only contain letters and numbers';
+      }
+
+      // validate birthday
+      if (empty($param['usersbirthd'])) {
+        $data['frm_msg']['users_birthday'] = 'Date of Birth: Field is empty';
+      } else {
+        $dtObj1 = new DateTime("now");
+        $dtObj2 = DateTime::createFromFormat('Y-m-d', $param['usersbirthd']);
+        //echo $dtObj->format('Y-m-d');
+        // $dtErObj = DateTime::getLastErrors();
+        // if ($dtErObj['warning_count'] > 0 || $dtErObj['error_count'] > 0)
+        if (array_sum(DateTime::getLastErrors())) {
+          $data['frm_msg']['users_birthday'] = 'Date of Birth: Invalied date format';
+        } elseif ($dtObj2->diff($dtObj1)->format('%y') < 16) {
+          $data['frm_msg']['users_birthday'] = 'Date of Birth: Under age restricted';
+        }
+      }
+
+      // validate gender
+      if (empty($param['usersgender'])) {
+        $data['frm_msg']['users_gender'] = 'Gender: Field not selected';
+      } elseif (!($param['usersgender'] == 'male' || $param['usersgender'] == 'female')) {
+        $data['frm_msg']['users_gender'] = 'Gender: Invalied value';
+      }
+
+      // validate address
+      if (empty($param['usersaddres'])) {
+        $data['frm_msg']['users_address'] = 'Address: Field is empty';
+      }
+
+      // validate telphone number
+      if (empty($param['usersphone'])) {
+        $data['frm_msg']['users_phone'] = 'Phone: Field is empty';
+      } elseif (!preg_match($validator3, $param['usersphone'])) {
+        $data['frm_msg']['users_phone'] = 'Phone: Invalied phone number format';
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate role id
+      if (empty($param['usersrole'])) {
+        $data['frm_msg']['users_role'] = 'Role: Field not selected';
+      } elseif (!preg_match($validator2, $param['usersrole'])) {
+        $data['frm_msg']['users_role'] = 'Role: Invalied format';
+      }
+
+      // validate username
+      if (empty($param['usersusname'])) {
+        $data['frm_msg']['users_username'] = 'Username: Field is empty';
+      } elseif (!filter_var($param['usersusname'], FILTER_VALIDATE_EMAIL)) {
+        $data['frm_msg']['users_username'] = 'Username: Insert valid email address';
+      } else {
+        $user = $this->userModel->findUsername($param['usersusname']);
+        if (!$user) {
+          $data['frm_msg']['edit_users_msg'] = 'Someting went wrong';
+        } elseif ($user['count'] > 0) {
+          $data['frm_msg']['users_username'] = 'Username: Already taken';
+        }
+      }
+
+      // validate password
+      if (empty($param['userspasswd'])) {
+        $data['frm_msg']['users_password'] = 'Password: Field is empty';
+      } elseif (!preg_match($validator4, $param['userspasswd'])) {
+        $data['frm_msg']['users_password'] = 'Password: Must have 8 to 20 characters including atleast one uppercase, one lowercase and one number';
+      }
+
+      // validate confirm password
+      if (empty($param['userscnpass'])) {
+        $data['frm_msg']['users_confpass'] = 'Confirm Password: Field is empty';
+      } elseif ($param['userscnpass'] !== $param['userspasswd']) {
+        $data['frm_msg']['users_confpass'] = 'Confirm Password: Do not match';
+      }
+
+      // validate account status
+      if (empty($param['usersstate'])) {
+        $data['frm_msg']['users_acstatus'] = 'Account Status: Field not selected';
+      } elseif (!($param['usersstate'] == 'active' || $param['usersstate'] == 'blocked')) {
+        $data['frm_msg']['users_acstatus'] = 'Account Status: Invalied value';
+      }
+
+
+      if (empty($data['frm_msg'])) {
+
+        $param['userspasswd'] = password_hash($param['userspasswd'], PASSWORD_DEFAULT);
+        unset($param['userscnpass']);
+
+        if (move_uploaded_file($fileData['path'][0], 'img/uploads/user/' . $fileData['users_image'][0])) {
+          $param['usersimage'] = $fileData['users_image'][0];
+        } else {
+          $data['frm_msg']['add_users_msg'] = 'Image: File not saved';
+        }
+
+        if ($this->userModel->create($param)) {
+          unset($param);
+          $data['state']  = 'success';
+          $data['frm_msg']['add_users_msg'] = 'User successfully added';
+        } else {
+          $data['frm_msg']['add_users_msg'] = 'Someting went wrong';
+        }
+      }
+
+      echo json_encode($data);
+    }
+  }
+
+  public function editUser()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      // var_dump($_POST);
+      $param = [
+        'usersid' => trim($_POST['users_id']),
+        'usersfirname' => trim($_POST['users_fname']),
+        'userslasname' => trim($_POST['users_lname']),
+        'usersbirthd' => trim($_POST['users_birthday']),
+        'usersgender' => trim($_POST['users_gender']),
+        'usersaddres' => trim($_POST['users_address']),
+        'usersphone' => trim($_POST['users_phone']),
+        'usersrole' => trim($_POST['users_role']),
+        'usersusname' => trim($_POST['users_username']),
+        'userspasswd' => trim($_POST['users_password']),
+        'userscnpass' => trim($_POST['users_confpass']),
+        'usersstate' => trim($_POST['users_acstatus']),
+        'usersimage' => ''
+      ];
+
+      $data = [
+        'state' => 'invalid',
+        'frm_msg' => []
+      ];
+
+      $validator0 = ['jpeg', 'png', 'gif'];  // filter image types
+      $validator1 = "/^[a-zA-Z0-9 _-]*$/";   // filter only lowercase/uppercase/numbers/space/underscor/dash
+      $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+      $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
+      $validator4 = "/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/";  // must include atleast one upercase, lowercase, number. lenght 8 to 20
+      $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
+
+      // validate user id
+      if (empty($param['usersid'])) {
+        $data['frm_msg']['edit_users_msg'] = 'User Id: Field is empty';
+      } elseif (!preg_match($validator2, $param['usersid'])) {
+        $data['frm_msg']['edit_users_msg'] = 'User Id: Invalied format';
+      }
+
+      // validate image
+      $fileData = validateFiles('users_image', 1, $validator0);
+      if (empty($fileData['error'])) {
+        // $data['frm_msg']['users_image'] = 'Image: File not found';
+      } elseif ($fileData['error'] != 'NoError') {
+        $data['frm_msg']['users_image'] = 'Image: ' . $fileData['error'];
+      }
+
+      // validate first name
+      if (empty($param['usersfirname'])) {
+        $data['frm_msg']['users_fname'] = 'First Name: Field is empty';
+      } elseif (!preg_match($validator1, $param['usersfirname'])) {
+        $data['frm_msg']['users_fname'] = 'First Name: Can only contain letters and numbers';
+      }
+
+      // validate last name
+      if (!preg_match($validator1, $param['userslasname'])) {
+        $data['frm_msg']['users_lname'] = 'Last Name: Can only contain letters and numbers';
+      }
+
+      // validate birthday
+      if (empty($param['usersbirthd'])) {
+        $data['frm_msg']['users_birthday'] = 'Date of Birth: Field is empty';
+      } else {
+        $dtObj1 = new DateTime("now");
+        $dtObj2 = DateTime::createFromFormat('Y-m-d', $param['usersbirthd']);
+        //echo $dtObj->format('Y-m-d');
+        // $dtErObj = DateTime::getLastErrors();
+        // if ($dtErObj['warning_count'] > 0 || $dtErObj['error_count'] > 0)
+        if (array_sum(DateTime::getLastErrors())) {
+          $data['frm_msg']['users_birthday'] = 'Date of Birth: Invalied date format';
+        } elseif ($dtObj2->diff($dtObj1)->format('%y') < 16) {
+          $data['frm_msg']['users_birthday'] = 'Date of Birth: Under age restricted';
+        }
+      }
+
+      // validate gender
+      if (empty($param['usersgender'])) {
+        $data['frm_msg']['users_gender'] = 'Gender: Field not selected';
+      } elseif (!($param['usersgender'] == 'male' || $param['usersgender'] == 'female')) {
+        $data['frm_msg']['users_gender'] = 'Gender: Invalied value';
+      }
+
+      // validate address
+      if (empty($param['usersaddres'])) {
+        $data['frm_msg']['users_address'] = 'Address: Field is empty';
+      }
+
+      // validate telphone number
+      if (empty($param['usersphone'])) {
+        $data['frm_msg']['users_phone'] = 'Phone: Field is empty';
+      } elseif (!preg_match($validator3, $param['usersphone'])) {
+        $data['frm_msg']['users_phone'] = 'Phone: Invalied phone number format';
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate role id
+      if (empty($param['usersrole'])) {
+        $data['frm_msg']['users_role'] = 'Role: Field not selected';
+      } elseif (!preg_match($validator2, $param['usersrole'])) {
+        $data['frm_msg']['users_role'] = 'Role: Invalied format';
+      }
+
+      // validate username
+      if (empty($param['usersusname'])) {
+        $data['frm_msg']['users_username'] = 'Username: Field is empty';
+      } elseif (!filter_var($param['usersusname'], FILTER_VALIDATE_EMAIL)) {
+        $data['frm_msg']['users_username'] = 'Username: Insert valid email address';
+      } else {
+        $user = $this->userModel->findUsername($param['usersusname']);
+        if (!$user) {
+          $data['frm_msg']['edit_users_msg'] = 'Someting went wrong';
+        } elseif ($user['count'] > 0 && $user['user_code'] != $param['usersid']) {
+          $data['frm_msg']['users_username'] = 'Username: Already taken';
+        }
+      }
+
+      // validate password
+      if (empty($param['userspasswd'])) {
+        // $data['frm_msg']['users_password'] = 'Password: Field is empty';
+      } elseif (!preg_match($validator4, $param['userspasswd'])) {
+        $data['frm_msg']['users_password'] = 'Password: Must have 8 to 20 characters including atleast one uppercase, one lowercase and one number';
+      }
+
+      // validate confirm password
+      if ((!empty($param['userspasswd'])) && empty($param['userscnpass'])) {
+        $data['frm_msg']['users_confpass'] = 'Confirm Password: Field is empty';
+      } elseif ($param['userscnpass'] !== $param['userspasswd']) {
+        $data['frm_msg']['users_confpass'] = 'Confirm Password: Do not match';
+      }
+
+      // validate account status
+      if (empty($param['usersstate'])) {
+        $data['frm_msg']['users_acstatus'] = 'Account Status: Field not selected';
+      } elseif (!($param['usersstate'] == 'active' || $param['usersstate'] == 'blocked')) {
+        $data['frm_msg']['users_acstatus'] = 'Account Status: Invalied value';
+      }
+
+
+      if (empty($data['frm_msg'])) {
+
+        if (!empty($param['userspasswd'])) {
+          $param['userspasswd'] = password_hash($param['userspasswd'], PASSWORD_DEFAULT);
+        } else {
+          unset($param['userspasswd']);
+        }
+        unset($param['userscnpass']);
+
+        if (!empty($fileData['users_image'][0])) {
+          if (move_uploaded_file($fileData['path'][0], 'img/uploads/user/' . $fileData['users_image'][0])) {
+            $param['usersimage'] = $fileData['users_image'][0];
+          } else {
+            $data['frm_msg']['edit_users_msg'] = 'Image: File not saved';
+          }
+        }
+
+        if ($this->userModel->update($param)) {
+          unset($param);
+          $data['state']  = 'success';
+          $data['frm_msg']['edit_users_msg'] = 'User successfully updated';
+        } else {
+          $data['frm_msg']['edit_users_msg'] = 'Someting went wrong';
+        }
+      }
+
+      echo json_encode($data);
+    }
+  }
+
+  public function deleteUser()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+      $param = [
+        'usersid' => trim($_POST['delt_users_id'])
+      ];
+
+      $data = [
+        'state' => 'invalid',
+        'frm_msg' => []
+      ];
+
+      $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+
+      // validate user id
+      if (empty($param['usersid'])) {
+        $data['frm_msg']['delt_users_msg'] = 'User Id: Field is empty';
+      } elseif (!preg_match($validator2, $param['usersid'])) {
+        $data['frm_msg']['delt_users_msg'] = 'User Id: Invalied format';
+      }
+
+      if (empty($data['frm_msg'])) {
+
+        if ($this->userModel->getRowCount() == 1) {
+          $data['frm_msg']['delt_users_msg'] = 'Last user can not delete';
+        } elseif ($this->userModel->remove($param)) {
+          unset($param);
+          $data['state']  = 'success';
+          $data['frm_msg']['delt_users_msg'] = 'User successfully deleted';
+        } else {
+          $data['frm_msg']['delt_users_msg'] = 'Someting went wrong';
+        }
+      }
+
+      echo json_encode($data);
+    }
+  }
+
+  public function getUserDataset()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+      $pageNum = trim($_POST['page_num']);
+      $newSearch = trim($_POST['search_new']);
+
+      $param = [
+        'max_rows' => 10,
+        'row_offset' => 0,
+        'sort_col' => trim($_POST['sort_col']),
+        'sort_type' => trim($_POST['sort_type']),
+        'search_val' => trim($_POST['search_val']),
+      ];
+
+      $data = [
+        'page_tot' => '',
+        'tbl_data' => []
+      ];
+
+      $pattern1 = "/^[1-9]\d*$/";   // filter any number except 0
+      $pattern2 = "/^[0|1]?$/";   // filter 0 or 1
+      $pattern3 = "/^[a-z]{2,}$/";  // filter only lowercase lerters, atleast 2
+
+      if (!preg_match($pattern1, $pageNum)) {
+        $pageNum = 1;
+      }
+
+      if (!preg_match($pattern2, $newSearch)) {
+        $newSearch = 1;
+      }
+
+      if (!preg_match($pattern1, $param['sort_col'])) {
+        $param['sort_col'] = 1;
+      } else {
+        $param['sort_col'] = (int)$param['sort_col'];
+      }
+
+      if (!preg_match($pattern2, $param['sort_type'])) {
+        $param['sort_type'] = 0;
+      } else {
+        $param['sort_type'] = (int)$param['sort_type'];
+      }
+
+      if (!preg_match($pattern3, $param['search_val'])) {
+        $param['search_val'] = '';
+      }
+
+      $param['row_offset'] = ((int)$pageNum - 1) * $param['max_rows'];
+
+      if ($newSearch) {
+        $rowTot = $this->userModel->getRowCount($param['search_val']);
+        $data['page_tot'] =  ceil($rowTot / $param['max_rows']);
+      }
+
+      $data['tbl_data'] = $this->userModel->getRows($param);
+
+      echo json_encode($data);
+    }
+  }
+
+
+  // public function isLoggedIn()
+  // {
+  //   if (isset($_SESSION['userid'])) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   public function testdb()
   {
     echo '<pre>';
-    var_dump($this->userModel->login('david.smith@hot.mail', 'Hello123'));
+    // $k = true;
+    // if ($k > 0) {
+    //   echo 'valid';
+    // } else {
+    //   echo 'not';
+    // }
+    var_dump($this->userModel->findUsername('davdfid.smith@hot.mail'));
+    // var_dump($this->userModel->login('david.smith@hot.mail', 'Hello123'));
 
     // var_dump($this->userModel->findByUsername('david.smith@hot.mail'));
 
@@ -77,255 +564,6 @@ class Users extends Controller
       //     $_SESSION['files'] = $_FILES['fil_image']['tmp_name'];
       //   }
       // }
-    }
-  }
-
-  public function addUser()
-  {
-    $data = [
-      'title' => 'Add User'
-    ];
-    $this->view('users/add_user', $data);
-  }
-
-  public function saveUser()
-  {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      // var_dump($_POST);
-      $param = [
-        'txt_fname' => trim($_POST['txt_fname']),
-        'txt_lname' => trim($_POST['txt_lname']),
-        'dte_birthday' => trim($_POST['dte_birthday']),
-        'opt_gender' => trim($_POST['opt_gender']),
-        'txt_address' => trim($_POST['txt_address']),
-        'tel_phone' => trim($_POST['tel_phone']),
-        'opt_role' => trim($_POST['opt_role']),
-        'txt_username' => trim($_POST['txt_username']),
-        'pas_password' => trim($_POST['pas_password']),
-        'pas_confpass' => trim($_POST['pas_confpass']),
-        // 'txt_usrstat' => trim($_POST['txt_usrstat']),
-        'opt_accstat' => trim($_POST['opt_accstat']),
-        'fil_image' => ''
-      ];
-
-      $status = [
-        'state' => 'invalid',
-        'frm_msg' => []
-      ];
-
-      $pattern1 = "/^[a-zA-Z0-9]*$/";   // filter only lowercase/uppercase/numbers
-      $pattern2 = "/^[1-9]\d*$/";   // filter any number except 0
-      $pattern3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
-      $pattern4 = "/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/";  // must include atleast one upercase, lowercase, number. lenght 8 to 20
-      $fileTypes = ['jpeg', 'png', 'gif'];
-      // $fileSize = 1;  // 1 mega byte
-
-      // validate first name
-      if (empty($param['txt_fname'])) {
-        $status['frm_msg']['txt_fname'] = 'First Name: Field is empty';
-      } elseif (!preg_match($pattern1, $param['txt_fname'])) {
-        $status['frm_msg']['txt_fname'] = 'First Name: Can only contain letters and numbers';
-      }
-
-      // validate last name
-      if (!preg_match($pattern1, $param['txt_lname'])) {
-        $status['frm_msg']['txt_lname'] = 'Last Name: Can only contain letters and numbers';
-      }
-
-      // validate birthday
-      if (empty($param['dte_birthday'])) {
-        $status['frm_msg']['dte_birthday'] = 'Date of Birth: Field is empty';
-      } else {
-        $dtObj1 = new DateTime("now");
-        $dtObj2 = DateTime::createFromFormat('Y-m-d', $param['dte_birthday']);
-        //echo $dtObj->format('Y-m-d');
-        // $dtErObj = DateTime::getLastErrors();
-        // if ($dtErObj['warning_count'] > 0 || $dtErObj['error_count'] > 0)
-        if (array_sum(DateTime::getLastErrors())) {
-          $status['frm_msg']['dte_birthday'] = 'Date of Birth: Invalied date format';
-        } elseif ($dtObj2->diff($dtObj1)->format('%y') < 16) {
-          $status['frm_msg']['dte_birthday'] = 'Date of Birth: Under age restricted';
-        }
-      }
-
-      // validate gender
-      if (empty($param['opt_gender'])) {
-        $status['frm_msg']['opt_gender'] = 'Gender: Field not selected';
-      } elseif (!preg_match($pattern2, $param['opt_gender'])) {
-        $status['frm_msg']['txt_fname'] = 'Gender: Invalied format';
-      }
-
-      // validate address
-      if (empty($param['txt_address'])) {
-        $status['frm_msg']['txt_address'] = 'Address: Field is empty';
-      }
-
-      // validate telphone number
-      if (empty($param['tel_phone'])) {
-        $status['frm_msg']['tel_phone'] = 'Phone: Field is empty';
-      } elseif (!preg_match($pattern3, $param['tel_phone'])) {
-        $status['frm_msg']['tel_phone'] = 'Phone: Invalied phone number format';
-      }
-
-      // validate role id
-      if (empty($param['opt_role'])) {
-        $status['frm_msg']['opt_role'] = 'Role: Field not selected';
-      } elseif (!preg_match($pattern2, $param['opt_role'])) {
-        $status['frm_msg']['opt_role'] = 'Role: Invalied format';
-      }
-
-      // validate username
-      if (empty($param['txt_username'])) {
-        $status['frm_msg']['txt_username'] = 'Username: Field is empty';
-      } elseif ($this->userModel->findByUsername($param['txt_username'])) {
-        $status['frm_msg']['txt_username'] = 'Username: Already taken';
-      }
-
-      // validate password
-      if (empty($param['pas_password'])) {
-        $status['frm_msg']['pas_password'] = 'Password: Field is empty';
-      } elseif (!preg_match($pattern4, $param['pas_password'])) {
-        $status['frm_msg']['pas_password'] = 'Password: Must have 8 to 20 characters including atleast one uppercase, one lowercase and one number';
-      }
-
-      // validate confirm password
-      if (empty($param['pas_confpass'])) {
-        $status['frm_msg']['pas_confpass'] = 'Confirm Password: Field is empty';
-      } elseif ($param['pas_confpass'] !== $param['pas_password']) {
-        $status['frm_msg']['pas_confpass'] = 'Confirm Password: Do not match';
-      }
-
-      // validate account status
-      if (empty($param['opt_accstat'])) {
-        $status['frm_msg']['opt_accstat'] = 'Account Status: Field not selected';
-      } elseif (!preg_match($pattern2, $param['opt_accstat'])) {
-        $status['frm_msg']['opt_accstat'] = 'Account Status: Invalied format';
-      }
-
-      // validate image
-      $fileData = validateFiles('fil_image', 1, $fileTypes);
-      if (!empty($fileData['error'])) {
-        if ($fileData['error'] != 'File not found') {
-          $status['frm_msg']['fil_image'] = 'Image: ' . $fileData['error'];
-        }
-      }
-
-      /* if (empty($fileData['error'])) {
-        for ($index = 0; $index < count($fileData['path']); $index++) {
-          if (move_uploaded_file($fileData['path'][$index], 'uploads/' . $fileData['fil_image'][$index])) {
-            $data['fil_image'] = $fileData['fil_image'][$index];
-          } else {
-            $status['frm_msg']['fil_image'] = 'Image: File not saved';
-          }
-        }
-      }  else {
-        $status['frm_msg']['fil_image'] = 'Image: ' . $fileData['error'];
-      }*/
-
-
-      if (empty($status['frm_msg'])) {
-
-        $param['pas_password'] = password_hash($param['pas_password'], PASSWORD_DEFAULT);
-        // unset($data['pas_confpass']);
-
-        if (empty($fileData['error'])) {
-          if (move_uploaded_file($fileData['path'][0], 'img/uploads/user/' . $fileData['fil_image'][0])) {
-            $param['fil_image'] = $fileData['fil_image'][0];
-          } else {
-            $status['frm_msg']['frm_status'] = 'Image: File not saved';
-          }
-        }
-
-        if ($this->userModel->createUser($param)) {
-          unset($param);
-          $status['state']  = 'success';
-          $status['frm_msg']['frm_status'] = 'User successfully added';
-        } else {
-          $status['frm_msg']['frm_status'] = 'Someting went wrong';
-        }
-      }
-
-      echo json_encode($status);
-    }
-  }
-
-  public function login()
-  {
-    $data = [
-      'title' => 'Login',
-      'frm_state' => '',
-      'frm_msg' => []
-    ];
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      // var_dump($_POST);
-      $param = [
-        'txt_username' => trim($_POST['txt_username']),
-        'pas_password' => trim($_POST['pas_password'])
-      ];
-
-
-      if (empty($param['txt_username'])) {
-        $data['frm_msg']['txt_username'] = 'Please enter Username';
-      }
-
-      if (empty($param['pas_password'])) {
-        $data['frm_msg']['pas_password'] = 'Please enter Password';
-      }
-
-      if (empty($data['frm_msg'])) {
-        $userDetails = $this->userModel->login($param['txt_username'], $param['pas_password']);
-        if ($userDetails) {
-          $this->createSession($userDetails);
-        } else {
-          $data['frm_state'] = 'invalid';
-          $data['frm_msg']['status'] = 'Incorrect Username or Password. Please try again!';
-        }
-      } else {
-        $data['frm_state'] = 'invalid';
-      }
-    }
-    $this->view('users/login', $data);
-  }
-
-  public function logout()
-  {
-    unset($_SESSION['userid']);
-    unset($_SESSION['userfname']);
-    unset($_SESSION['userrole']);
-    unset($_SESSION['userphoto']);
-    session_destroy();
-    redirect('users/login');
-  }
-
-  public function createSession($user)
-  {
-    session_start();
-    $_SESSION['userid'] = $user['user_code'];
-    $_SESSION['userfname'] = $user['user_first_name'];
-    $_SESSION['userrole'] = $user['user_role_code'];
-
-    if (empty($user['user_photo'])) {
-      if ($user['user_gender'] == '2') {
-        $_SESSION['userphoto'] = 'avatar_f.png';
-      } else {
-        $_SESSION['userphoto'] = 'avatar_m.png';
-      }
-    } else {
-      $_SESSION['userphoto'] = $user['user_photo'];
-    }
-
-    redirect('pages/index');
-  }
-
-  public function isLoggedIn()
-  {
-    if (isset($_SESSION['userid'])) {
-      return true;
-    } else {
-      return false;
     }
   }
 }

@@ -14,8 +14,8 @@
   </div>
   <div class="main-cards">
     <!-- BUTTON add new -->
-    <div class="form-group">
-      <a class="btn" href="<?php echo URLROOT; ?>products/add" tabindex="0">Add New Product</a>
+    <div class="row mb-2">
+      <a class="btn blue" href="<?php echo URLROOT; ?>products/add" tabindex="0">Add New Product</a>
     </div>
 
 
@@ -62,13 +62,13 @@
                 <div class="td">3</div>
                 <div class="td">Inactive</div>
                 <div class="td">
-                  <a class="tbl_btn_view btn green mr-1" role="button" title="View more">
+                  <a class="btn green mr-1" role="button" title="View more">
                     <i class="fas fa-eye"></i>
                   </a>
-                  <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Vendor">
+                  <a class="btn yellow mr-1" role="button" title="Edit Vendor">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="tbl_btn_delt btn red" role="button" title="Delete Vendor">
+                  <a class="btn red" role="button" title="Delete Vendor">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>
@@ -143,45 +143,138 @@
   /////////////////////////////////////////////////////////////////////////////////
 
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnViewHtml = '<a class="tbl_btn_view btn green mr-1" role="button" title="View More Details"><i class="fas fa-eye"></i></a>';
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Product"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Product"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["pid"];
+
+    // create Image column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td txt-center";
+    tblRow.appendChild(tblData1);
+    let image = document.createElement("img");
+    image.src = "<?php echo URLROOT; ?>img/uploads/product/" + dataRow["pimg"];
+    image.alt = "Product Image";
+    image.style.maxHeight = "5rem";
+    image.style.maxWidth = "5rem";
+    tblData1.appendChild(image);
+
+    // create SKU column
+    let tblData2 = document.createElement("div");
+    tblData2.className = "td";
+    tblRow.appendChild(tblData2);
+    let span2 = document.createElement("span");
+    span2.textContent = "PRD-" + dataRow["pid"].padStart(8, "0");
+    tblData2.appendChild(span2);
+
+    // create Name column
+    let tblData3 = document.createElement("div");
+    tblData3.className = "td";
+    tblRow.appendChild(tblData3);
+    let span3 = document.createElement("span");
+    span3.textContent = dataRow["pname"];
+    tblData3.appendChild(span3);
+
+    // create Description column
+    let tblData4 = document.createElement("div");
+    tblData4.className = "td";
+    tblRow.appendChild(tblData4);
+    let span4 = document.createElement("span");
+    span4.textContent = dataRow["pdesc"];
+    tblData4.appendChild(span4);
+
+    // create Category column
+    let tblData5 = document.createElement("div");
+    tblData5.className = "td";
+    tblRow.appendChild(tblData5);
+    let span5 = document.createElement("span");
+    span5.textContent = dataRow["pcatg"];
+    tblData5.appendChild(span5);
+
+    // create Brand column
+    let tblData6 = document.createElement("div");
+    tblData6.className = "td";
+    tblRow.appendChild(tblData6);
+    let span6 = document.createElement("span");
+    span6.textContent = dataRow["pbrnd"];
+    tblData6.appendChild(span6);
+
+    // create Quantity column
+    let tblData7 = document.createElement("div");
+    tblData7.className = "td";
+    tblRow.appendChild(tblData7);
+    let span7 = document.createElement("span");
+    span7.textContent = dataRow["pqty"];
+    tblData7.appendChild(span7);
+
+    // create Locations column
+    let tblData8 = document.createElement("div");
+    tblData8.className = "td";
+    tblRow.appendChild(tblData8);
+    let span8 = document.createElement("span");
+    span8.textContent = dataRow["plocs"];
+    tblData8.appendChild(span8);
+
+    // create Status column
+    let tblData9 = document.createElement("div");
+    tblData9.className = "td";
+    tblRow.appendChild(tblData9);
+    let span9 = document.createElement("span");
+    span9.textContent = (dataRow["pstat"] == "1") ? "Active" : "Inactive";
+    tblData9.appendChild(span9);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create view button
+    let btnView = document.createElement("a");
+    btnView.className = "btn-sm green mr-md-1";
+    btnView.title = "View Product";
+    btnView.onclick = viewProductLoader;
+    tblDataAct.appendChild(btnView);
+    let icoView = document.createElement("i");
+    icoView.className = "fas fa-eye";
+    btnView.appendChild(icoView);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Product";
+    btnEdit.onclick = editProductLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Product";
+    btnDelt.onclick = deltProductLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["pid"];
-      // tblRow.dataset.rowId = i;
-
-      createTblData(tblRow, result[i]["pimg"], '');
-      createTblData(tblRow, "PRD-" + result[i]["pid"].padStart(8, "0"), '');
-      createTblData(tblRow, result[i]["pname"], '');
-      createTblData(tblRow, result[i]["pdesc"], '');
-      createTblData(tblRow, result[i]["pcatg"], '');
-      createTblData(tblRow, result[i]["pbrnd"], '');
-      createTblData(tblRow, result[i]["pqty"], '');
-      createTblData(tblRow, result[i]["plocs"], '');
-      createTblData(tblRow, (result[i]["pstat"] == 1) ? "Active" : "Inactive", '');
-      createTblData(tblRow, btnViewHtml + btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_view", viewProductLoader);
-    setEventsByClass("tbl_btn_edit", editProductLoader);
-    setEventsByClass("tbl_btn_delt", deltProductLoader);
   }
 
 
-  let dataList = new DataList(urlroot + "getProductDataset", displayData);
+  let dataList = new DataList(`${urlroot}getProductDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
-  dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3", "dl_sort_4");
+  dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3", "dl_sort_4", "dl_sort_5", "dl_sort_6", "dl_sort_7", "dl_sort_8");
   dataList.setSearch('dl_search_inp', 'dl_search_btn');
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

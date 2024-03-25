@@ -32,6 +32,7 @@ label {
   position: relative;
   display: block;
   text-transform: capitalize;
+  user-select: none;
 }
 
 input {
@@ -77,12 +78,28 @@ input {
     }
   }
   &[type=checkbox] {
-    display: inline-block;
-    min-width: 2rem;
-    width: auto;
-    height: auto;
-    font-size: 1rem;
-    font-family: sans-serif;
+    // display: inline-block;
+
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    background-color: darken($white, 5%);
+    // cursor: pointer;
+    appearance: none;
+    // transition: all .1s linear; 
+
+    &:hover {
+      background-color: lighten($gray, 25%);
+    }
+    &:checked {
+      background-color: $white;
+      border: 0.375rem solid $blue;
+    }
+    &:focus {
+      background-color: darken($white, 5%);
+      outline: none;
+      box-shadow: none;
+    }
   }
   &[type=number] {
     -moz-appearance: textfield;
@@ -102,10 +119,10 @@ input {
   }
   &:focus {
     background-color: $white;
-    border: 1px solid darken($blue2, 8%);
+    border: 1px solid darken($blue, 8%);
 
     + .border-wrap {
-      border: 1px solid darken($blue2, 8%);
+      border: 1px solid darken($blue, 8%);
     }
   }
   &.invalid {
@@ -144,7 +161,7 @@ select {
   
   &:focus {
     background-color: $white;
-    border: 1px solid darken($blue2, 8%);
+    border: 1px solid darken($blue, 8%);
   }
   &:required:invalid {
     color: $gray;
@@ -198,7 +215,7 @@ textarea {
   }
   &:focus {
     background-color: $white;
-    border: 1px solid darken($blue2, 8%);
+    border: 1px solid darken($blue, 8%);
 
     // + .border-wrap {
     //   border: 1px solid darken($blue2, 8%);

@@ -2,9 +2,10 @@
 // load configurations
 require_once('config/config.php');
 // load helpers
-require_once('helpers/constants.php');
-require_once('helpers/url_helper.php');
-require_once('helpers/file_handler.php');
+require_once('helpers/constantsH.php');
+require_once('helpers/urlH.php');
+require_once('helpers/sessionH.php');
+require_once('helpers/fileuploadH.php');
 
 // autoload core libraries
 spl_autoload_register('autoLoadHandler');

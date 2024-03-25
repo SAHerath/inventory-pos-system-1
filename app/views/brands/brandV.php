@@ -33,22 +33,20 @@
         <div class="table">
           <div class="thead">
             <div class="tr">
-              <div class="th" id="dl_sort_1" style="width: 150px;">Brand Id<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-              <div class="th" id="dl_sort_2">Brand Name<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-              <div class="th" id="dl_sort_3">Status<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+              <div class="th" id="dl_sort_1">Brand Name<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+              <div class="th" id="dl_sort_2">Status<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
               <div class="th">Action</div>
             </div>
           </div>
           <div class="tbody" id="dl_tbl_body">
             <div class="tr">
-              <div class="td">1</div>
               <div class="td">Brand_1</div>
               <div class="td">Inactive</div>
               <div class="td">
-                <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Brand">
+                <a class="btn yellow mr-1" role="button" title="Edit Brand">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="tbl_btn_delt btn red" role="button" title="Delete Brand">
+                <a class="btn red" role="button" title="Delete Brand">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
@@ -172,7 +170,7 @@
     dataList.refreshData();
   }
 
-  let addBrand = new FormHandler('add_brand', 'add_brand_msg', urlroot + 'addBrand');
+  let addBrand = new FormHandler('add_brand', 'add_brand_msg', `${urlroot}addBrand`);
   addBrand.setCallback(brandAdded);
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -182,16 +180,16 @@
     showHide('mod_editbrand');
   }
 
-  let editBrand = new FormHandler('edit_brand', 'edit_brand_msg', urlroot + 'editBrand');
+  let editBrand = new FormHandler('edit_brand', 'edit_brand_msg', `${urlroot}editBrand`);
   editBrand.setCallback(brandEdited);
 
   function editBrandLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
-    let dataElem = this.parentElement.parentElement.getElementsByClassName("td");
+    let dataElem = this.parentElement.parentElement.getElementsByTagName("span");
     // console.log(dataElem);
     document.getElementById("edit_brand_id").value = rowId;
-    document.getElementById("edit_brand_name").value = dataElem[1].dataset.value;
-    document.getElementById("edit_brand_state").value = dataElem[2].dataset.value;
+    document.getElementById("edit_brand_name").value = dataElem[0].textContent;
+    document.getElementById("edit_brand_state").value = (dataElem[1].textContent == "Active") ? 1 : 2;
     showHide('mod_editbrand');
     // console.log(dataSet);
   }
@@ -202,7 +200,7 @@
     showHide('mod_deltbrand');
   }
 
-  let deltBrand = new FormHandler('delt_brand', 'delt_brand_msg', urlroot + 'deleteBrand');
+  let deltBrand = new FormHandler('delt_brand', 'delt_brand_msg', `${urlroot}deleteBrand`);
   deltBrand.setCallback(brandDeleted);
 
   function deltBrandLoader() {
@@ -213,37 +211,69 @@
   /////////////////////////////////////////////////////////////////////////////////
 
   const tblBody = document.getElementById("dl_tbl_body");
-  const btnEditHtml = '<a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Brand"><i class="fas fa-edit"></i></a>';
-  const btnDeleteHtml = '<a class="tbl_btn_delt btn red" role="button" title="Delete Brand"><i class="fas fa-trash-alt"></i></a>';
+
+  function createTblRow(dataRow) {
+
+    let tblRow = document.createElement("div");
+    tblRow.className = "tr";
+    tblRow.dataset.rowId = dataRow["brand_id"];
+
+    // create Brand Name column
+    let tblData1 = document.createElement("div");
+    tblData1.className = "td";
+    tblRow.appendChild(tblData1);
+    let span1 = document.createElement("span");
+    span1.textContent = dataRow["brand_name"];
+    tblData1.appendChild(span1);
+
+    // create Status column
+    let tblData2 = document.createElement("div");
+    tblData2.className = "td";
+    tblRow.appendChild(tblData2);
+    let span2 = document.createElement("span");
+    span2.textContent = (dataRow["brand_state"] == "1") ? "Active" : "Inactive";
+    tblData2.appendChild(span2);
+
+    // create Action column
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create edit button
+    let btnEdit = document.createElement("a");
+    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.title = "Edit Brand";
+    btnEdit.onclick = editBrandLoader;
+    tblDataAct.appendChild(btnEdit);
+    let icoEdit = document.createElement("i");
+    icoEdit.className = "fas fa-edit";
+    btnEdit.appendChild(icoEdit);
+    // create delete button
+    let btnDelt = document.createElement("a");
+    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.title = "Delete Brand";
+    btnDelt.onclick = deltBrandLoader;
+    tblDataAct.appendChild(btnDelt);
+    let icoDelt = document.createElement("i");
+    icoDelt.className = "fas fa-trash-alt";
+    btnDelt.appendChild(icoDelt);
+
+    return tblRow;
+  }
 
   function displayData(result) {
     // console.log("Reload Dataset");
-    tblBody.innerHTML = "";
+    tblBody.textContent = "";
 
-    for (let i in result) {
-      // console.log(result[i]);
-      let tblRow = document.createElement("div");
-      tblRow.classList.add("tr");
-      tblRow.dataset.rowId = result[i]["brand_id"];
-      // tblRow.dataset.rowId = i;
-
-      createTblData(tblRow, result[i]["brand_id"], result[i]["brand_id"]);
-      createTblData(tblRow, result[i]["brand_name"], result[i]["brand_name"]);
-      createTblData(tblRow, (result[i]["brand_state"] == 1) ? "Active" : "Inactive", result[i]["brand_state"]);
-      createTblData(tblRow, btnEditHtml + btnDeleteHtml);
-
-      // console.log(tblRow);
+    for (const row of result) {
+      let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
-    setEventsByClass("tbl_btn_edit", editBrandLoader);
-    setEventsByClass("tbl_btn_delt", deltBrandLoader);
   }
 
-
-  let dataList = new DataList(urlroot + "getDataset", displayData);
+  let dataList = new DataList(`${urlroot}getDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
-  dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3");
+  dataList.setSortHeader("dl_sort_1", "dl_sort_2");
   dataList.setSearch('dl_search_inp', 'dl_search_btn');
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

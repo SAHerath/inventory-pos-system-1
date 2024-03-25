@@ -4,8 +4,8 @@
     <a class="toggle-lg" role="button" onclick="dashbC.toggleMenu()">
       <i class="fas fa-bars"></i>
     </a>
-    <a class="active" href="#">Home</a>
-    <a class="" href="#">Menu1</a>
+    <a class="" href="<?php echo URLROOT; ?>home">Home</a>
+    <!-- <a class="" href="#">Menu1</a> -->
   </nav>
   <!-- center navigation -->
   <!-- <nav> 
@@ -16,14 +16,14 @@
     <a class="" href="#">Notifications</a>
     <div class="drop">
       <a class="" onclick="showDrop(this);">
-        <img src="<?php echo URLROOT; ?>img/uploads/user/avatar_m.png" alt="User Photo">
-        <!-- <img src="< echo URLROOT; ?>img/uploads/user/< echo $_SESSION['userphoto']; ?>" alt="User Photo">
-        < echo $_SESSION['userfname']; ?> -->
-        User_Name
+        <!-- <img src="<?php echo URLROOT; ?>img/uploads/user/avatar_m.png" alt="User Photo"> -->
+        <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $_SESSION['userphoto']; ?>" alt="User_Photo">
+        <?php echo $_SESSION['userfname']; ?>
+        <!-- User_Name -->
       </a>
       <div class="drop-content">
         <a href="#">Profile</a>
-        <a href="<?php echo URLROOT; ?>users/logout">Logout</a>
+        <a href="<?php echo URLROOT; ?>auth/logout">Logout</a>
       </div>
     </div>
   </nav>
@@ -47,19 +47,19 @@
   </div>
   <div class="aside-menu-wrap" id="aside_menu_wrap">
     <nav class="aside-menu">
-      <a class="<?php echo (($data['title'] == 'dashboard') ? 'active' : ''); ?>" href="dashboard.php">
+      <a class="<?php echo ((strpos($data['title'], 'dashboard') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>home">
         <i class="fas fa-home"></i> <!-- fa-th -->
         <span>Dashboard</span>
       </a>
-      <a class="<?php echo (($data['title'] == 'category') ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>categories">
+      <a class="<?php echo ((strpos($data['title'], 'category') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>categories">
         <i class=" fas fa-sitemap"></i> <!-- fa-list-alt -->
         <span>Category</span>
       </a>
-      <a class="<?php echo (($data['title'] == 'brand') ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>brands">
+      <a class="<?php echo ((strpos($data['title'], 'brand') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>brands">
         <i class="fas fa-tags"></i>
         <span>Brand</span>
       </a>
-      <a class="<?php echo (($data['title'] == 'attributes') ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>attributes">
+      <a class="<?php echo ((strpos($data['title'], 'attribute') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>attributes">
         <i class="fas fa-list"></i> <!-- fa-layer-plus -->
         <span>Attributes</span>
       </a>
@@ -72,13 +72,13 @@
         <span>Location</span>
       </a>
       <a class="<?php echo ((strpos($data['title'], 'product') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>products">
-        <i class="fas fa-box"></i>
+        <i class="fas fa-box"></i> <!-- fa-cubes-->
         <span>Product</span>
       </a>
 
-      <div class="drop">
+      <!-- <div class="drop">
         <a class="" onclick="showDrop(this);">
-          <i class="fas fa-box"></i> <!-- fa-cubes-->
+          <i class="fas fa-box"></i>
           <span>Product</span>
         </a>
         <div class="drop-content">
@@ -89,7 +89,7 @@
             Product List
           </a>
         </div>
-      </div>
+      </div> -->
 
       <a class="<?php echo ((strpos($data['title'], 'order') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>orders">
         <i class="fas fa-shopping-cart"></i>
@@ -103,25 +103,13 @@
         <i class="fas fa-building"></i>
         <span>Company</span>
       </a>
-      <a class="" href="#">
+      <a class="<?php echo ((strpos($data['title'], 'user') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>users">
         <i class="fas fa-users"></i>
         <span>User</span>
       </a>
-      <a class="" href="#">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-      </a>
-      <a class="" href="#">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-      </a>
-      <a class="" href="#">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-      </a>
-      <a class="" href="#">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
+      <a class="<?php echo ((strpos($data['title'], 'role') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>roles">
+        <i class="fas fa-user-shield"></i> <!--  fa-shield-alt -->
+        <span>Role</span>
       </a>
       <a class="" href="#">
         <i class="fas fa-cog"></i>

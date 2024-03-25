@@ -676,10 +676,10 @@ a {
 .main .main-overview {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (minmax(12rem, 1fr))[auto-fit];
-      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  -ms-grid-columns: (minmax(14rem, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   /* Where the magic happens */
-  grid-auto-rows: 6rem;
+  grid-auto-rows: 8rem;
   grid-gap: 1.25rem;
   margin: 1.25rem;
 }
@@ -689,17 +689,20 @@ a {
 }
 
 .overviewcard {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  padding: 1.25rem;
-  background-color: #16bd6971;
+  background-color: rgba(33, 134, 243, 0.4);
+}
+
+.overviewcard span {
+  font-size: 1.5rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.overviewcard i {
+  font-size: 4rem;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .card {
@@ -1422,22 +1425,40 @@ a {
       flex-wrap: wrap;
 }
 
-.row.center {
+.row.center-h {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
 }
 
-.row.left {
+.row.start-h {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
 }
 
-.row.right {
+.row.end-h {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+}
+
+.row.center-v {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.row.start-v {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.row.end-v {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 .col {
@@ -2871,6 +2892,10 @@ label {
   position: relative;
   display: block;
   text-transform: capitalize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 input {
@@ -2916,12 +2941,29 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 input[type=checkbox] {
-  display: inline-block;
-  min-width: 2rem;
-  width: auto;
-  height: auto;
-  font-size: 1rem;
-  font-family: sans-serif;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  background-color: #ededed;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+input[type=checkbox]:hover {
+  background-color: #c8c8c8;
+}
+
+input[type=checkbox]:checked {
+  background-color: #fafafa;
+  border: 0.375rem solid #2186F3;
+}
+
+input[type=checkbox]:focus {
+  background-color: #ededed;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 input[type=number] {
@@ -2960,11 +3002,11 @@ input:disabled {
 
 input:focus {
   background-color: #fafafa;
-  border: 1px solid #0967b3;
+  border: 1px solid #0c72df;
 }
 
 input:focus + .border-wrap {
-  border: 1px solid #0967b3;
+  border: 1px solid #0c72df;
 }
 
 input.invalid {
@@ -3003,7 +3045,7 @@ select {
 
 select:focus {
   background-color: #fafafa;
-  border: 1px solid #0967b3;
+  border: 1px solid #0c72df;
 }
 
 select:required:invalid {
@@ -3072,7 +3114,7 @@ textarea::placeholder {
 
 textarea:focus {
   background-color: #fafafa;
-  border: 1px solid #0967b3;
+  border: 1px solid #0c72df;
 }
 
 textarea.invalid {
@@ -3398,6 +3440,7 @@ fieldset:empty + .empty {
   display: block;
   margin-right: 0.25rem;
   margin-left: 0.25rem;
+  text-transform: capitalize;
 }
 
 .table .td a {
