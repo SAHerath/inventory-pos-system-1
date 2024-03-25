@@ -1,0 +1,796 @@
+@import 'colors';
+@import 'fonts';
+@import 'mixins';
+
+/* @custom-media --sm-viewport only screen and (min-width: 40em);
+@custom-media --md-viewport only screen and (min-width: 62em);
+@custom-media --lg-viewport only screen and (min-width: 75em); */
+
+/* @media (--md-viewport) {} */
+
+$theme_color: $blue2;
+
+:root {
+  height: 100%;
+  scroll-behavior: smooth;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+}
+@include screen_sm {
+  :root {
+    font-size: 16px;
+  }
+}
+@include screen_2k {
+  :root {
+    font-size: 32px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: $black $white;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $gray;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: $black;
+}
+
+body {
+  height: 100%;
+  color: #202020;
+  background-color: #fafafa;
+  overflow-y: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #202020;
+}
+
+[hidden] {
+  display: none;
+}
+
+/* Assign grid instructions to our parent grid container, mobile-first (hide the sidenav) */
+#grid_container {
+  // position: relative;
+  // height: 100%;
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* Side nav is hidden on mobile */
+  grid-template-rows: 3rem 1fr 2rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  // overflow: auto;
+  transition: grid-template-columns .5s ease-out;
+
+  &.mobile {
+    .aside {
+      margin-left: -14rem;
+      transition: margin-left .5s ease-out;
+
+      .toggle-sm {
+        display: block;
+      }
+    }
+
+    .aside-overlay {
+      display: none;
+    }
+
+    .header {
+      .toggle-lg {
+        visibility: hidden;
+      }
+    }
+
+    &.open {
+      .aside {
+        margin-left: 0rem;
+      }
+
+      .aside-overlay {
+        display: block;
+      }
+    }
+  }
+
+  &.tablet {
+    /* Show the side nav for non-mobile screens */
+    grid-template-areas:
+      "aside header"
+      "aside main"
+      "aside footer";
+
+    &.close {
+      grid-template-columns: 4rem 1fr;
+
+      .aside {
+        margin-left: 0rem;
+        width: 4rem;
+
+        .aside-menu {
+          .drop {
+            >a {
+              background-image: url(../icon/fontawesome/svgs/solid/caret-right.svg);
+              background-repeat: no-repeat;
+              background-position: right 0.25rem top 50%;
+              background-size: 0.375rem auto;
+            }
+            .drop-content {
+              position: absolute;
+              // bottom: 2rem;
+              margin-top: -3rem;
+              margin-left: 4rem;
+              width: 8rem;
+              border-right: 5px solid $theme_color;
+            }
+          }
+        }
+
+        span {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+    }
+
+    &.open {
+      grid-template-columns: 14rem 1fr;
+
+      .aside {
+        margin-left: 0rem;
+        width: 14rem;
+        
+        span {
+          visibility: visible;
+          opacity: 1;
+          transition: opacity .2s ease-in .3s;
+        }
+      }
+    }
+  }
+
+  &.desktop {
+    grid-template-columns: 14rem 1fr;
+    /* Show the side nav for non-mobile screens */
+    grid-template-areas:
+      "aside header"
+      "aside main"
+      "aside footer";
+
+    .aside {
+      margin-left: 0rem;
+      width: 14rem;
+
+      span {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .2s ease-in .3s;
+      }
+    }
+
+    .header {
+      top: 0;
+      position: sticky;
+
+      nav >a {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+    }
+
+    &.close {
+      grid-template-columns: 4rem 1fr;
+
+      .aside {
+        margin-left: 0rem;
+        width: 4rem;
+
+        span {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        .aside-menu {
+          .drop {
+            >a {
+              background-image: url(../icon/fontawesome/svgs/solid/caret-right.svg);
+              background-repeat: no-repeat;
+              background-position: right 0.25rem top 50%;
+              background-size: 0.375rem auto;
+            }
+            .drop-content {
+              position: absolute;
+              // bottom: 2rem;
+              margin-top: -3rem;
+              margin-left: 4rem;
+              width: 8rem;
+              border-right: 5px solid $theme_color;
+            }
+          }
+
+        }
+      }
+    }
+  }
+}
+
+
+/* set grid name */
+.header {
+  grid-area: header;
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  background-color: $white;
+  /* border: 0.05rem solid #808080; */
+  box-shadow: 0px 4px 8px $gray;
+
+  nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    a {
+      padding: 0.75rem 0.5rem;
+      // border-bottom: 0.25rem solid hotpink;
+
+      &.toggle-lg i {
+        font-size: 1.25rem;
+      }
+
+      &:hover {
+        color: $theme_color;
+
+        &:not(.toggle-lg) {
+          border-bottom: 0.25rem solid $theme_color;
+        }
+      }
+
+    }
+
+    .drop {
+
+      >a {
+        display: inline-block;
+        padding: 0.75rem 0.5rem 0.75rem 2.625rem;
+        white-space: nowrap;
+        cursor: pointer;
+
+        img {
+          // vertical-align: middle;
+          position: absolute;
+          z-index: 101;
+          margin-left: -2.375rem;
+          margin-top: -0.3125rem;
+          width: 2rem;
+          height: 2rem;
+          border-radius: 50%;
+          box-shadow: 0 0 2px 1px lighten($gray, 10%);
+        }
+
+        &.show {
+          border-bottom: 0.25rem solid $theme_color;
+        }
+      }
+
+      // &:hover ~ .drop-content {
+      //   background-color: orange;
+      // }
+
+
+      .drop-content {
+        position: absolute;
+        top: 3rem;
+        right: 0rem;
+        margin-right: 0.5rem;
+        width: 8rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // background-color: $theme_color;
+
+        a {
+          overflow: hidden;
+          height: 0;
+          width: 100%;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none;
+
+          background-color: $white;
+          transition: height .2s ease-in;
+
+          &:hover {
+            border-left: 0.25rem solid $theme_color;
+          }
+        }
+
+        &.show { 
+          border: 1px solid $theme_color;
+          a {
+            height: 2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Mobile-first side nav styles */
+.aside {
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  width: 14rem;
+  /* margin-left: -14rem;  /* sidebar closed */
+  position: fixed;
+  // overflow-y: auto;
+  z-index: 105;
+  /* Needs to sit above the hamburger menu icon */
+  background-color: $white;
+  // background: linear-gradient(90deg, #fafafa 50%, #90ccfd 100%); 
+  box-shadow: 4px 0px 8px $gray;
+  transition: width .5s ease-out;
+}
+
+.aside-logo {
+  height: 4rem;
+  width: 100%;
+  position: relative;
+  z-index: 108;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+  align-items: center;
+  border-bottom: 1px solid $black;
+  background-color: $white;
+  // background: linear-gradient(90deg, #fafafa 50%, #90ccfd 100%); 
+
+  img {
+    margin-left: 0.75rem;
+    width: 3rem;
+    height: 2rem;
+    padding-right: 0.4rem;
+    /* padding: 0.1rem 0.2rem; */
+    /* box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b; */
+  }
+
+  span {
+    /* display: none; */
+    margin-left: 1.5rem;
+    text-align: center;
+    width: 7rem;
+  }
+
+}
+
+.toggle-sm {
+  display: none;
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  z-index: 106;
+  margin-right: -1.6rem;
+
+  &:after {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    transform: rotate(45deg);
+    background-color: $white;
+    border-top: 1px solid $gray;
+    border-right: 1px solid $gray;
+    border-radius: 10px;
+  }
+
+  &:hover {
+    color: $theme_color;
+  }
+
+  i {
+    position: absolute;
+    top: 0.95rem;//13.5px;
+    right: 0.4rem;
+    font-size: 16px;
+  }
+}
+
+.aside-menu-wrap {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;  // Firefox
+  -ms-overflow-style: none; // IE and Edge
+  &::-webkit-scrollbar {    // Chrome, Safari and Opera
+    display: none; 
+  }
+}
+
+.scroll-menu {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  background-color: $black;
+
+  a{
+    width: 100%;
+    color: $white;
+    &:hover {
+      color: $theme_color;
+    }
+
+    i {
+      width: 100%;
+      font-size: 1.5rem;
+      text-align: center;
+      // &:hover {
+      //   text-shadow: -1px 0 $theme_color, 0 1px $theme_color, 1px 0 $theme_color, 0 -1px $theme_color;
+      // }
+    }
+  }
+}
+
+.aside-menu {
+  // overflow-y: auto;
+  // overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  min-height: min-content;
+  /* this will afect when scrolling the menu*/
+
+  a {    
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &.active {
+      color: $white;
+      background-color: $theme_color;
+      // border-left: 0.25rem solid $theme_color;
+    }
+
+    &:hover:not(.active) {
+      color: $theme_color;
+      border-left: 0.25rem solid $theme_color;
+    }
+  }
+
+  .drop {
+    >a {        // style only first level of 'a' siblings
+      background-image: url(../icon/fontawesome/svgs/solid/caret-down.svg);
+      background-repeat: no-repeat;
+      background-position: right 0.75rem top 50%;
+      background-size: 0.75rem auto;
+
+      &.show {
+        // border-top: 1px solid $black;
+        border-left: 0.25rem solid $theme_color;
+      }
+    }
+
+    .drop-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;   
+      background-color: $theme_color;
+   
+      a {
+        overflow: hidden;
+        height: 0;
+        width: 100%;
+        margin-left: 0.5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        // background-color: lighten($gray, 30%);
+        background-color: $white;
+        transition: height .2s ease-in;
+        
+        &.active {
+          color: $white;
+          background-color: $theme_color;
+        }
+      }
+  
+      &.show { 
+        border-top: 1px solid $theme_color;
+        border-bottom: 1px solid $theme_color;
+        a {
+          height: 2rem;
+        }
+      }
+  
+    }
+  }
+
+  i {
+    // padding: 0rem 0.5rem;
+    font-size: 1.25rem;
+    // margin: 0 1rem 0 1.3rem;
+    margin-left: 1rem;
+    width: 2rem;
+    text-align: center;
+  }
+  span {
+    position: absolute;
+    margin-left: 4.5rem;
+  }
+}
+
+.aside-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 103;
+  background-color: rgba($black, 0.3);
+}
+
+
+.main {
+  grid-area: main;
+  background-color: lighten($theme_color, 52%);
+  overflow: auto;
+
+  /* transition: all .5s ease-out; */
+  .main-header {
+    display: flex;
+    justify-content: space-between;
+    // margin: 1.25rem;
+    margin: 1.25rem 1.25rem 0rem 1.25rem;
+    // padding: 0.75rem;
+    // height: 8rem;
+    /* Force our height since we don't have actual content yet */
+    background-color: darken($white, 10%);
+
+    .heading{
+      font-family: Roboto_light, sans-serif;
+      // letter-spacing: 1px;
+      color: $black;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .breadcrumb {
+      padding: 0.75rem;
+      list-style: none;
+      color: darken($gray, 22%);//#505050;
+    }
+    .breadcrumb li {
+      display: inline;
+      font-size: 0.85rem;
+    }
+    .breadcrumb li+li:before {
+      padding: 0.25rem;
+      color: $black;
+      content: "/\00a0";
+    }
+    .breadcrumb li a {
+      color: $blue2;
+      text-decoration: none;
+    }
+    .breadcrumb li a:hover {
+      color: darken($blue2, 16%);
+      text-decoration: underline;
+    }
+  }
+
+  .main-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    /* Where the magic happens */
+    grid-auto-rows: 6rem;
+    grid-gap: 1.25rem;
+    margin: 1.25rem;
+  }
+
+  .main-cards {
+    // column-count: 2;
+    // column-gap: 1.25rem;
+    // width: 100%;
+    margin: 1.25rem;
+    // transition: all 1s ease-in-out;
+  }
+}
+
+
+.overviewcard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background-color: #16bd6971;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  // width: 100%;
+  background-color: $white;
+  // background-color: #ffbecb;
+  margin-bottom: 1rem;
+  -webkit-column-break-inside: avoid;
+  padding: 1.5rem;
+  border: 0.125rem solid darken($blue2, 8%);
+  border-radius: 0.25rem;
+  // overflow: visible;
+
+  // transition: transform 0.2s ease-in-out;
+  animation: scaleUp 0.3s ease-out;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background-color: $black;
+  color: $white;
+}
+
+.btn {
+  display: inline-block; 
+  border: 1px solid transparent;
+  padding: 0.3125rem 0.75rem;
+  border-radius: 0.25rem;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1rem;
+  color: $black;
+  background-color: transparent;
+
+  &.green {
+    @include btn-color($green);
+  }
+  &.blue {
+    @include btn-color($blue);
+  }
+  &.red {
+    @include btn-color($red);
+  }
+  &.yellow {
+    @include btn-color($yellow);
+  }
+  &.orange {
+    @include btn-color($orange);
+  }
+}
+
+.btn-sm {
+  display: inline-block; 
+  border: 1px solid transparent;
+  padding: 0.25rem 0.375rem;
+  border-radius: 0.25rem;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.8rem;
+  color: $black;
+  background-color: transparent;
+
+  &.green {
+    @include btn-color($green);
+  }
+  &.blue {
+    @include btn-color($blue);
+  }
+  &.red {
+    @include btn-color($red);
+  }
+  &.yellow {
+    @include btn-color($yellow);
+  }
+  &.orange {
+    @include btn-color($orange);
+  }
+  &.purple {
+    @include btn-color($purple);
+  }
+}
+
+.gallery {
+  overflow-x: auto;
+
+  div {
+    // background-color: palegreen;
+    
+    display: flex;
+    justify-content: space-evenly;
+
+    img {
+      width: 20rem;
+      max-height: 16rem;
+      padding: 5px;
+      // border: 1px solid black;
+      border-radius: 0.25rem;
+    }
+    @include screen_sm {
+      img {
+        width: 12rem;
+        height: auto;
+      }
+    }
+  }
+}
+
+.hide {
+  display: none;
+
+  // transform: scale(0);
+  // height: 0;
+  // margin: 0;
+  // padding: 0;
+  // border: none;
+  // transition: height 1s ease-in-out;
+}
+
+
+/********************* Layout Style *******************************************************************/
+@import 'layout';
+
+/********************* Modal Style *******************************************************************/
+@import 'modal';
+
+/********************* Form Styles *******************************************************************************/
+@import 'form';
+
+/********************* Table Styles *******************************************************************************/
+@import 'table';
+
+/********************* Animation Styles *******************************************************************************/
+@import 'animation';
+
+
+
+//https://www.w3schools.com/code/tryit.asp?filename=GFZ0X4A8MUHO

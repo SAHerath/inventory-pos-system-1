@@ -1,0 +1,108 @@
+.dual_list_box {
+  margin-right: auto;
+  margin-left: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.dual_list_box i {
+  display: none;
+  margin-top: auto;
+  margin-bottom: auto;
+  /* font-size: 2.5rem; */
+  font-size: 4vw;
+}
+
+.dual_list_box div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 70%;
+  min-width: 100px;
+  padding: 0.5rem 2px;
+}
+
+.dual_list_box div label {
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.dual_list_box div button {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  outline: none;
+  font-size: 1rem;
+}
+
+.dual_list_box div select {
+  height: 100%;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: 1px solid #5e5e5e;
+  overflow-y: auto;
+  background-color: transparent;
+}
+
+.dual_list_box div select option {
+  padding: 0.5rem 0.25rem;
+  /* text-align: center; */
+  border: none;
+  border-bottom: 1px solid #c5c5c5;
+  /* margin-top: -1px; */
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  white-space: normal;
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.dual_list_box div select option:hover, .dual_list_box div select option:focus {
+  background-color: #abe6ee;
+}
+
+.dual_list_box div select option:checked {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#48d9ec), to(#489dec));
+  background-image: linear-gradient(#48d9ec, #489dec);
+  background-color: #48d9ec !important;
+  color: #000000 !important;
+}
+
+@media screen and (min-width: 576px) {
+  .dual_list_box i {
+    display: block;
+  }
+  .dual_list_box div {
+    padding: 1rem 4vw;
+  }
+  .dual_list_box div select option {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .dual_list_box i {
+    font-size: 2vw;
+  }
+  .dual_list_box div {
+    padding: 1rem 2vw;
+  }
+}
+/*# sourceMappingURL=dualListbox.css.map */

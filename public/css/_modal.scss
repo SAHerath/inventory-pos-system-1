@@ -1,0 +1,127 @@
+.modal {    // modal overlay
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  overflow: hidden;
+  background-color: rgba($black, 0.4);
+  // background-color: rgba($black, 0.08);
+  &.active {
+    display: block;
+  }
+
+  .modal-content {   // actual modal content
+    position: relative;
+    margin: 8% auto 0 auto;
+    padding-bottom: 0.5rem;
+    width: 80%;
+    overflow: hidden;
+    border: 0.1875rem solid darken($blue2, 8%);
+    border-radius: 0.25rem;
+    // box-shadow: 0 0 0.75rem $black;
+    background-color: $white;
+    animation: scaleUp 0.3s ease-out;
+
+    &.max-width {
+      width: 100%;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -2px;
+      right: 10px;
+      color: lighten($gray, 12%);
+      font-size: 30px;
+      text-decoration: none;
+      outline: none;
+      &:hover {
+        color: $red;
+        cursor: pointer;
+      }
+    }
+    .modal-header {
+      margin-top: 1rem;
+      padding-bottom: 0.75rem;
+      color: $black;
+      text-align: center;
+      /* background-color: #f0afbc; */
+      h3{
+        font-family: myfont_Montserrat;
+        font-size: 1.5rem;
+      }
+      h4 {  
+        font-size: 1.25rem;
+      }
+      span {
+        display: block;
+        padding-bottom: 0.75rem;
+        // font-size: 4.5rem;
+        font-size: 3rem;
+      }
+    }
+
+    .modal-body {
+      padding: 0 1rem;
+
+      &.center {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .modal-footer {
+      width: 100%;
+      display: block;
+      margin: 0.5rem 0;
+      align-items: center;
+      /* background-color: #7fbd45; */
+
+      // a {
+      //   display: inline-block;
+      //   margin: 0.25rem 2rem;
+      //   padding: 0.35rem 1rem;
+      //   border: 2px solid #2196F3;
+      //   border-radius: 0.25rem;
+      //   text-decoration: none;
+      //   cursor:default;
+      //   outline: none;
+      //   box-shadow: none;
+      //   font-size: 1rem;
+      //   color: #ffffff;
+      //   background-color: #2196F3;
+      //   &:hover {
+      //     background-color: #0b7dda;
+      //     border-color: #202020;
+      //   }
+      // }
+    }
+  }
+  
+}
+
+@include screen_sm {
+  .modal .modal-content {
+    width: 50%;
+
+    .modal-body {
+      padding: 0 2rem;
+    }
+
+    .modal-footer {
+      a {
+        width: auto;
+      }
+    }
+  }
+}
+
+@include screen_lg {
+  .modal .modal-content {
+    width: 40%;
+  } 
+}
+
+

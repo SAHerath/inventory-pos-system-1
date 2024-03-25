@@ -1,0 +1,82 @@
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// 2k screens
+$screen-2k-min: 2560px;
+
+// Small devices
+@mixin screen_sm {
+  @media screen and (min-width: $screen-sm-min) {
+      @content;
+  }
+}
+
+// Medium devices
+@mixin screen_md {
+  @media screen and (min-width: $screen-md-min) {
+      @content;
+  }
+}
+
+// Large devices
+@mixin screen_lg {
+  @media screen and (min-width: $screen-lg-min) {
+      @content;
+  }
+}
+
+// Extra large devices
+@mixin screen_xl {
+  @media screen and (min-width: $screen-xl-min) {
+      @content;
+  }
+}
+
+// 2k devices
+@mixin screen_2k {
+  @media screen and (min-width: $screen-2k-min) {
+      @content;
+  }
+}
+
+// Custom devices
+@mixin screen_custom($screen) {
+  @media screen and (min-width: $screen+'px') {
+      @content;
+  }
+}
+
+//////////////////////////////////////////////////////////////
+
+@mixin btn-color($btnColor) {
+  color: lighten($white, 5%);
+  background-color: $btnColor;
+  border: 0.125rem solid $btnColor;
+
+  &:hover {
+    &:not(:disabled){
+      background-color: darken($btnColor, 8%);
+      border-color: $black;
+      transition: all 0.3s ease;
+    }
+  }
+  &:focus {
+    border-color: $gray;
+  } 
+  &:active {
+    background-color: darken($btnColor,25%);
+  }
+
+  &:disabled {
+    background-color: $gray;
+  }
+}

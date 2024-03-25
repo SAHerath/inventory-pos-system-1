@@ -1,0 +1,280 @@
+:root {
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+}
+
+@media only screen and (min-width: 576px) {
+  :root {
+    font-size: 16px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+}
+
+body {
+  color: #222222;
+  background-color: #fafafa;
+  overflow-y: scroll;
+}
+
+a {
+  text-decoration: none;
+  color: #202020;
+}
+
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  height: 100vh;
+}
+
+.column1 {
+  display: none;
+  background: #2193b0;
+  background: -webkit-gradient(linear, left top, right top, from(#6dd5ed), to(#2193b0));
+  background: linear-gradient(to right, #6dd5ed, #2193b0);
+  /* 
+  background: #654ea3;
+  background: linear-gradient(to right, #eaafc8, #654ea3); */
+}
+
+.column1 img {
+  width: 60%;
+  max-width: 50rem;
+  height: auto;
+}
+
+.column1 h1 {
+  padding-top: 3rem;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 3.5rem;
+  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 5px #000;
+}
+
+.column2 {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.column2 form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 10% 2rem 10%;
+  width: 100%;
+  /* background-color: cornflowerblue; */
+}
+
+.column2 form .status {
+  position: relative;
+  display: none;
+  margin-bottom: 1rem;
+  padding: 0.0625rem 0.5rem;
+  outline: none;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.column2 form .status.invalid {
+  display: block;
+  background-color: #f7c9cd;
+  -webkit-box-shadow: 0rem 0rem 0.75rem 0.125rem #f2a6ac;
+          box-shadow: 0rem 0rem 0.75rem 0.125rem #f2a6ac;
+}
+
+.column2 form .status.success {
+  display: block;
+  background-color: #55f87e;
+}
+
+.column2 h2 {
+  font-size: 3rem;
+}
+
+.column2 img {
+  max-width: 10rem;
+  width: 50%;
+  max-height: 8rem;
+  height: auto;
+}
+
+.form-input {
+  position: relative;
+  display: -ms-grid;
+  display: grid;
+  /* grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas: "one two"
+    "three three"; */
+  grid-template: "one two" auto "three three" auto/auto 1fr;
+  width: 100%;
+  padding-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.form-input i {
+  grid-area: one;
+  position: relative;
+  z-index: 5;
+  padding: 0.75rem 0.25rem;
+  font-size: 1.25rem;
+  color: #222222a0;
+}
+
+.form-input input {
+  grid-area: two;
+  position: relative;
+  z-index: 5;
+  min-width: 6rem;
+  padding: 0.75rem 0.5rem 0.5rem 0.25rem;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  text-align: center;
+  font-size: 1.25rem;
+  color: #222222a0;
+  background-color: transparent;
+}
+
+.form-input input:focus + span::after {
+  -webkit-transform: translateX(0%);
+          transform: translateX(0%);
+}
+
+.form-input input.invalid + span {
+  -webkit-box-shadow: 0rem -1.25rem 1.25rem 0.125rem #e23b49;
+          box-shadow: 0rem -1.25rem 1.25rem 0.125rem #e23b49;
+}
+
+.form-input span {
+  grid-area: three;
+  position: relative;
+  display: block;
+  padding: 0rem 0.5rem 0rem 0.5rem;
+  color: transparent;
+  text-align: end;
+  font-size: 1rem;
+  border-top: 2px solid #929292;
+  /* box-shadow: 0rem -2rem 1rem 0rem #ff95aa; */
+}
+
+.form-input span::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  border-top: 4px solid #743ad5;
+  border-image-source: linear-gradient(90deg, #6dd5ed, #2193b0);
+  /* border-image-source: linear-gradient(90deg, #743ad5, #d53a9d); */
+  border-image-slice: 1;
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+  -webkit-transition: -webkit-transform 0.4s ease;
+  transition: -webkit-transform 0.4s ease;
+  transition: transform 0.4s ease;
+  transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+}
+
+.form-input span.invalid {
+  color: #dc143c;
+  -webkit-box-shadow: 0rem -2rem 1rem 0rem #ffbecb;
+          box-shadow: 0rem -2rem 1rem 0rem #ffbecb;
+}
+
+.form-button {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 2rem;
+}
+
+.form-button button {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  outline: none;
+  font-size: 1.25rem;
+  font-weight: bolder;
+  color: #ffffff;
+  background-color: #202020;
+  border: 2px solid #202020;
+  border-radius: 0.25rem;
+  /* border: 0.25rem solid #202020;
+    border-image-source: linear-gradient(90deg, #743ad5, #d53a9d);
+    border-image-slice: 1; */
+}
+
+.form-button button:hover {
+  background-color: #743ad5;
+  background-image: -webkit-gradient(linear, left top, right top, from(#6dd5ed), to(#2193b0));
+  background-image: linear-gradient(90deg, #6dd5ed, #2193b0);
+  /* background-image: linear-gradient(90deg, #743ad5, #d53a9d); */
+}
+
+.form-button button:focus {
+  border-color: #929292;
+}
+
+@media only screen and (min-width: 768px) {
+  .column1 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    width: 66.67%;
+  }
+  .column2 {
+    width: 33.33%;
+  }
+}
+/*# sourceMappingURL=login.css.map */
