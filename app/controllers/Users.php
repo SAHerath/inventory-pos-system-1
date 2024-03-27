@@ -7,6 +7,10 @@ class Users extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('user')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('UserM');
   }
 

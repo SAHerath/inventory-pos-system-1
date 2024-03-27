@@ -8,6 +8,10 @@ class Categories extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('catg')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('CategoryM');
   }
 
@@ -21,6 +25,10 @@ class Categories extends Controller
 
   public function addCategory()
   {
+    if (!isAllowed('catg', 'add')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 

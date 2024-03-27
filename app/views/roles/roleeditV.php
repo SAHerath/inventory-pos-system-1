@@ -8,7 +8,7 @@
     </div>
 
     <ul class="breadcrumb">
-      <li><a href="<?php echo URLROOT; ?>">Home</a></li>
+      <li><a href="<?php echo URLROOT; ?>home">Home</a></li>
       <li><a href="<?php echo URLROOT; ?>roles">Role</a></li>
       <li>Edit Role</li>
     </ul>
@@ -51,7 +51,7 @@
             <div class="row mb-3">
               <label>Category</label>
             </div>
-            <?php foreach ($data['rolprm']['category'] as $row) : ?>
+            <?php foreach ($data['rolprm']['catg'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -62,7 +62,7 @@
             <div class="row mb-3">
               <label>Brand</label>
             </div>
-            <?php foreach ($data['rolprm']['brand'] as $row) : ?>
+            <?php foreach ($data['rolprm']['brnd'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -73,7 +73,7 @@
             <div class="row mb-3">
               <label>Attribute</label>
             </div>
-            <?php foreach ($data['rolprm']['attribute'] as $row) : ?>
+            <?php foreach ($data['rolprm']['atrb'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -84,7 +84,7 @@
             <div class="row mb-3">
               <label>Vendor</label>
             </div>
-            <?php foreach ($data['rolprm']['vendor'] as $row) : ?>
+            <?php foreach ($data['rolprm']['vend'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -95,7 +95,7 @@
             <div class="row mb-3">
               <label>Location</label>
             </div>
-            <?php foreach ($data['rolprm']['location'] as $row) : ?>
+            <?php foreach ($data['rolprm']['loca'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -117,7 +117,7 @@
             <div class="row mb-3">
               <label>Product</label>
             </div>
-            <?php foreach ($data['rolprm']['product'] as $row) : ?>
+            <?php foreach ($data['rolprm']['prod'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -128,7 +128,7 @@
             <div class="row mb-3">
               <label>Order</label>
             </div>
-            <?php foreach ($data['rolprm']['order'] as $row) : ?>
+            <?php foreach ($data['rolprm']['ordr'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
@@ -142,6 +142,17 @@
             <?php foreach ($data['rolprm']['role'] as $row) : ?>
               <div class="row mb-3 pl-4 center-v">
                 <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>" <?php echo empty($row['ropm_role_code']) ? '' : 'checked' ?>>
+                <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
+              </div>
+            <?php endforeach; ?>
+          </div>
+          <div class="col col-sm-4 p-3">
+            <div class="row mb-3">
+              <label>Report</label>
+            </div>
+            <?php foreach ($data['rolprm']['repo'] as $row) : ?>
+              <div class="row mb-3 pl-4 center-v">
+                <input id="roles_permi_<?php echo $row['perm_code']; ?>" name="roles_permi_<?php echo $row['perm_code']; ?>" type="checkbox" value="<?php echo $row['perm_code']; ?>">
                 <label class="pl-3" for="roles_permi_<?php echo $row['perm_code']; ?>"><?php echo $row['perm_section'] ?></label>
               </div>
             <?php endforeach; ?>

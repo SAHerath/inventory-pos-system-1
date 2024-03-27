@@ -7,6 +7,10 @@ class Roles extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('role')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('RoleM');
   }
 

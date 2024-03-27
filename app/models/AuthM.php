@@ -30,4 +30,15 @@ class AuthM
       }
     }
   }
+
+  public function getPermission($rowId)
+  {
+    $query = "SELECT P.perm_module, P.perm_section FROM tabl_role_permis RP LEFT JOIN tabl_permission P ON RP.ropm_perm_code = P.perm_code WHERE RP.ropm_role_code = :rolesid";
+    $param = ['rolesid' => $rowId];
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_MULTIPLE);
+    } else {
+      return false;
+    }
+  }
 }

@@ -8,6 +8,10 @@ class Vendors extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('vend')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('VendorM');
   }
 

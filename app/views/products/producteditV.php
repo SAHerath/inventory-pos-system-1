@@ -13,7 +13,7 @@
     </div>
 
     <ul class="breadcrumb">
-      <li><a href="<?php echo URLROOT; ?>">Home</a></li>
+      <li><a href="<?php echo URLROOT; ?>home">Home</a></li>
       <li><a href="<?php echo URLROOT; ?>products">Product</a></li>
       <li>Edit Product</li>
     </ul>

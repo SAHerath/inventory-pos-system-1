@@ -42,12 +42,14 @@ class Auth extends Controller
       if (empty($data['frm_msg'])) {
         $userDetails = $this->userModel->login($param['txt_username'], $param['pas_password']);
         if ($userDetails) {
-          createSession($userDetails);
-          redirect('home');
-        } else {
-          $data['frm_state'] = 'invalid';
-          $data['frm_msg']['status'] = 'Incorrect Username or Password. Please try again!';
+          $userPermis = $this->userModel->getPermission($userDetails['user_role_code']);
+          if ($userPermis) {
+            createSession($userDetails, $userPermis);
+            redirect('home');
+          }
         }
+        $data['frm_state'] = 'invalid';
+        $data['frm_msg']['status'] = 'Incorrect Username or Password. Please try again!';
       } else {
         $data['frm_state'] = 'invalid';
       }

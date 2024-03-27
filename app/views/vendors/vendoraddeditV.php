@@ -11,7 +11,7 @@
     </div>
 
     <ul class="breadcrumb">
-      <li><a href="<?php echo URLROOT; ?>">Home</a></li>
+      <li><a href="<?php echo URLROOT; ?>home">Home</a></li>
       <li><a href="<?php echo URLROOT; ?>vendors">Vendor</a></li>
       <li><?php echo (($data['title'] == 'vendor_add') ? 'Add Vendor' : 'Edit Vendor'); ?></li>
     </ul>

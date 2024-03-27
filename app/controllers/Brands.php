@@ -8,6 +8,10 @@ class Brands extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('brnd')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('BrandM');
   }
 

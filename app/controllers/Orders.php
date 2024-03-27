@@ -7,6 +7,10 @@ class Orders extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('ordr')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('OrderM');
   }
 

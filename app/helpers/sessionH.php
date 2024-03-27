@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 function isLoggedIn()
 {
-  if (isset($_SESSION['userid']) && is_int($_SESSION['userid'])) {
+  if (isset($_SESSION['usercode']) && is_int($_SESSION['usercode'])) {
     if (time() - $_SESSION['activated'] > SESS_EXPIRE) {  // sessin will expire if user does not active for certain period
       deleteSession();
       return false;
@@ -24,15 +24,28 @@ function isLoggedIn()
   }
 }
 
-function createSession($user)
+function isEnabled($module)   // checks whether module enabled
+{
+  return array_key_exists($module, $_SESSION['userpermi']);
+}
+
+function isAllowed($module, $section)   // checks whether module's section enabled
+{
+  return in_array($section, $_SESSION['userpermi'][$module]);
+}
+
+function createSession($user, $permis)
 {
   session_start();
 
-  $_SESSION['userid'] = (int)$user['user_code'];
+  $_SESSION['usercode'] = (int)$user['user_code'];
   $_SESSION['userfname'] = $user['user_first_name'];
   $_SESSION['username'] = $user['user_username'];
-  $_SESSION['userrole'] = $user['user_role_code'];
   $_SESSION['activated'] = time();
+
+  for ($i = 0; $i < count($permis); $i++) {
+    $_SESSION['userpermi'][$permis[$i]['perm_module']][] = $permis[$i]['perm_section'];
+  }
 
   if (empty($user['user_photo'])) {
     if ($user['user_gender'] == 'male') {
@@ -44,17 +57,17 @@ function createSession($user)
     $_SESSION['userphoto'] = $user['user_photo'];
   }
 
-  error_log(date('D d-M-Y H:i:s e | ') . "User {$_SESSION['userid']} logged in" . PHP_EOL, 3, APPROOT . '/logs/debug.log');
+  error_log(date('D d-M-Y H:i:s e | ') . "User {$_SESSION['usercode']} logged in" . PHP_EOL, 3, APPROOT . '/logs/debug.log');
 }
 
 function deleteSession()
 {
-  error_log(date('D d-M-Y H:i:s e | ') . "User {$_SESSION['userid']} logged out" . PHP_EOL, 3, APPROOT . '/logs/debug.log');
+  error_log(date('D d-M-Y H:i:s e | ') . "User {$_SESSION['usercode']} logged out" . PHP_EOL, 3, APPROOT . '/logs/debug.log');
 
-  unset($_SESSION['userid']);
+  unset($_SESSION['usercode']);
   unset($_SESSION['userfname']);
   unset($_SESSION['username']);
-  unset($_SESSION['userrole']);
+  unset($_SESSION['userpermi']);
   unset($_SESSION['userphoto']);
   unset($_SESSION['activated']);
   session_destroy();

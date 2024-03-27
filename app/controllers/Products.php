@@ -8,6 +8,10 @@ class Products extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
+    if (!isEnabled('prod')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('ProductM');
   }
 

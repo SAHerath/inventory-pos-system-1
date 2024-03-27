@@ -8,8 +8,8 @@
     </div>
 
     <ul class="breadcrumb">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Attributes</a></li>
+      <li><a href="<?php echo URLROOT; ?>home">Home</a></li>
+      <li><a href="<?php echo URLROOT; ?>attributes">Attributes</a></li>
       <li>Attribute Values</li>
     </ul>
 

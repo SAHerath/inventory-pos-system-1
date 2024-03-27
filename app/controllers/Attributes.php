@@ -8,10 +8,10 @@ class Attributes extends Controller
     if (!isLoggedIn()) {
       redirect('auth/index');
     }
-    // echo '<pre>';
-    // var_dump(get_declared_classes());
-    // var_dump(get_parent_class('Attribute'));
-    // echo '</pre>';
+    if (!isEnabled('atrb')) {
+      exit("Permission Not Granted!");
+      return;
+    }
     $this->userModel = $this->model('AttributeM');
     // session_start();
   }
