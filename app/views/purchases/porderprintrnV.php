@@ -1,0 +1,145 @@
+<?php
+require_once(APPROOT . '/extensions/tcpdf/tcpdf.php');
+
+// create new PDF document
+$pdf = new TCPDF('L', 'mm', 'A5', true, 'UTF-8', false);
+
+// set document information
+$pdf->SetCreator('TCPDF');
+$pdf->SetAuthor('S. A. Herath');
+$pdf->SetTitle('Nawa Lanka Enterprises');
+$pdf->SetSubject('RECEIVED NOTE');
+
+// remove default header/footer
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
+
+$pdf->SetMargins(10, 0, 10);  // left , top, right, bottom
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, 5);
+// $pageMargin = $pdf->getOriginalMargins();
+$bodyWidth = 210 - 20;
+$pageWidth = $pdf->getPageWidth();
+$border = 0;
+
+$pdf->SetFont('helvetica', '', 18);  // font, B-bolt|I-itaic|U-underline, font size
+
+$pdf->AddPage();
+
+// Image( $file, $x = '', $y = '', $w = 0, $h = 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false, $alt = false, $altimgs = array() )
+$pdf->Image(URLROOT . 'img/nawalanka-logo-2.png', 15, 10, 16, '', 'PNG');
+
+$logo = ['NAWA LANKA', 'ENTERPRISES'];
+$contact = ['No: 33A, Colombo Road, Negombo', 'Tel: 0094-312-281441 / 0094-774-881655', 'Email: nawalankaent@gmail.com'];
+
+// MultiCell( $w, $h, $txt, $border = 0, $align = 'J', $fill = false, $ln = 1, $x = '', $y = '', $reseth = true, $stretch = 0, $ishtml = false, $autopadding = true, $maxh = 0, $valign = 'T', $fitcell = false );
+$pdf->SetFont('helvetica', 'B', 20);
+$pdf->MultiCell(52, 6, $logo[0], $border, 'J', 0, 1, 38, 9, true);
+$pdf->SetFont('helvetica', 'B', 11.5);
+$pdf->MultiCell(52, 4, $logo[1], $border, 'C', 0, 1, 38, 17, true);
+
+$pdf->SetFont('helvetica', '', 10);
+$pdf->SetTextColor(0, 48, 207);
+
+$pdf->MultiCell(70, 5, $contact[0], $border, 'R', 0, 1, 130, 10, true);
+$pdf->MultiCell(70, 5, $contact[1], $border, 'R', 0, 1, 130, 15, true);
+$pdf->MultiCell(70, 5, $contact[2], $border, 'R', 0, 1, 130, 20, true);
+
+$pdf->SetFont('helvetica', 'B', 18);
+$pdf->SetTextColor(127, 31, 0);
+$pdf->Cell('', '', 'RECEIVED NOTE', $border, 1, 'C', 0, '', 0);  // Cell( $w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M' );
+
+$pdf->SetFont('helvetica', '', 10);
+$y = $pdf->getY();
+$x = $pdf->getX();
+
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(80, '', 'VENDOR DETAILS', $border, 'L', 0, 1, $x, $y, true);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->MultiCell(80, '', $data['vendr']['vend_name'], $border, 'L', 0, 1, $x, $y + 5, true);
+$pdf->MultiCell(80, '', str_replace(PHP_EOL, '', $data['vendr']['vend_address']), $border, 'L', 0, 1, $x, $y + 10, true);
+$pdf->MultiCell(80, '', str_replace(PHP_EOL, '', $data['vendr']['vend_city']) . ', ' . str_replace(PHP_EOL, '', $data['vendr']['vend_country']), $border, 'L', 0, 1, $x, $y + 15, true);
+$pdf->MultiCell(80, '', $data['vendr']['vend_phone'], $border, 'L', 0, 1, $x, $y + 20, true);
+// $pdf->MultiCell(80, '', $data['vendr']['vend_email'], $border, 'L', 0, 1, $x, $y + 25, true);
+
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(25, '', 'ORDER NO', $border, 'L', 0, 0, $pageWidth - 60, $y, true);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->MultiCell(25, '', $data['pordr']['pordr_no'], $border, 'L', 0, 1, $pageWidth - 35, $y, true);
+
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(25, '', 'DATE', $border, 'L', 0, 0, $pageWidth - 60, $y + 7, true);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->MultiCell(25, '', $data['pordr']['prch_date'], $border, 'L', 0, 1, $pageWidth - 35, $y + 7, true);
+
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(25, '', 'LOCATION', $border, 'L', 0, 0, $pageWidth - 60, $y + 14, true);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->MultiCell(25, '', $data['locat']['loca_name'], $border, 'L', 0, 1, $pageWidth - 35, $y + 14, true);
+
+$pdf->Ln(15);
+$y = $pdf->getY();
+$x = $pdf->getX();
+
+//table head
+
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(110, '', 'Item', $border, 'L', 0, 1, $x, $y, true);
+$pdf->MultiCell(35, '', 'Quantity', $border, 'R', 0, 1, $x + 110, $y, true);
+$pdf->MultiCell(35, '', 'Received', $border, 'R', 0, 1, $x + 145, $y, true);
+$pdf->Line($x, $y + 6, $pageWidth - $x, $y + 6, '');  // Line( $x1, $y1, $x2, $y2, $style = array() )
+$pdf->Ln(5);
+
+//table body
+$fill = 1;
+$y = $pdf->getY();
+$pdf->SetTextColor(0, 0, 0);
+$pdf->SetFillColor(240, 240, 240);
+
+foreach ($data['ordprd'] as $item) {
+  $pdf->MultiCell(110, '', $item['prodt_sku'] . ', ' . $item['prod_vend_prtno'], $border, 'L', $fill, 1, $x, $y, true);
+  $pdf->MultiCell(35, '', $item['pcpd_qty_receiv'], $border, 'R', $fill, 1, $x + 110, $y, true);
+  $pdf->MultiCell(35, '', 'YES', $border, 'R', $fill, 1, $x + 145, $y, true);
+
+  $y = $y + 6;
+  $fill = !$fill;
+}
+$pdf->Ln(5);
+$y = $pdf->getY();
+$pdf->Line($x, $y, $pageWidth - $x, $y, '');
+$fill = 1;
+
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(20, '', 'Sub Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 5, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_sub_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 5, true);
+
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(20, '', 'Additional', $border, 'L', $fill, 1, $pageWidth - 60, $y + 10, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_charges'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 10, true);
+
+// $pdf->SetFont('helvetica', 'B', 10);
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(20, '', 'Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 15, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 15, true);
+
+// $pdf->SetFont('helvetica', '', 10);
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(20, '', 'Paid', $border, 'L', $fill, 1, $pageWidth - 60, $y + 25, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_paid'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 25, true);
+
+// $pdf->SetFont('helvetica', 'B', 10);
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(20, '', 'Balance', $border, 'L', $fill, 1, $pageWidth - 60, $y + 30, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_balance'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 30, true);
+
+// force print dialog
+$js = 'print(true);';
+// set javascript
+$pdf->IncludeJS($js);
+//Close and output PDF document
+$pdf->Output($data['pordr']['pordr_no'] . '.pdf', 'I');
