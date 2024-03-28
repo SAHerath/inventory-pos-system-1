@@ -8,7 +8,7 @@ $pdf = new TCPDF('L', 'mm', 'A5', true, 'UTF-8', false);
 $pdf->SetCreator('TCPDF');
 $pdf->SetAuthor('S. A. Herath');
 $pdf->SetTitle('Nawa Lanka Enterprises');
-$pdf->SetSubject('Invoice');
+$pdf->SetSubject('SALES RECEIPT');
 
 // remove default header/footer
 $pdf->setPrintHeader(false);
@@ -45,7 +45,7 @@ $pdf->MultiCell(70, 5, $contact[2], $border, 'R', 0, 1, 130, 20, true);
 
 $pdf->SetFont('helvetica', 'B', 18);
 $pdf->SetTextColor(127, 31, 0);
-$pdf->Cell('', '', 'INVOICE', $border, 1, 'C', 0, '', 0);  // Cell( $w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M' );
+$pdf->Cell('', '', 'SALES RECEIPT', $border, 1, 'C', 0, '', 0);  // Cell( $w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M' );
 
 $pdf->SetFont('helvetica', '', 10);
 $y = $pdf->getY();
@@ -62,7 +62,7 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(20, '', $data['order']['ordr_pay_method'], $border, 'L', 0, 1, $x + 26, $y + 20, true);
 
 $pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(25, '', 'INVOICE NO', $border, 'L', 0, 0, $pageWidth - 70, $y, true);
+$pdf->MultiCell(25, '', 'ORDER NO', $border, 'L', 0, 0, $pageWidth - 70, $y, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['order']['order_incno'], $border, 'L', 0, 1, $pageWidth - 45, $y, true);
 
@@ -72,7 +72,7 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['order']['ordr_date'], $border, 'L', 0, 1, $pageWidth - 45, $y + 7, true);
 
 $pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(25, '', 'SALES REP', $border, 'L', 0, 0, $pageWidth - 70, $y + 14, true);
+$pdf->MultiCell(25, '', 'ISSUED BY', $border, 'L', 0, 0, $pageWidth - 70, $y + 14, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['user']['user_first_name'], $border, 'L', 0, 1, $pageWidth - 45, $y + 14, true);
 $pdf->Ln(10);

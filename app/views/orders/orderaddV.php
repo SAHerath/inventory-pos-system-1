@@ -50,7 +50,7 @@
                 <div class="th" title="Product Name/Id">Product</div>
                 <div class="th" title="Quantity" style="width: 80px;">Qty</div>
                 <div class="th" title="Unit Price" style="width: 100px;">Rate<?php echo $data['currency']; ?></div>
-                <div class="th" title="Discount" style="width: 100px;">Disc</div>
+                <div class="th" title="Discount Percentage" style="width: 100px;">Disc %</div>
                 <div class="th" title="Sub Total" style="width: 100px;">Amount<?php echo $data['currency']; ?></div>
                 <div class="th">Action</div>
               </div>
@@ -164,6 +164,7 @@
       document.getElementById(rowId + "_order_dis").value = 0;
       document.getElementById(rowId + "_order_amt").value = parseFloat(resp['prodt']['prodt_reprice']).toFixed(2);
       document.getElementById(rowId).getElementsByTagName("button")[0].disabled = false;
+      document.getElementById(rowId + "_order_sku").disabled = true;
       return true;
     } else {
       return false;
@@ -184,7 +185,7 @@
     let inpQtyVal = document.getElementById(rowId + "_order_qty").value;
     let inpRatVal = document.getElementById(rowId + "_order_rat").value;
     let inpDisVal = document.getElementById(rowId + "_order_dis").value;
-    document.getElementById(rowId + "_order_amt").value = ((inpRatVal * inpQtyVal) - inpDisVal).toFixed(2);
+    document.getElementById(rowId + "_order_amt").value = ((inpRatVal * inpQtyVal) - (inpRatVal * inpQtyVal * inpDisVal * 0.01)).toFixed(2);
   }
 
   async function checkInput(event) {
@@ -303,7 +304,8 @@
     input1.type = "text";
     input1.id = tblRow.id + "_order_sku";
     input1.placeholder = "Enter Barcode";
-    input1.onkeyup = checkInput;
+    // input1.onkeyup = checkInput;
+    input1.addEventListener("keyup", checkInput);
     tblData1.appendChild(input1);
 
     // create Product Name column
@@ -322,7 +324,8 @@
     let input3 = document.createElement("input");
     input3.type = "number";
     input3.id = tblRow.id + "_order_qty";
-    input3.oninput = calculateAll;
+    // input3.oninput = calculateAll;
+    input3.addEventListener("input", calculateAll);
     tblData3.appendChild(input3);
 
     // create Rate column
@@ -344,7 +347,8 @@
     input5.type = "text";
     input5.id = tblRow.id + "_order_dis";
     input5.className = "txt-right";
-    input5.oninput = calculateAll;
+    // input5.oninput = calculateAll;
+    input5.addEventListener("input", calculateAll);
     tblData5.appendChild(input5);
 
     // create Amount column
@@ -359,16 +363,17 @@
     tblData6.appendChild(input6);
 
     // create Action column
-    let tblData7 = document.createElement("div");
-    tblData7.className = "td txt-center";
-    tblRow.appendChild(tblData7);
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
     let btnDelt = document.createElement("button");
     btnDelt.type = "button";
     btnDelt.className = "btn-sm red";
     btnDelt.title = "Remove Product";
     btnDelt.disabled = true;
-    btnDelt.onclick = removeRowTbl;
-    tblData7.appendChild(btnDelt);
+    // btnDelt.onclick = removeRowTbl;
+    btnDelt.addEventListener("click", removeRowTbl);
+    tblDataAct.appendChild(btnDelt);
     let icoDelt = document.createElement("i");
     icoDelt.className = "fas fa-times";
     btnDelt.appendChild(icoDelt);

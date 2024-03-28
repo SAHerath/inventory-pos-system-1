@@ -16,10 +16,13 @@
     <a class="" href="#">Notifications</a>
     <div class="drop">
       <a class="" onclick="showDrop(this);">
-        <!-- <img src="<?php echo URLROOT; ?>img/uploads/user/avatar_m.png" alt="User Photo"> -->
-        <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $_SESSION['userphoto']; ?>" alt="User_Photo">
-        <?php echo $_SESSION['userfname']; ?>
-        <!-- User_Name -->
+        <?php if (isset($_SESSION['userfname'])) : ?>
+          <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $_SESSION['userphoto']; ?>" alt="User_Photo">
+          <?php echo $_SESSION['userfname']; ?>
+        <?php else : ?>
+          <img src="<?php echo URLROOT; ?>img/uploads/user/avatar_m.png" alt="User Photo">
+          User_Name
+        <?php endif ?>
       </a>
       <div class="drop-content">
         <a href="#">Profile</a>
@@ -88,28 +91,28 @@
         </a>
       <?php endif ?>
 
-      <!-- <div class="drop">
+      <div class="drop">
         <a class="" onclick="showDrop(this);">
-          <i class="fas fa-box"></i>
-          <span>Product</span>
+          <i class="fas fa-shopping-cart"></i>
+          <span>Order</span>
         </a>
         <div class="drop-content">
-          <a class="<?php echo (($data['title'] == 'product_add') ? 'active' : ''); ?>" href="#">
-            Add Product
+          <a class="<?php echo ((strpos($data['title'], 'porder') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases">
+            Purchase Order
           </a>
-          <a class="<?php echo (($data['title'] == 'product_list') ? 'active' : ''); ?>" href="#">
-            Product List
+          <a class="<?php echo ((strpos($data['title'], 'sorder') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>orders">
+            Sales Order
           </a>
         </div>
-      </div> -->
-      <?php if (isEnabled('ordr')) : ?>
+      </div>
+      <!-- <?php if (isEnabled('ordr')) : ?>
         <a class="<?php echo ((strpos($data['title'], 'order') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>orders">
           <i class="fas fa-shopping-cart"></i>
           <span>Order</span>
         </a>
-      <?php endif ?>
+      <?php endif ?> -->
       <?php if (isEnabled('repo')) : ?>
-        <a class="" href="#">
+        <a class="<?php echo ((strpos($data['title'], 'report') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>reports">
           <i class="fas fa-chart-area"></i> <!-- fa-analytics -->
           <span>Report</span>
         </a>

@@ -4,13 +4,13 @@ class Orders extends Controller
 {
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
-    if (!isEnabled('ordr')) {
-      exit("Permission Not Granted!");
-      return;
-    }
+    // if (!isLoggedIn()) {
+    //   redirect('auth/index');
+    // }
+    // if (!isEnabled('ordr')) {
+    //   exit("Permission Not Granted!");
+    //   return;
+    // }
     $this->userModel = $this->model('OrderM');
   }
 
@@ -56,7 +56,7 @@ class Orders extends Controller
       $data['prdcon'] = count($data['ordprd']);
 
       for ($i = 0; $i < count($data['ordprd']); $i++) {
-        $data['ordprd'][$i]['prodt_sku'] = 'PRD-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
+        $data['ordprd'][$i]['prodt_sku'] = 'PR-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
       }
 
       // echo '<pre>';
@@ -89,10 +89,10 @@ class Orders extends Controller
       // $data['prdcon'] = count($data['ordprd']);
 
       for ($i = 0; $i < count($data['ordprd']); $i++) {
-        $data['ordprd'][$i]['prodt_sku'] = 'PRD-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
+        $data['ordprd'][$i]['prodt_sku'] = 'PR-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
       }
 
-      $data['order']['order_num'] = 'ORD-' . str_pad($data['order']['ordr_code'], 8, '0', STR_PAD_LEFT);
+      $data['order']['order_num'] = 'SO-' . str_pad($data['order']['ordr_code'], 8, '0', STR_PAD_LEFT);
       // echo '<pre>';
       // var_dump($data);
       // echo '</pre>';
@@ -101,7 +101,7 @@ class Orders extends Controller
     }
   }
 
-  public function print($orderId = null)
+  public function print($type, $orderId = null)
   {
     $orderId = trim($orderId);
     $data = [
@@ -122,17 +122,22 @@ class Orders extends Controller
       $data['ordprd'] = $this->userModel->getOrderProduct($orderId);
       $data['user'] = $this->userModel->getOrderUser($orderId);
 
-      // for ($i = 0; $i < count($data['ordprd']); $i++) {
-      //   $data['ordprd'][$i]['prodt_sku'] = 'PRD-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
-      // }
+      for ($i = 0; $i < count($data['ordprd']); $i++) {
+        $data['ordprd'][$i]['prodt_sku'] = 'PR-' . str_pad($data['ordprd'][$i]['prod_code'], 8, '0', STR_PAD_LEFT);
+      }
 
-      $data['order']['order_incno'] = 'INC-' . str_pad($data['order']['ordr_code'], 8, '0', STR_PAD_LEFT);
+      $data['order']['order_incno'] = 'SO-' . str_pad($data['order']['ordr_code'], 8, '0', STR_PAD_LEFT);
 
       // echo '<pre>';
       // var_dump($data);
       // echo '</pre>';
 
-      $this->view('orders/orderprintV', $data);
+      if ($type == 'in') {
+        $this->view('orders/orderprintinV', $data);
+      } elseif ($type == 'rc') {
+        $this->view('orders/orderprintrcV', $data);
+      } else {
+      }
     }
   }
 
@@ -184,9 +189,10 @@ class Orders extends Controller
       $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
       $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
       $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
-      $validator7 = "/^(?=PRD-[0-9]*[1-9][0-9]*).{12}$/"; // sku check for 12 length zero padded positive integer with prefix of PRD-
-      $validator8 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
-      $validator9 = "/^-?[0-9]*.[0-9]+?$/"; // check floats with optional sign (-) negative
+      $validator7 = "/^(?=PR-[0-9]*[1-9][0-9]*).{11}$/"; // sku check for 12 length zero padded positive integer with prefix of PRD-
+      $validator8 = "/^[0-9]*$/";  // filter any number
+      $validator9 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
+      $validator10 = "/^-?[0-9]*.[0-9]+?$/"; // check floats with optional sign (-) negative
       // validate date
       if (empty($param['order']['orderdate'])) {
         $status['frm_msg']['order_date'] = 'Date: Field is empty';
@@ -235,7 +241,7 @@ class Orders extends Controller
           } elseif (!preg_match($validator7, $tblrow_data['order_sku'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: SKU: Invalid format";
           } else {
-            $param['tblr'][$tblrow_id]['prodtid'] = ltrim($tblrow_data['order_sku'], "PRD-0");
+            $param['tblr'][$tblrow_id]['prodtid'] = ltrim($tblrow_data['order_sku'], "PR-0");
           }
 
           // validate qty
@@ -255,14 +261,14 @@ class Orders extends Controller
           // validate unit rate
           if (empty($tblrow_data['order_rat'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Rate: Field is empty";
-          } elseif (!preg_match($validator2, $tblrow_data['order_rat'])) {
+          } elseif (!preg_match($validator9, $tblrow_data['order_rat'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Rate: Not a valid number";
           }
 
           // validate amount
           if (empty($tblrow_data['order_amt'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Amount: Field is empty";
-          } elseif (!preg_match($validator8, $tblrow_data['order_amt'])) {
+          } elseif (!preg_match($validator9, $tblrow_data['order_amt'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Amount: Not a valid number";
           }
 
@@ -287,50 +293,51 @@ class Orders extends Controller
       //   $data['frm_msg']['order_paymeth'] = 'Payment Method: Not a valied method';
       // }
       // validate tax rate
-      if (empty($param['order']['ordertaxrt'])) {
-        $data['frm_msg']['order_taxrate'] = 'Tax: Field is empty';
-      } elseif (!preg_match($validator2, $param['order']['ordertaxrt'])) {
+      // if (empty($param['order']['ordertaxrt'])) {
+      //   $data['frm_msg']['order_taxrate'] = 'Tax: Field is empty';
+      // } 
+      if (!preg_match($validator8, $param['order']['ordertaxrt'])) {
         $data['frm_msg']['order_taxrate'] = 'Tax: Not a valied number';
       }
 
       // validate sub-total
       if (empty($param['order']['ordersubtot'])) {
         $data['frm_msg']['order_subtotal'] = 'Sub Total: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordersubtot'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordersubtot'])) {
         $data['frm_msg']['order_subtotal'] = 'Sub Total: Not a valied number';
       }
 
       // validate total taxes
       if (empty($param['order']['ordertaxes'])) {
         $data['frm_msg']['order_taxesall'] = 'Total Tax: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordertaxes'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordertaxes'])) {
         $data['frm_msg']['order_taxesall'] = 'Total Tax: Not a valied number';
       }
 
       // validate total amt
       if (empty($param['order']['ordertotal'])) {
         $data['frm_msg']['order_totalamt'] = 'Total: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordertotal'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordertotal'])) {
         $data['frm_msg']['order_totalamt'] = 'Total: Not a valied number';
       }
 
       // validate paid amount
       if (empty($param['order']['orderpaid'])) {
         $data['frm_msg']['order_paidamt'] = 'Paid: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['orderpaid'])) {
+      } elseif (!preg_match($validator9, $param['order']['orderpaid'])) {
         $data['frm_msg']['order_paidamt'] = 'Paid: Not a valied number';
       }
 
       // validate balance
       if (empty($param['order']['orderbalnc'])) {
         $data['frm_msg']['order_balance'] = 'Balance: Field is empty';
-      } elseif (!preg_match($validator9, $param['order']['orderbalnc'])) {
+      } elseif (!preg_match($validator10, $param['order']['orderbalnc'])) {
         $data['frm_msg']['order_balance'] = 'Balance: Not a valied number';
       }
 
       if (empty($data['frm_msg'])) {
 
-        if ($param['order']['orderpaid'] == ($param['order']['ordertotal'] + $param['order']['orderbalnc'])) {
+        if ($param['order']['orderpaid'] >= $param['order']['ordertotal']) {
           $param['order']['orderstate'] = 'completed';
         } else {
           $param['order']['orderstate'] = 'pending';
@@ -339,7 +346,7 @@ class Orders extends Controller
         if ($this->userModel->create($param)) {
           unset($param);
           $data['state']  = 'success';
-          $data['frm_msg']['add_order_msg'] = 'Product successfully added';
+          $data['frm_msg']['add_order_msg'] = 'Order successfully added';
         } else {
           $data['frm_msg']['add_order_msg'] = 'Someting went wrong';
         }
@@ -397,9 +404,10 @@ class Orders extends Controller
       $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
       $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
       $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
-      $validator7 = "/^(?=PRD-[0-9]*[1-9][0-9]*).{12}$/"; // sku check for 12 length zero padded positive integer with prefix of PRD-
-      $validator8 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
-      $validator9 = "/^-?[0-9]*.[0-9]+?$/"; // check floats with optional sign (-) negative
+      $validator7 = "/^(?=PR-[0-9]*[1-9][0-9]*).{11}$/"; // sku check for 12 length zero padded positive integer with prefix of PRD-
+      $validator8 = "/^[0-9]*$/";  // filter any number
+      $validator9 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
+      $validator10 = "/^-?[0-9]*.[0-9]+?$/"; // check floats with optional sign (-) negative
 
       // validate order id
       if (empty($param['order']['orderid'])) {
@@ -455,7 +463,7 @@ class Orders extends Controller
           } elseif (!preg_match($validator7, $tblrow_data['order_sku'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: SKU: Invalid format";
           } else {
-            $param['tblr'][$tblrow_id]['prodtid'] = ltrim($tblrow_data['order_sku'], "PRD-0");
+            $param['tblr'][$tblrow_id]['prodtid'] = ltrim($tblrow_data['order_sku'], "PR-0");
           }
 
           // validate qty
@@ -475,14 +483,14 @@ class Orders extends Controller
           // validate unit rate
           if (empty($tblrow_data['order_rat'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Rate: Field is empty";
-          } elseif (!preg_match($validator2, $tblrow_data['order_rat'])) {
+          } elseif (!preg_match($validator9, $tblrow_data['order_rat'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Rate: Not a valid number";
           }
 
           // validate amount
           if (empty($tblrow_data['order_amt'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Amount: Field is empty";
-          } elseif (!preg_match($validator8, $tblrow_data['order_amt'])) {
+          } elseif (!preg_match($validator9, $tblrow_data['order_amt'])) {
             $data['frm_msg']['tblr_' . $tblrow_id] = "Order Product Details: Amount: Not a valid number";
           }
 
@@ -507,44 +515,43 @@ class Orders extends Controller
       //   $data['frm_msg']['order_paymeth'] = 'Payment Method: Not a valied method';
       // }
       // validate tax rate
-      if (empty($param['order']['ordertaxrt'])) {
-        $data['frm_msg']['order_taxrate'] = 'Tax: Field is empty';
-      } elseif (!preg_match($validator2, $param['order']['ordertaxrt'])) {
+
+      if (!preg_match($validator8, $param['order']['ordertaxrt'])) {
         $data['frm_msg']['order_taxrate'] = 'Tax: Not a valied number';
       }
 
       // validate sub-total
       if (empty($param['order']['ordersubtot'])) {
         $data['frm_msg']['order_subtotal'] = 'Sub Total: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordersubtot'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordersubtot'])) {
         $data['frm_msg']['order_subtotal'] = 'Sub Total: Not a valied number';
       }
 
       // validate total taxes
       if (empty($param['order']['ordertaxes'])) {
         $data['frm_msg']['order_taxesall'] = 'Total Tax: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordertaxes'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordertaxes'])) {
         $data['frm_msg']['order_taxesall'] = 'Total Tax: Not a valied number';
       }
 
       // validate total amt
       if (empty($param['order']['ordertotal'])) {
         $data['frm_msg']['order_totalamt'] = 'Total: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['ordertotal'])) {
+      } elseif (!preg_match($validator9, $param['order']['ordertotal'])) {
         $data['frm_msg']['order_totalamt'] = 'Total: Not a valied number';
       }
 
       // validate paid amount
       if (empty($param['order']['orderpaid'])) {
         $data['frm_msg']['order_paidamt'] = 'Paid: Field is empty';
-      } elseif (!preg_match($validator8, $param['order']['orderpaid'])) {
+      } elseif (!preg_match($validator9, $param['order']['orderpaid'])) {
         $data['frm_msg']['order_paidamt'] = 'Paid: Not a valied number';
       }
 
       // validate balance
       if (empty($param['order']['orderbalnc'])) {
         $data['frm_msg']['order_balance'] = 'Balance: Field is empty';
-      } elseif (!preg_match($validator9, $param['order']['orderbalnc'])) {
+      } elseif (!preg_match($validator10, $param['order']['orderbalnc'])) {
         $data['frm_msg']['order_balance'] = 'Balance: Not a valied number';
       }
 
@@ -559,9 +566,9 @@ class Orders extends Controller
         if ($this->userModel->update($param)) {
           unset($param);
           $data['state']  = 'success';
-          $data['frm_msg']['add_order_msg'] = 'Product successfully added';
+          $data['frm_msg']['edit_order_msg'] = 'Order successfully added';
         } else {
-          $data['frm_msg']['add_order_msg'] = 'Someting went wrong';
+          $data['frm_msg']['edit_order_msg'] = 'Someting went wrong';
         }
       }
       echo json_encode($data);
@@ -616,16 +623,16 @@ class Orders extends Controller
       // echo json_encode($prodtId);
       // return;
 
-      $validator7 = "/^(?=PRD-[0-9]*[1-9][0-9]*).{12}$/"; // check for 12 length zero padded positive integer with prefix of PRD-
+      $validator7 = "/^(?=PR-[0-9]*[1-9][0-9]*).{11}$/"; // check for 12 length zero padded positive integer with prefix of PRD-
 
       // validate product sku
       if (empty($prodtId) || !preg_match($validator7, $prodtId)) {
         $data['prodt'] = false;
       } else {
-        $prodtId = ltrim($prodtId, "PRD-0");
+        $prodtId = ltrim($prodtId, "PR-0");
         $data['prodt'] = $this->userModel->getProduct($prodtId);
         if ($data['prodt']) {
-          $data['prodt']['prodt_sku'] = 'PRD-' . str_pad($prodtId, 8, '0', STR_PAD_LEFT);
+          $data['prodt']['prodt_sku'] = 'PR-' . str_pad($prodtId, 8, '0', STR_PAD_LEFT);
         }
       }
       echo json_encode($data);
@@ -690,9 +697,10 @@ class Orders extends Controller
 
       $data['tbl_data'] = $this->userModel->getRows($param);
 
-      // if ($data['tbl_data']) {
-      //   $data['tbl_data']['order_no'] = 'ORD-' . str_pad($data['tbl_data']['order_id'], 8, '0', STR_PAD_LEFT);
-      // }
+      for ($i = 0; $i < count($data['tbl_data']); $i++) {
+        $data['tbl_data'][$i]['order_no'] = 'SO-' . str_pad($data['tbl_data'][$i]['order_id'], 8, '0', STR_PAD_LEFT);
+      }
+
 
       echo json_encode($data);
     }

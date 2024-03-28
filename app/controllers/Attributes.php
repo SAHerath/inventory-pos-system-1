@@ -5,9 +5,6 @@ class Attributes extends Controller
 
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('atrb')) {
       exit("Permission Not Granted!");
       return;

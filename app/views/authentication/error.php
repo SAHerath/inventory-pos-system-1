@@ -14,11 +14,13 @@
     .title {
       color: #ce2e3e;
       text-align: center;
-      font-size: 32px;
+      font-size: 48px;
     }
 
     .message {
       color: #444;
+      font-size: 32px;
+      text-align: center;
     }
   </style>
 </head>
@@ -26,13 +28,13 @@
 <body>
   <h1 class="title">
     <i class="fas fa-exclamation-triangle"></i>
-    UNEXPECTED ERROR!
+    ERROR!
   </h1>
   <br>
 
   <div class="message">
     <p>
-      <?php //echo $data['msg']; 
+      <?php echo $data['err_msg'];
       ?>
     </p>
   </div>

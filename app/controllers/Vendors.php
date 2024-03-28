@@ -5,9 +5,6 @@ class Vendors extends Controller
 
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('vend')) {
       exit("Permission Not Granted!");
       return;
@@ -86,8 +83,8 @@ class Vendors extends Controller
         'frm_msg' => []
       ];
 
-      $pattern1 = "/^[a-zA-Z0-9 _]*$/";   // filter only lowercase/uppercase/numbers/space/underscor
-      $pattern2 = "/^[1-9]\d*$/";   // filter any number except 0
+      $validator1 = "/^[a-zA-Z0-9 _.-]*$/";   // filter only lowercase/uppercase/numbers/space/underscor/dash
+      $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
       $pattern3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
       $pattern5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
       $pattern6 = "^[0-9]{5}(?:-[0-9]{4})?$"; // US Postal Codes ex 98102 or 98102-1234
@@ -95,16 +92,17 @@ class Vendors extends Controller
       // validate vendor name
       if (empty($param['vendrname'])) {
         $data['frm_msg']['vendr_name'] = 'Vendor Name: Field is empty';
-      } elseif (!preg_match($pattern1, $param['vendrname'])) {
+      } elseif (!preg_match($validator1, $param['vendrname'])) {
         $data['frm_msg']['vendr_name'] = 'Vendor Name: Can only contain letters and numbers';
       }
 
       // validate telphone number
       if (empty($param['vendrphone'])) {
         $data['frm_msg']['vendr_phone'] = 'Phone: Field is empty';
-      } elseif (!preg_match($pattern3, $param['vendrphone'])) {
-        $data['frm_msg']['vendr_phone'] = 'Phone: Invalied phone number format';
       }
+      //  elseif (!preg_match($pattern3, $param['vendrphone'])) {
+      //   $data['frm_msg']['vendr_phone'] = 'Phone: Invalied phone number format';
+      // }
 
       // validate email
       if (empty($param['vendremail'])) {
@@ -130,21 +128,21 @@ class Vendors extends Controller
       // validate city
       if (empty($param['vendrcity'])) {
         $data['frm_msg']['vendr_city'] = 'City: Field is empty';
-      } elseif (!preg_match($pattern1, $param['vendrcity'])) {
+      } elseif (!preg_match($pattern5, $param['vendrcity'])) {
         $data['frm_msg']['vendr_city'] = 'City: Can only contain letters and numbers';
       }
 
       // validate country
       if (empty($param['vendrcont'])) {
         $data['frm_msg']['vendr_country'] = 'Country: Field is empty';
-      } elseif (!preg_match($pattern1, $param['vendrcont'])) {
+      } elseif (!preg_match($validator1, $param['vendrcont'])) {
         $data['frm_msg']['vendr_country'] = 'Country: Can only contain letters and numbers';
       }
 
       // validate zip
       if (empty($param['vendrzip'])) {
         // $data['frm_msg']['vendr_postal'] = 'Country: Field is empty';
-      } elseif (!preg_match($pattern2, $param['vendrzip'])) {
+      } elseif (!preg_match($validator2, $param['vendrzip'])) {
         $data['frm_msg']['vendr_postal'] = 'ZIP/Postal Code: Invalied format';
       }
 
@@ -156,7 +154,7 @@ class Vendors extends Controller
       // validate status
       if (empty($param['vendractv'])) {
         $data['frm_msg']['vendr_state'] = 'Status: Field not selected';
-      } elseif (!preg_match($pattern2, $param['vendractv'])) {
+      } elseif (!preg_match($validator2, $param['vendractv'])) {
         $data['frm_msg']['vendr_state'] = 'Status: Invalied format';
       }
 

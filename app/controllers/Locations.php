@@ -5,9 +5,6 @@ class Locations extends Controller
 
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('loca')) {
       exit("Permission Not Granted!");
       return;

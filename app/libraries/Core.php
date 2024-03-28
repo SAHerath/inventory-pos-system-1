@@ -8,7 +8,7 @@
 class Core
 {
   protected $currentController = 'Auth';  // first value of url, default 'Auth'
-  protected $currentMethod = 'index';   // second value of url, fefault 'index'
+  protected $currentMethod = 'index';   // second value of url, default 'index'
   protected $params = [];   // from third to end values
 
   public function __construct()
@@ -22,6 +22,11 @@ class Core
         //if found request controller, set as active
         $this->currentController = ucwords($url[0]); // captitalize first letter
         unset($url[0]);
+
+        if (!isLoggedIn() && $this->currentController != 'Auth') {
+          error_log(date('D d-M-Y H:i:s e | ') . 'Invalid Access ' . $this->currentController . PHP_EOL, 3, APPROOT . '/logs/debug.log');
+          // redirect('auth/index');
+        }
       }
     }
 
@@ -35,8 +40,11 @@ class Core
         // if method found, set as active
         $this->currentMethod = $url[1];
         unset($url[1]);
+
+        // restric non-permission users
+
       } else {
-        redirect('auth/error');
+        redirect('auth/error/404');
         // exit('Error! : Requested method not found!');
       }
     }

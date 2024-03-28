@@ -1,13 +1,9 @@
 <?php
-require_once(APPROOT . '/extensions/barcode/vendor/autoload.php');
 
 class Products extends Controller
 {
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('prod')) {
       exit("Permission Not Granted!");
       return;
@@ -117,6 +113,8 @@ class Products extends Controller
 
   public function show($prodtId = null)
   {
+    require_once(APPROOT . '/extensions/barcode/vendor/autoload.php');
+
     $prodtId = trim($prodtId);
 
     $data = [
@@ -131,7 +129,7 @@ class Products extends Controller
     } else {
 
       $data['prodt'] = $this->userModel->getProduct($prodtId);
-      $data['prodt']['prod_sku'] = 'PRD-' . str_pad($prodtId, 8, '0', STR_PAD_LEFT);
+      $data['prodt']['prod_sku'] = 'PR-' . str_pad($prodtId, 8, '0', STR_PAD_LEFT);
 
       $data['categ'] = $this->userModel->getCategory($data['prodt']['prod_catg_code']);
       $data['brand'] = $this->userModel->getBrand($data['prodt']['prod_brnd_code']);
@@ -139,6 +137,7 @@ class Products extends Controller
       $data['stock'] = $this->userModel->getProdtStock($prodtId);
       $data['attrb'] = $this->userModel->getProdtAtval($prodtId);
       $data['image'] = $this->userModel->getProdtImage($prodtId);
+
 
       // instantiate the barcode class
       $barcode = new \Com\Tecnick\Barcode\Barcode();
@@ -477,6 +476,10 @@ class Products extends Controller
       }
 
       $data['tbl_data'] = $this->userModel->getRows($param);
+
+      for ($i = 0; $i < count($data['tbl_data']); $i++) {
+        $data['tbl_data'][$i]['prodt_no'] = 'PR-' . str_pad($data['tbl_data'][$i]['pid'], 8, '0', STR_PAD_LEFT);
+      }
 
       echo json_encode($data);
     }

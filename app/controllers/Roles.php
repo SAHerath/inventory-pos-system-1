@@ -4,9 +4,6 @@ class Roles extends Controller
 {
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('role')) {
       exit("Permission Not Granted!");
       return;

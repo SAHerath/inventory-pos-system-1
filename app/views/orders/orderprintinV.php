@@ -8,13 +8,15 @@ $pdf = new TCPDF('L', 'mm', 'A5', true, 'UTF-8', false);
 $pdf->SetCreator('TCPDF');
 $pdf->SetAuthor('S. A. Herath');
 $pdf->SetTitle('Nawa Lanka Enterprises');
-$pdf->SetSubject('Invoice');
+$pdf->SetSubject('INVOICE');
 
 // remove default header/footer
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 
 $pdf->SetMargins(10, 0, 10);  // left , top, right, bottom
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, 5);
 // $pageMargin = $pdf->getOriginalMargins();
 $bodyWidth = 210 - 20;
 $pageWidth = $pdf->getPageWidth();
@@ -56,13 +58,13 @@ $pdf->MultiCell(80, '', 'BILL TO', $border, 'L', 0, 1, $x, $y, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(80, '', $data['order']['ordr_cust_name'] . "\n" . str_replace(PHP_EOL, '', $data['order']['ordr_cust_address']) . "\n" . $data['order']['ordr_cust_phone'], $border, 'L', 0, 1, $x, $y + 5, true);
 
-$pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(26, '', 'PAY METHOD', $border, 'L', 0, 1, $x, $y + 20, true);
-$pdf->SetTextColor(0, 0, 0);
-$pdf->MultiCell(20, '', $data['order']['ordr_pay_method'], $border, 'L', 0, 1, $x + 26, $y + 20, true);
+// $pdf->SetTextColor(0, 48, 207);
+// $pdf->MultiCell(26, '', 'PAY METHOD', $border, 'L', 0, 1, $x, $y + 20, true);
+// $pdf->SetTextColor(0, 0, 0);
+// $pdf->MultiCell(20, '', $data['order']['ordr_pay_method'], $border, 'L', 0, 1, $x + 26, $y + 20, true);
 
 $pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(25, '', 'INVOICE NO', $border, 'L', 0, 0, $pageWidth - 70, $y, true);
+$pdf->MultiCell(25, '', 'ORDER NO', $border, 'L', 0, 0, $pageWidth - 70, $y, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['order']['order_incno'], $border, 'L', 0, 1, $pageWidth - 45, $y, true);
 
@@ -72,7 +74,7 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['order']['ordr_date'], $border, 'L', 0, 1, $pageWidth - 45, $y + 7, true);
 
 $pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(25, '', 'SALES REP', $border, 'L', 0, 0, $pageWidth - 70, $y + 14, true);
+$pdf->MultiCell(25, '', 'ISSUED BY', $border, 'L', 0, 0, $pageWidth - 70, $y + 14, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(35, '', $data['user']['user_first_name'], $border, 'L', 0, 1, $pageWidth - 45, $y + 14, true);
 $pdf->Ln(10);
@@ -126,18 +128,6 @@ $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(20, '', 'Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 15, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(30, '', number_format((float)$data['order']['ordr_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 15, true);
-
-$pdf->SetFont('helvetica', '', 10);
-$pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(20, '', 'Paid', $border, 'L', $fill, 1, $pageWidth - 60, $y + 25, true);
-$pdf->SetTextColor(0, 0, 0);
-$pdf->MultiCell(30, '', number_format((float)$data['order']['ordr_paid'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 25, true);
-
-$pdf->SetFont('helvetica', 'B', 10);
-$pdf->SetTextColor(0, 48, 207);
-$pdf->MultiCell(20, '', 'Balance', $border, 'L', $fill, 1, $pageWidth - 60, $y + 30, true);
-$pdf->SetTextColor(0, 0, 0);
-$pdf->MultiCell(30, '', number_format((float)$data['order']['ordr_balance'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 30, true);
 
 // force print dialog
 $js = 'print(true);';

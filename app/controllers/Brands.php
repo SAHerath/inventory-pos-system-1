@@ -5,9 +5,6 @@ class Brands extends Controller
 
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('brnd')) {
       exit("Permission Not Granted!");
       return;

@@ -62,8 +62,8 @@ class OrderM
     try {
       $this->db->beginTransaction();
 
-      $query = "INSERT INTO tabl_order (ordr_user_code, ordr_date, ordr_cust_name, ordr_cust_phone, ordr_cust_address, ordr_sub_total, ordr_taxes, ordr_total, ordr_paid, ordr_balance, ordr_pay_method) 
-                VALUES(:ordersaler, :orderdate, :ordercname, :ordercphon, :ordercaddr, :ordersubtot, :ordertaxes, :ordertotal, :orderpaid, :orderbalnc, :orderpmeth)";
+      $query = "INSERT INTO tabl_order (ordr_user_code, ordr_date, ordr_cust_name, ordr_cust_phone, ordr_cust_address, ordr_sub_total, ordr_taxes, ordr_total, ordr_paid, ordr_balance, ordr_pay_method, ordr_status) 
+                VALUES(:ordersaler, :orderdate, :ordercname, :ordercphon, :ordercaddr, :ordersubtot, :ordertaxes, :ordertotal, :orderpaid, :orderbalnc, :orderpmeth, :orderstate)";
 
       if ($this->db->runQuery($query, $param['order'])) {
         $orderId = $this->db->getResults(DB_LASTID);

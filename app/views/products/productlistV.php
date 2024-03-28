@@ -166,7 +166,7 @@
     tblData2.className = "td";
     tblRow.appendChild(tblData2);
     let span2 = document.createElement("span");
-    span2.textContent = "PRD-" + dataRow["pid"].padStart(8, "0");
+    span2.textContent = dataRow["prodt_no"];
     tblData2.appendChild(span2);
 
     // create Name column

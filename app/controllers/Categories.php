@@ -5,9 +5,6 @@ class Categories extends Controller
 
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('catg')) {
       exit("Permission Not Granted!");
       return;

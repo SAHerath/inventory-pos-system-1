@@ -4,18 +4,18 @@
 <main class="main" id="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Order</h2>
+      <h2>Sales Order</h2>
     </div>
 
     <ul class="breadcrumb">
       <li><a href="<?php echo URLROOT; ?>home">Home</a></li>
-      <li>Order</li>
+      <li>Sales Order</li>
     </ul>
 
   </div>
   <div class="main-cards">
     <div class="row mb-2">
-      <a class="btn blue" href="<?php echo URLROOT; ?>orders/add" tabindex="0">Add New Order</a>
+      <a class="btn blue" href="<?php echo URLROOT; ?>orders/add" tabindex="0">Add New Sales Order</a>
     </div>
     <div class="card">
       <div id="tbl_data_list">
@@ -35,7 +35,7 @@
           <div class="table">
             <div class="thead">
               <div class="tr">
-                <div class="th" id="dl_sort_1" title="Sort by Order No.">Order #<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+                <div class="th" id="dl_sort_1" title="Sort by Order No.">Order No<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
                 <div class="th" id="dl_sort_2" title="Sort by Date">Date<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
                 <div class="th" id="dl_sort_3" title="Sort by Customer">Customer<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
                 <div class="th" id="dl_sort_4" title="Sort by Status">Status<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
@@ -55,13 +55,13 @@
                 <div class="td">1500.00</div>
                 <div class="td">250.00</div>
                 <div class="td txt-center">
-                  <a class="tbl_btn_view btn-sm green mr-md-1" role="button" title="View more">
+                  <a class=" btn-sm green mr-md-1" role="button" title="View more">
                     <i class="fas fa-eye"></i>
                   </a>
-                  <a class="tbl_btn_edit btn-sm yellow mr-md-1" role="button" title="Edit Vendor">
+                  <a class=" btn-sm yellow mr-md-1" role="button" title="Edit Vendor">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="tbl_btn_delt btn-sm red mr-md-1" role="button" title="Delete Vendor">
+                  <a class=" btn-sm red mr-md-1" role="button" title="Delete Vendor">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>
@@ -154,7 +154,7 @@
     tblData1.className = "td";
     tblRow.appendChild(tblData1);
     let span1 = document.createElement("span");
-    span1.textContent = "ODR-" + dataRow["order_id"].padStart(8, "0");
+    span1.textContent = dataRow["order_no"];
     tblData1.appendChild(span1);
 
     // create date column
@@ -183,7 +183,7 @@
 
     // create total column
     let tblData5 = document.createElement("div");
-    tblData5.className = "td";
+    tblData5.className = "td txt-right";
     tblRow.appendChild(tblData5);
     let span5 = document.createElement("span");
     span5.textContent = dataRow["order_totalamt"];
@@ -191,7 +191,7 @@
 
     // create paid column
     let tblData6 = document.createElement("div");
-    tblData6.className = "td";
+    tblData6.className = "td txt-right";
     tblRow.appendChild(tblData6);
     let span6 = document.createElement("span");
     span6.textContent = dataRow["order_paidamt"];
@@ -199,7 +199,7 @@
 
     // create balance column
     let tblData7 = document.createElement("div");
-    tblData7.className = "td";
+    tblData7.className = "td txt-right";
     tblRow.appendChild(tblData7);
     let span7 = document.createElement("span");
     span7.textContent = dataRow["order_balance"];

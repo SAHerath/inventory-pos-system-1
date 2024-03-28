@@ -4,9 +4,6 @@ class Users extends Controller
 {
   public function __construct()
   {
-    if (!isLoggedIn()) {
-      redirect('auth/index');
-    }
     if (!isEnabled('user')) {
       exit("Permission Not Granted!");
       return;

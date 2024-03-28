@@ -54,7 +54,7 @@
                 <div class="th" title="Product Name/Id">Product</div>
                 <div class="th" title="Quantity" style="width: 80px;">Qty</div>
                 <div class="th" title="Unit Price" style="width: 100px;">Rate<?php echo $data['currency']; ?></div>
-                <div class="th" title="Discount" style="width: 100px;">Disc</div>
+                <div class="th" title="Discount Percentage" style="width: 100px;">Disc %</div>
                 <div class="th" title="Sub Total" style="width: 100px;">Amount<?php echo $data['currency']; ?></div>
                 <div class="th">Action</div>
               </div>
@@ -65,25 +65,25 @@
               <?php foreach ($data['ordprd'] as $id => $row) : ?>
                 <div class="tr" id="tblr_<?php echo $id + 1; ?>">
                   <div class="td">
-                    <input onkeyup="checkInput();" type="text" id="tblr_<?php echo $id + 1; ?>_order_sku" placeholder="Enter Barcode" value="<?php echo $row['prodt_sku']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_order_sku" type="text" placeholder="Enter Barcode" disabled value="<?php echo $row['prodt_sku']; ?>">
                   </div>
                   <div class="td">
-                    <input type="text" id="tblr_<?php echo $id + 1; ?>_order_prd" value="<?php echo $row['prod_name']; ?>">
+                    <input " id=" tblr_<?php echo $id + 1; ?>_order_prd"type="text value=" <?php echo $row['prod_name']; ?>">
                   </div>
                   <div class="td">
-                    <input oninput="calculateAll();" type="number" id="tblr_<?php echo $id + 1; ?>_order_qty" value="<?php echo $row['odpd_quantity']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_order_qty" type="number" value="<?php echo $row['odpd_quantity']; ?>">
                   </div>
                   <div class="td">
-                    <input type="text" id="tblr_<?php echo $id + 1; ?>_order_rat" class="txt-right" disabled="" value="<?php echo $row['odpd_unit_price']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_order_rat" class="txt-right" type="text" disabled value="<?php echo $row['odpd_unit_price']; ?>">
                   </div>
                   <div class="td">
-                    <input oninput="calculateAll();" type="text" id="tblr_<?php echo $id + 1; ?>_order_dis" class="txt-right" value="<?php echo $row['odpd_discount']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_order_dis" class="txt-right" type="text" value="<?php echo $row['odpd_discount']; ?>">
                   </div>
                   <div class="td">
-                    <input type="text" id="tblr_<?php echo $id + 1; ?>_order_amt" class="txt-right" disabled="" value="<?php echo $row['odpd_sub_amount']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_order_amt" class="txt-right" type="text" disabled value="<?php echo $row['odpd_sub_amount']; ?>">
                   </div>
                   <div class="td txt-center">
-                    <button onclick="removeRowTbl();" type="button" class="btn-sm red" title="Remove Product">
+                    <button class="btn-sm red" type="button" title="Remove Product">
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
@@ -161,10 +161,11 @@
       document.getElementById(rowId + "_order_sku").value = resp['prodt']['prodt_sku'];
       document.getElementById(rowId + "_order_prd").value = resp['prodt']['prodt_name'];
       document.getElementById(rowId + "_order_qty").value = 1;
-      document.getElementById(rowId + "_order_rat").value = resp['prodt']['prodt_reprice'];
+      document.getElementById(rowId + "_order_rat").value = parseFloat(resp['prodt']['prodt_reprice']).toFixed(2);
       document.getElementById(rowId + "_order_dis").value = 0;
       document.getElementById(rowId + "_order_amt").value = parseFloat(resp['prodt']['prodt_reprice']).toFixed(2);
       document.getElementById(rowId).getElementsByTagName("button")[0].disabled = false;
+      document.getElementById(rowId + "_order_sku").disabled = true;
       return true;
     } else {
       return false;
@@ -182,10 +183,11 @@
     }
   */
   function updateRowTbl(rowId) {
+    // console.log(rowId);
     let inpQtyVal = document.getElementById(rowId + "_order_qty").value;
     let inpRatVal = document.getElementById(rowId + "_order_rat").value;
     let inpDisVal = document.getElementById(rowId + "_order_dis").value;
-    document.getElementById(rowId + "_order_amt").value = ((inpRatVal * inpQtyVal) - inpDisVal).toFixed(2);
+    document.getElementById(rowId + "_order_amt").value = ((inpRatVal * inpQtyVal) - (inpRatVal * inpQtyVal * inpDisVal * 0.01)).toFixed(2);
   }
 
   async function checkInput(event) {
@@ -265,6 +267,7 @@
 
   function calculateAll() {
     let tblRowId = this.parentElement.parentElement.id;
+    // console.log("calculateAll", this);
     updateRowTbl(tblRowId);
     calculatePay();
   }
@@ -304,7 +307,8 @@
     input1.type = "text";
     input1.id = tblRow.id + "_order_sku";
     input1.placeholder = "Enter Barcode";
-    input1.onkeyup = checkInput;
+    // input1.onkeyup = checkInput;
+    input1.addEventListener("keyup", checkInput);
     tblData1.appendChild(input1);
 
     // create Product Name column
@@ -323,7 +327,8 @@
     let input3 = document.createElement("input");
     input3.type = "number";
     input3.id = tblRow.id + "_order_qty";
-    input3.oninput = calculateAll;
+    // input3.oninput = calculateAll;
+    input3.addEventListener("input", calculateAll);
     tblData3.appendChild(input3);
 
     // create Rate column
@@ -345,7 +350,8 @@
     input5.type = "text";
     input5.id = tblRow.id + "_order_dis";
     input5.className = "txt-right";
-    input5.oninput = calculateAll;
+    // input5.oninput = calculateAll;
+    input5.addEventListener("input", calculateAll);
     tblData5.appendChild(input5);
 
     // create Amount column
@@ -360,16 +366,17 @@
     tblData6.appendChild(input6);
 
     // create Action column
-    let tblData7 = document.createElement("div");
-    tblData7.className = "td txt-center";
-    tblRow.appendChild(tblData7);
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
     let btnDelt = document.createElement("button");
     btnDelt.type = "button";
     btnDelt.className = "btn-sm red";
     btnDelt.title = "Remove Product";
     btnDelt.disabled = true;
-    btnDelt.onclick = removeRowTbl;
-    tblData7.appendChild(btnDelt);
+    // btnDelt.onclick = removeRowTbl;
+    btnDelt.addEventListener("click", removeRowTbl);
+    tblDataAct.appendChild(btnDelt);
     let icoDelt = document.createElement("i");
     icoDelt.className = "fas fa-times";
     btnDelt.appendChild(icoDelt);
@@ -377,10 +384,25 @@
     return tblRow;
   }
 
+  function addEvents() {
+    for (let ind = 1; ind < tblRowCount; ind++) {
+      // console.log('addEvents', ind);
+      // let inpSku = document.getElementById("tblr_" + ind + "_order_sku");
+      let inpQty = document.getElementById("tblr_" + ind + "_order_qty");
+      let inpDis = document.getElementById("tblr_" + ind + "_order_dis");
+      let btnDel = document.getElementById("tblr_" + ind).getElementsByTagName("button")[0];
+      // inpSku.addEventListener('keyup', checkInput);
+      inpQty.addEventListener('input', calculateAll);
+      inpDis.addEventListener('input', calculateAll);
+      btnDel.addEventListener('click', removeRowTbl);
+    }
+  }
 
   const tblBody = document.getElementById("dl_tbl_body");
   var tblRowCount = <?php echo $data['prdcon'] + 1; ?>;
+  addEvents();
   tblBody.appendChild(createTblRow(tblRowCount++));
+
 
   function orderEdited() {
     console.log("orderEdited");

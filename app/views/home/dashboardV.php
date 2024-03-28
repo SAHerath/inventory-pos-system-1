@@ -22,8 +22,8 @@
           <i class="fas fa-box"></i>
         </div>
         <div class="col-7 p-4 txt-right">
-          <span><b>18</b></span>
-          <!-- <span><b><?php echo $data['tot_prodt']; ?></b></span> -->
+          <!-- <span><b>18</b></span> -->
+          <span><b><?php echo $data['tot_prodt']; ?></b></span>
         </div>
       </div>
     </div>
@@ -36,8 +36,8 @@
           <i class="fas fa-shopping-cart"></i>
         </div>
         <div class="col-7 p-4 txt-right">
-          <span><b>12</b></span>
-          <!-- <span><b><?php echo $data['tot_order']; ?></b></span> -->
+          <!-- <span><b>12</b></span> -->
+          <span><b><?php echo $data['tot_order']; ?></b></span>
         </div>
       </div>
     </div>
@@ -50,8 +50,8 @@
           <i class="fas fa-users"></i>
         </div>
         <div class="col-7 p-4 txt-right">
-          <span><b>6</b></span>
-          <!-- <span><b><?php echo $data['tot_users']; ?></b></span> -->
+          <!-- <span><b>6</b></span> -->
+          <span><b><?php echo $data['tot_users']; ?></b></span>
         </div>
       </div>
     </div>
@@ -64,8 +64,8 @@
           <i class="fas fa-map-marker-alt"></i>
         </div>
         <div class="col-7 p-4 txt-right">
-          <span><b>2</b></span>
-          <!-- <span><b><?php echo $data['tot_locat']; ?></b></span> -->
+          <!-- <span><b>2</b></span> -->
+          <span><b><?php echo $data['tot_locat']; ?></b></span>
         </div>
       </div>
     </div>

@@ -4,9 +4,6 @@ class Auth extends Controller
 {
   public function __construct()
   {
-    if (isLoggedIn()) {  // if already logged redirect to dashboard
-      redirect('home');
-    }
     $this->userModel = $this->model('AuthM');
   }
 
@@ -63,9 +60,14 @@ class Auth extends Controller
     redirect('auth/index');
   }
 
-  public function error()
+  public function error($errCode = null)
   {
-    $this->view('authentication/error');
+    $data = [
+      'title' => 'error',
+      'err_msg' => $errCode
+    ];
+
+    $this->view('authentication/error', $data);
   }
 
   /*
