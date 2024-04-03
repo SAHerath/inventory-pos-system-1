@@ -127,6 +127,11 @@ class Orders extends Controller
       }
 
       $data['order']['order_incno'] = 'SO-' . str_pad($data['order']['ordr_code'], 8, '0', STR_PAD_LEFT);
+      $data['order']['ordr_total_spell'] = $this->spellCurrency($data['order']['ordr_total']);
+
+      // $fmt = new NumberFormatter('en_LK', NumberFormatter::CURRENCY);
+      // $data['a1'] = $fmt->format($data['order']['ordr_total']);
+      // $data['a2'] = $fmt->formatCurrency($data['order']['ordr_total'], "LKR");
 
       // echo '<pre>';
       // var_dump($data);
@@ -184,15 +189,20 @@ class Orders extends Controller
 
       // echo json_encode($param);
       // return;
-
-      $validator1 = "/^[a-zA-Z0-9 _.-]*$/";   // filter only lowercase/uppercase/numbers/space/underscor/dash
+      // filter only lowercase/uppercase/numbers/space/underscor/dash
+      $validator1 = "/^[a-zA-Z0-9 _.-]*$/";
       $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
-      $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";    // filter local telephone no.
+      // filter local telephone no.
+      $validator3 = "/^([0-9]{3}|\+94[1-9]{2})[0-9]{7}$/";
       $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
-      $validator7 = "/^(?=PR-[0-9]*[1-9][0-9]*).{11}$/"; // sku check for 12 length zero padded positive integer with prefix of PRD-
+      // sku check for 11 length zero padded positive integer with prefix of PR-
+      $validator7 = "/^(?=PR-[0-9]*[1-9][0-9]*).{11}$/";
       $validator8 = "/^[0-9]*$/";  // filter any number
-      $validator9 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
-      $validator10 = "/^-?[0-9]*.[0-9]+?$/"; // check floats with optional sign (-) negative
+      // check for floats which has at least one floating point
+      $validator9 = "/^[0-9]*.[0-9]+?$/";
+      // check floats which has at least one floating point with optional sign (-) negative
+      $validator10 = "/^-?[0-9]*.[0-9]+?$/";
+
       // validate date
       if (empty($param['order']['orderdate'])) {
         $status['frm_msg']['order_date'] = 'Date: Field is empty';
@@ -212,7 +222,7 @@ class Orders extends Controller
 
       // validate customer phone
       if (empty($param['order']['ordercphon'])) {
-        // $data['frm_msg']['order_cusphone'] = 'Phone: Field is empty';
+        $data['frm_msg']['order_cusphone'] = 'Phone: Field is empty';
       } elseif (!preg_match($validator3, $param['order']['ordercphon'])) {
         $data['frm_msg']['order_cusphone'] = 'Phone: Can only contain letters and numbers';
       }
@@ -704,6 +714,14 @@ class Orders extends Controller
 
       echo json_encode($data);
     }
+  }
+
+  public function spellCurrency($number)
+  {
+    $num = explode('.', $number);
+    // NumberFormatter class require to enable "intl" extention of php.ini
+    $numFormat = new NumberFormatter("en_LK", NumberFormatter::SPELLOUT);
+    return "{$numFormat->format($num[0])} rupees and {$numFormat->format($num[1])} cents";
   }
 
   public function testdb()

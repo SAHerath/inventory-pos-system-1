@@ -58,10 +58,10 @@ $pdf->MultiCell(80, '', 'BILL TO', $border, 'L', 0, 1, $x, $y, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(80, '', $data['order']['ordr_cust_name'] . "\n" . str_replace(PHP_EOL, '', $data['order']['ordr_cust_address']) . "\n" . $data['order']['ordr_cust_phone'], $border, 'L', 0, 1, $x, $y + 5, true);
 
-// $pdf->SetTextColor(0, 48, 207);
-// $pdf->MultiCell(26, '', 'PAY METHOD', $border, 'L', 0, 1, $x, $y + 20, true);
-// $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(20, '', $data['order']['ordr_pay_method'], $border, 'L', 0, 1, $x + 26, $y + 20, true);
+$pdf->SetTextColor(0, 48, 207);
+$pdf->MultiCell(26, '', 'PAY METHOD', $border, 'L', 0, 1, $x, $y + 20, true);
+$pdf->SetTextColor(0, 0, 0);
+$pdf->MultiCell(20, '', $data['order']['ordr_pay_method'], $border, 'L', 0, 1, $x + 26, $y + 20, true);
 
 $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(25, '', 'ORDER NO', $border, 'L', 0, 0, $pageWidth - 70, $y, true);
@@ -128,10 +128,10 @@ $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(20, '', 'Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 15, true);
 $pdf->SetTextColor(0, 0, 0);
 $pdf->MultiCell(30, '', number_format((float)$data['order']['ordr_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 15, true);
-
+$pdf->MultiCell('', '', $data['order']['ordr_total_spell'], $border, 'R', $fill, 1, 10, $y + 20, true);
 // force print dialog
 $js = 'print(true);';
 // set javascript
-$pdf->IncludeJS($js);
+// $pdf->IncludeJS($js);
 //Close and output PDF document
 $pdf->Output($data['order']['order_incno'] . '.pdf', 'I');
