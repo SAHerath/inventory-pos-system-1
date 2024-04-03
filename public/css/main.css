@@ -128,23 +128,32 @@ a {
   width: 4rem;
 }
 
-#grid_container.tablet.close .aside .aside-menu .drop > a {
-  background-image: url(../icon/fontawesome/svgs/solid/caret-right.svg);
-  background-repeat: no-repeat;
-  background-position: right 0.25rem top 50%;
-  background-size: 0.375rem auto;
+#grid_container.tablet.close .aside .aside-menu .menu-drop .drop-content {
+  display: none;
+  position: absolute;
+  left: 4rem;
+  width: 10rem;
+  border: 1px solid #0b7dda;
+  border-left: none;
 }
 
-#grid_container.tablet.close .aside .aside-menu .drop .drop-content {
-  position: absolute;
-  margin-top: -3rem;
-  margin-left: 4rem;
-  width: 8rem;
-  border-right: 5px solid #0b7dda;
+#grid_container.tablet.close .aside .aside-menu .menu-drop .drop-content.show {
+  display: block;
+}
+
+#grid_container.tablet.close .aside .aside-menu .menu-drop .drop-content a {
+  height: 2rem;
+  padding-left: 1rem;
+}
+
+#grid_container.tablet.close .aside .aside-menu .menu-drop .drop-icon {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
 }
 
 #grid_container.tablet.close .aside span {
-  visibility: hidden;
+  width: 0;
+  margin-left: 0;
   opacity: 0;
 }
 
@@ -158,13 +167,6 @@ a {
   width: 14rem;
 }
 
-#grid_container.tablet.open .aside span {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: opacity .2s ease-in .3s;
-  transition: opacity .2s ease-in .3s;
-}
-
 #grid_container.desktop {
   -ms-grid-columns: 14rem 1fr;
       grid-template-columns: 14rem 1fr;
@@ -175,13 +177,6 @@ a {
 #grid_container.desktop .aside {
   margin-left: 0rem;
   width: 14rem;
-}
-
-#grid_container.desktop .aside span {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: opacity .2s ease-in .3s;
-  transition: opacity .2s ease-in .3s;
 }
 
 #grid_container.desktop .header {
@@ -206,23 +201,32 @@ a {
 }
 
 #grid_container.desktop.close .aside span {
-  visibility: hidden;
+  width: 0;
+  margin-left: 0;
   opacity: 0;
 }
 
-#grid_container.desktop.close .aside .aside-menu .drop > a {
-  background-image: url(../icon/fontawesome/svgs/solid/caret-right.svg);
-  background-repeat: no-repeat;
-  background-position: right 0.25rem top 50%;
-  background-size: 0.375rem auto;
+#grid_container.desktop.close .aside .aside-menu .menu-drop .drop-content {
+  display: none;
+  position: absolute;
+  left: 4rem;
+  width: 10rem;
+  border: 1px solid #0b7dda;
+  border-left: none;
 }
 
-#grid_container.desktop.close .aside .aside-menu .drop .drop-content {
-  position: absolute;
-  margin-top: -3rem;
-  margin-left: 4rem;
-  width: 8rem;
-  border-right: 5px solid #0b7dda;
+#grid_container.desktop.close .aside .aside-menu .menu-drop .drop-content.show {
+  display: block;
+}
+
+#grid_container.desktop.close .aside .aside-menu .menu-drop .drop-content a {
+  height: 2rem;
+  padding-left: 1rem;
+}
+
+#grid_container.desktop.close .aside .aside-menu .menu-drop .drop-icon {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
 }
 
 /* set grid name */
@@ -274,7 +278,7 @@ a {
 }
 
 .header nav a:hover:not(.toggle-lg) {
-  border-bottom: 0.25rem solid #0b7dda;
+  border-top: 0.25rem solid #0b7dda;
 }
 
 .header nav .drop > a {
@@ -294,10 +298,6 @@ a {
   border-radius: 50%;
   -webkit-box-shadow: 0 0 2px 1px #a2a2a2;
           box-shadow: 0 0 2px 1px #a2a2a2;
-}
-
-.header nav .drop > a.show {
-  border-bottom: 0.25rem solid #0b7dda;
 }
 
 .header nav .drop .drop-content {
@@ -344,6 +344,7 @@ a {
 
 .header nav .drop .drop-content.show {
   border: 1px solid #0b7dda;
+  border-top: none;
 }
 
 .header nav .drop .drop-content.show a {
@@ -410,9 +411,12 @@ a {
 
 .aside-logo span {
   /* display: none; */
-  margin-left: 1.5rem;
+  overflow: hidden;
+  margin-left: 0.75rem;
   text-align: center;
-  width: 7rem;
+  width: 8rem;
+  -webkit-transition: all .5s ease-out;
+  transition: all .5s ease-out;
 }
 
 .toggle-sm {
@@ -494,7 +498,6 @@ a {
 }
 
 .aside-menu {
-  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -502,7 +505,7 @@ a {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 1.25rem;
   min-height: -webkit-min-content;
   min-height: -moz-min-content;
@@ -510,7 +513,7 @@ a {
   /* this will afect when scrolling the menu*/
 }
 
-.aside-menu a {
+.aside-menu .menu-item {
   height: 3rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -524,28 +527,21 @@ a {
           align-items: center;
 }
 
-.aside-menu a.active {
+.aside-menu .menu-item.active {
   color: #fafafa;
   background-color: #0b7dda;
 }
 
-.aside-menu a:hover:not(.active) {
+.aside-menu .menu-item:hover:not(.active) {
   color: #0b7dda;
   border-left: 0.25rem solid #0b7dda;
 }
 
-.aside-menu .drop > a {
-  background-image: url(../icon/fontawesome/svgs/solid/caret-down.svg);
-  background-repeat: no-repeat;
-  background-position: right 0.75rem top 50%;
-  background-size: 0.75rem auto;
+.aside-menu .menu-drop .menu-item.show {
+  color: #0b7dda;
 }
 
-.aside-menu .drop > a.show {
-  border-left: 0.25rem solid #0b7dda;
-}
-
-.aside-menu .drop .drop-content {
+.aside-menu .menu-drop .drop-content {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -553,17 +549,23 @@ a {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-color: #0b7dda;
+  background-color: #fafafa;
 }
 
-.aside-menu .drop .drop-content a {
+.aside-menu .menu-drop .drop-content.show {
+  border-top: 1px solid #0b7dda;
+  border-bottom: 1px solid #0b7dda;
+}
+
+.aside-menu .menu-drop .drop-content.show a {
+  height: 2rem;
+}
+
+.aside-menu .menu-drop .drop-content a {
   overflow: hidden;
   height: 0;
   width: 100%;
-  margin-left: 0.5rem;
+  padding-left: 3rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -571,9 +573,6 @@ a {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -582,30 +581,35 @@ a {
   transition: height .2s ease-in;
 }
 
-.aside-menu .drop .drop-content a.active {
+.aside-menu .menu-drop .drop-content a.active {
   color: #fafafa;
   background-color: #0b7dda;
 }
 
-.aside-menu .drop .drop-content.show {
-  border-top: 1px solid #0b7dda;
-  border-bottom: 1px solid #0b7dda;
+.aside-menu .menu-drop .drop-content a:hover:not(.active) {
+  color: #0b7dda;
+  border-left: 0.25rem solid #0b7dda;
 }
 
-.aside-menu .drop .drop-content.show a {
-  height: 2rem;
-}
-
-.aside-menu i {
+.aside-menu .menu-icon {
   font-size: 1.25rem;
   margin-left: 1rem;
   width: 2rem;
-  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .aside-menu span {
-  position: absolute;
-  margin-left: 4.5rem;
+  overflow: hidden;
+  opacity: 1;
+  width: 7rem;
+  margin-left: 2rem;
+  -webkit-transition: all .5s ease-out;
+  transition: all .5s ease-out;
 }
 
 .aside-overlay {
@@ -888,6 +892,31 @@ a {
   background-color: #888888;
 }
 
+.btn.purple {
+  color: white;
+  background-color: #7847d1;
+  border: 0.125rem solid #7847d1;
+}
+
+.btn.purple:hover:not(:disabled) {
+  background-color: #6330bf;
+  border-color: #202020;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.btn.purple:focus {
+  border-color: #888888;
+}
+
+.btn.purple:active {
+  background-color: #3f1f7a;
+}
+
+.btn.purple:disabled {
+  background-color: #888888;
+}
+
 .btn-sm {
   display: inline-block;
   border: 1px solid transparent;
@@ -1032,12 +1061,12 @@ a {
 
 .btn-sm.purple {
   color: white;
-  background-color: #6f42c1;
-  border: 0.125rem solid #6f42c1;
+  background-color: #7847d1;
+  border: 0.125rem solid #7847d1;
 }
 
 .btn-sm.purple:hover:not(:disabled) {
-  background-color: #5d36a4;
+  background-color: #6330bf;
   border-color: #202020;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -1048,7 +1077,7 @@ a {
 }
 
 .btn-sm.purple:active {
-  background-color: #382063;
+  background-color: #3f1f7a;
 }
 
 .btn-sm.purple:disabled {
