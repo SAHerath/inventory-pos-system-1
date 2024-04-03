@@ -6,8 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 function isLoggedIn()
 {
+  // check whether active user has valid credentials 
   if (isset($_SESSION['usercode']) && is_int($_SESSION['usercode'])) {
-    if (time() - $_SESSION['activated'] > SESS_EXPIRE) {  // sessin will expire if user does not active for certain period
+    // session will expire if user does not active for certain period
+    if (time() - $_SESSION['activated'] > SESS_EXPIRE) {
       deleteSession();
       return false;
     }
@@ -16,7 +18,7 @@ function isLoggedIn()
     //   $_SESSION['activated'] = time();
     // }
     else {
-      $_SESSION['activated'] = time();
+      $_SESSION['activated'] = time();  // reset logging timeout
       return true;
     }
   } else {
@@ -39,8 +41,8 @@ function isAllowed($module, $section)   // checks whether module's section enabl
 
 function createSession($user, $permis)
 {
-  session_start();
-
+  session_start();  // initialize session
+  // set user details in global session variable
   $_SESSION['usercode'] = (int)$user['user_code'];
   $_SESSION['userfname'] = $user['user_first_name'];
   $_SESSION['username'] = $user['user_username'];
@@ -66,12 +68,12 @@ function createSession($user, $permis)
 function deleteSession()
 {
   error_log(date('D d-M-Y H:i:s e | ') . "User {$_SESSION['usercode']} logged out" . PHP_EOL, 3, APPROOT . '/logs/debug.log');
-
+  // remove user details from session variable
   unset($_SESSION['usercode']);
   unset($_SESSION['userfname']);
   unset($_SESSION['username']);
   unset($_SESSION['userpermi']);
   unset($_SESSION['userphoto']);
   unset($_SESSION['activated']);
-  session_destroy();
+  session_destroy();  // delete session
 }
