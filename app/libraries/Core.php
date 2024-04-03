@@ -16,17 +16,17 @@ class Core
     $url = $this->getUrl();
     // print_r($url);
 
-    // look in 'controllers' for first value of url which is control class
+    // look in 'controllers' folder for first value of url which is control class
     if (isset($url[0])) {
       if (file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
         //if found request controller, set as active
         $this->currentController = ucwords($url[0]); // captitalize first letter
         unset($url[0]);
-
-        if (!isLoggedIn() && $this->currentController != 'Auth') {
-          error_log(date('D d-M-Y H:i:s e | ') . 'Invalid Access ' . $this->currentController . PHP_EOL, 3, APPROOT . '/logs/debug.log');
-          // redirect('auth/index');
-        }
+        // authenticate user
+        // if (!isLoggedIn() && $this->currentController != 'Auth') {
+        //   logger("Invalid Access: {$this->currentController}", APP_DEBUG);
+        //   redirect('auth/index');
+        // }
       }
     }
 
@@ -37,7 +37,7 @@ class Core
     // look in currentController for second value of url, which is method
     if (isset($url[1])) {
       if (method_exists($this->currentController, $url[1])) {
-        // if method found, set as active
+        // if method found, set as active method
         $this->currentMethod = $url[1];
         unset($url[1]);
 
@@ -63,10 +63,14 @@ class Core
 
   public function getUrl()
   {
+    // check if Get array has 'url' key
     if (isset($_GET['url'])) {
+      // remove additinal '/' at right
       $url = rtrim($_GET['url'], '/');
-      error_log(date('D d-M-Y H:i:s e | ') . 'Request URL: ' . URLROOT . $url . PHP_EOL, 3, APPROOT . '/logs/debug.log');
+      logger("Request URL: {$url}", APP_DEBUG);
+      // filterout invalid compnents 
       $url = filter_var($url, FILTER_SANITIZE_URL);
+      // devide url by '/' and store segments in array  
       $url = explode('/', $url);
       return $url;
     }

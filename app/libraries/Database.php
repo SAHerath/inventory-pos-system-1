@@ -32,12 +32,9 @@ class Database
       $this->dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);   // PDO::FETCH_ASSOC , PDO::FETCH_OBJ
       // $this->constat = true;
     } catch (PDOException $e) {   // handle errors
-	  $this->error = $e->getMessage();
+      $this->error = $e->getMessage();
       // $this->constat = false;
-      error_log(date('D d-M-Y H:i:s e | ') . "Database8: {$this->error}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
-      // echo ($this->error);
-      // $this->error = "My Error Message";
-      // header('location: http://localhost/Test/mySys03/app/views/error.php?msg=hi');
+      logger("Database: {$this->error}", APP_ERROR);
     }
 
     define('DB_SINGLE', 1);
@@ -221,7 +218,7 @@ class Database
       }
     } catch (Exception $er) {  // handle errors
       $this->error = $er->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "Database: {$this->error}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("Database: {$this->error}", APP_ERROR);
       return false;
     }
   }
