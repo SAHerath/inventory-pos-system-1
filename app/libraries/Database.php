@@ -20,22 +20,30 @@ class Database
 
   final public function __construct()
   {
-    $dbsn = 'mysql:host=' . $this->hostname . ';dbname=' . $this->dbname;      // Set Database Source Name  
+    // Set Database Source Name  
+    $dbsn = 'mysql:host=' . $this->hostname . ';dbname=' . $this->dbname;
 
     try {
-      $this->dbh = new PDO($dbsn, $this->username, $this->passwd);       // create Database Handler
+      // create Database Handler
+      $this->dbh = new PDO($dbsn, $this->username, $this->passwd);
       $this->dbh->setAttribute(PDO::ATTR_PERSISTENT, true);
-      $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // throw when error
+      // get database results as associated array
       $this->dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);   // PDO::FETCH_ASSOC , PDO::FETCH_OBJ
       // $this->constat = true;
-    } catch (PDOException $e) {
-      $this->error = $e->getMessage();
+    } catch (PDOException $e) {   // handle errors
+	  $this->error = $e->getMessage();
       // $this->constat = false;
       error_log(date('D d-M-Y H:i:s e | ') . "Database8: {$this->error}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
       // echo ($this->error);
       // $this->error = "My Error Message";
       // header('location: http://localhost/Test/mySys03/app/views/error.php?msg=hi');
     }
+
+    define('DB_SINGLE', 1);
+    define('DB_MULTIPLE', 2);
+    define('DB_COUNT', 3);
+    define('DB_LASTID', 4);
   }
 
   public function __destruct()
@@ -200,17 +208,18 @@ class Database
   public function runQuery($query, $parameters = [])
   {
     $sqlquery = trim($query);
-    $this->setQuery($sqlquery);
+    $this->setQuery($sqlquery);  // prepare query for execution 
 
     try {
+      // bind all the parameters by checking query
       $this->bindAll($parameters, $sqlquery);
 
-      if ($this->execute()) {
+      if ($this->execute()) { // execute query
         return true;
       } else {
         throw new Exception('SQL query execution failed');
       }
-    } catch (Exception $er) {
+    } catch (Exception $er) {  // handle errors
       $this->error = $er->getMessage();
       error_log(date('D d-M-Y H:i:s e | ') . "Database: {$this->error}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
       return false;
