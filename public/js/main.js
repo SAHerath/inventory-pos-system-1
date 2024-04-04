@@ -103,8 +103,39 @@ function goToTop() {
 //   return element.scrollWidth > element.clientWidth || element.scrollHeight > element.clientHeight;
 // };
 
+
+class ScrollHandler {
+  constructor(scrollwrapId) {
+    this.scrollwrap = document.getElementById(scrollwrapId);
+    let scrollMenu = this.scrollwrap.getElementsByClassName("scroll-menu")[0];
+    if (this.scrollwrap.scrollHeight > this.scrollwrap.clientHeight) {
+      scrollMenu.classList.remove("hide");
+    }
+  }
+
+  scrollMax() {
+    // let scrollPos = asideMenu.scrollTop;
+    // asideMenu.scrollTop = scrollPos - 200;
+    this.scrollwrap.scrollBy({
+      top: -150,
+      left: 0,
+      behavior: 'smooth' // or can add css to relevent element for smooth scrolling
+    });
+  }
+
+  scrollMin() {
+    // let scrollPos = asideMenu.scrollTop;
+    this.scrollwrap.scrollBy({
+      top: 150,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+}
+
 class DashboardController {
-  constructor(dashboardwrapId) {
+  constructor(dashboardwrapId, sidemenuwrapId) {
     this.dashboardWrap = document.getElementById(dashboardwrapId);
     this.winState = "some";
     this.btnState = "some";
@@ -113,6 +144,10 @@ class DashboardController {
 
     window.addEventListener('resize', this.getWindowSize.bind(this));
     this.getWindowSize();
+
+    this.scrollMenu = new ScrollHandler(sidemenuwrapId);
+
+    this.dropMenuHandler(sidemenuwrapId);
   }
 
   setState() {
@@ -169,36 +204,40 @@ class DashboardController {
       }
     }
   }
-}
 
-class ScrollHandler {
-  constructor(scrollwrapId) {
-    this.scrollwrap = document.getElementById(scrollwrapId);
-    let scrollMenu = this.scrollwrap.getElementsByClassName("scroll-menu")[0];
-    if (this.scrollwrap.scrollHeight > this.scrollwrap.clientHeight) {
-      scrollMenu.classList.remove("hide");
+  scrollUp() {
+    this.scrollMenu.scrollMax();
+  }
+
+  scrollDown() {
+    this.scrollMenu.scrollMin();
+  }
+
+  dropMenuHandler(menuwrapId) {
+    const dropMenus = document.getElementById(menuwrapId).getElementsByClassName("menu-drop");
+
+    for (const dmenu of dropMenus) {
+      console.log(dmenu);
+      const childMenu = dmenu.children;
+      dmenu.addEventListener("mouseenter", function () {
+        // event.stopPropagation();
+        // console.log(childMenu);
+        let position = childMenu[0].getBoundingClientRect();
+        childMenu[1].style.top = position.top + 'px';
+        setTimeout(function () {
+          childMenu[0].classList.add("show");
+          childMenu[1].classList.add("show");
+        }, 300);
+      });
+
+      dmenu.addEventListener("mouseleave", function () {
+        setTimeout(function () {
+          childMenu[0].classList.remove("show");
+          childMenu[1].classList.remove("show");
+        }, 200);
+      });
     }
   }
-
-  scrollMax() {
-    // let scrollPos = asideMenu.scrollTop;
-    // asideMenu.scrollTop = scrollPos - 200;
-    this.scrollwrap.scrollBy({
-      top: -150,
-      left: 0,
-      behavior: 'smooth' // or can add css to relevent element for smooth scrolling
-    });
-  }
-
-  scrollMin() {
-    // let scrollPos = asideMenu.scrollTop;
-    this.scrollwrap.scrollBy({
-      top: 150,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
-
 }
 
 class DynamicFields {
