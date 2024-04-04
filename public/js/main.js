@@ -837,4 +837,8 @@ class DataList {
     this.order = 0;
     this.requestData(1, this.page, this.header, this.order, '');
   }
+
+  exportProperty() {
+    return [this.header, this.order, this.search];
+  }
 }

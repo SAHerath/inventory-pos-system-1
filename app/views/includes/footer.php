@@ -6,8 +6,7 @@
 </div>
 
 <script type="text/javascript">
-  let dashbC = new DashboardController("grid_container");
-  let scrollH = new ScrollHandler("aside_menu_wrap");
+  let dashbCon = new DashboardController("grid_container", "aside_menu_wrap");
 </script>
 
 </body>

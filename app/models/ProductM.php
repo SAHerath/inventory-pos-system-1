@@ -18,10 +18,13 @@ class ProductM
 
   public function getCategory($categId)
   {
+    // set query
     $query = "SELECT catg_name AS categ_name FROM tabl_category WHERE catg_code = :categid";
+    // set parameters in associative array
     $param = ['categid' => $categId];
+    // call database class to run query
     if ($this->db->runQuery($query, $param)) {
-      return $this->db->getResults(DB_SINGLE);
+      return $this->db->getResults(DB_SINGLE); // get query result as single row
     }
   }
 
