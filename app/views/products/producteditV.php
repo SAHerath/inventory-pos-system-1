@@ -72,8 +72,12 @@
                   <label for="prodt_image" style="width: max-content; height: max-content; cursor: pointer">Choose</label>
                 </a>
                 <a class="btn blue mb-1" onclick="resetFile('prodt_image', 'image_wrapper')" tabindex="0">Remove</a>
-                <div class="dynamic-wrap image-wrap" id="image_wrapper"></div>
-                <span class="empty"></span>
+                <div class="dynamic-wrap image-wrap" id="image_wrapper">
+                  <?php foreach ($data['prdimg'] as $row) : ?>
+                    <img src="<?php echo URLROOT; ?>img/uploads/product/<?php echo $row['impr_img_name']; ?>" alt="Product_Image">
+                  <?php endforeach; ?>
+                </div>
+                <span class="empty">No Image Added</span>
               </div>
             </div>
           </div>
@@ -372,17 +376,15 @@
     document.getElementById(elementId).innerHTML = htmlStr;
   }
   /////////////////////////////////////////////////////////////////////////////
-  function prodtAdded() {
 
+  function prodtEdited() {
     resetFile('prodt_image', 'image_wrapper');
-    console.log("hi form ok");
-    // addProdt.resetForm();
-
-
+    console.log("prodtEdited");
+    location.href = urlroot;
   }
 
   let editProdt = new FormHandler('edit_prodt', 'edit_prodt_msg', `${urlroot}editProduct`);
-  editProdt.setCallback(prodtAdded);
+  editProdt.setCallback(prodtEdited);
   editProdt.setMaxFileLimit(3);
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

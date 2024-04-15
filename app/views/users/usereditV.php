@@ -32,7 +32,11 @@
                 <label for="users_image">Choose</label>
               </a>
               <a class="btn blue mb-1" onclick="resetFile('users_image', 'image_wrapper')" tabindex="0">Remove</a>
-              <div class="dynamic-wrap image-wrap" id="image_wrapper"></div>
+              <div class="dynamic-wrap image-wrap" id="image_wrapper">
+                <?php if (!empty($data['users']['user_photo'])) : ?>
+                  <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $data['users']['user_photo']; ?>" alt="User_Image">
+                <?php endif; ?>
+              </div>
               <span class="empty">Image Added. Click Choose to change</span>
             </div>
           </div>
