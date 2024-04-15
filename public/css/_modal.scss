@@ -1,5 +1,6 @@
 .modal {    // modal overlay
   display: none;
+  // display: flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -7,15 +8,18 @@
   height: 100%;
   z-index: 9999;
   overflow: hidden;
-  background-color: rgba($black, 0.4);
+  background-color: rgba($black, 0.3);
   // background-color: rgba($black, 0.08);
   &.active {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .modal-content {   // actual modal content
-    position: relative;
-    margin: 8% auto 0 auto;
+    // position: relative;
+    // margin: 8% auto 0 auto;
+    margin-bottom: 10rem;
     padding-bottom: 0.5rem;
     width: 80%;
     overflow: hidden;
