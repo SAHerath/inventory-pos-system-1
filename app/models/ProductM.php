@@ -30,7 +30,7 @@ class ProductM
 
   public function getCategoryList()
   {
-    $query = "SELECT catg_code AS categ_id, catg_name AS categ_name FROM tabl_category WHERE catg_active = 1";
+    $query = "SELECT catg_code, catg_name FROM tabl_category WHERE catg_active = 1";
     if ($this->db->runQuery($query)) {
       return $this->db->getResults(DB_MULTIPLE);
     } else {
@@ -49,17 +49,7 @@ class ProductM
 
   public function getBrandList()
   {
-    $query = "SELECT brnd_code AS brand_id, brnd_name AS brand_name FROM tabl_brand WHERE brnd_active = 1";
-    if ($this->db->runQuery($query)) {
-      return $this->db->getResults(DB_MULTIPLE);
-    } else {
-      return false;
-    }
-  }
-
-  public function getLocation()
-  {
-    $query = "SELECT loca_code AS locat_id, loca_name AS locat_name FROM tabl_location";
+    $query = "SELECT brnd_code, brnd_name FROM tabl_brand WHERE brnd_active = 1";
     if ($this->db->runQuery($query)) {
       return $this->db->getResults(DB_MULTIPLE);
     } else {
@@ -77,7 +67,17 @@ class ProductM
   }
   public function getVendorList()
   {
-    $query = "SELECT vend_code AS vendr_id, vend_name AS vendr_name FROM tabl_vendor WHERE vend_active = 1";
+    $query = "SELECT vend_code, vend_name FROM tabl_vendor WHERE vend_active = 1";
+    if ($this->db->runQuery($query)) {
+      return $this->db->getResults(DB_MULTIPLE);
+    } else {
+      return false;
+    }
+  }
+
+  public function getLocationList()
+  {
+    $query = "SELECT loca_code, loca_name FROM tabl_location";
     if ($this->db->runQuery($query)) {
       return $this->db->getResults(DB_MULTIPLE);
     } else {
@@ -98,15 +98,30 @@ class ProductM
     }
   }
 
-  public function getAttribute()
+  public function getAttributeList()
   {
-    $query = "SELECT attp_code AS attrb_id, attp_name AS attrb_name FROM tabl_attribute_type";
+    $query = "SELECT attp_code, attp_name FROM tabl_attribute_type";
     if ($this->db->runQuery($query)) {
       return $this->db->getResults(DB_MULTIPLE);
     } else {
       return false;
     }
   }
+
+  // public function getAttributeList2()
+  // {
+  //   // $query = "SELECT attp_code AS attrb_id, attp_name AS attrb_name, CASE WHEN AP.atpr_code IS NOT NULL THEN true ELSE false END AS selected FROM tabl_attribute_product AP LEFT JOIN tabl_attribute_value AV ON AP.atpr_atvl_code = AV.atvl_code RIGHT JOIN tabl_attribute_type AT ON AV.atvl_attp_code = AT.attp_code GROUP BY AT.attp_code";
+
+  //   $query = "SELECT attp_code AS attrb_id, attp_name AS attrb_name, (AP.atpr_code IS NOT NULL) AS selected FROM tabl_attribute_product AP 
+  //   LEFT JOIN tabl_attribute_value AV ON AP.atpr_atvl_code = AV.atvl_code 
+  //   RIGHT JOIN tabl_attribute_type AT ON AV.atvl_attp_code = AT.attp_code GROUP BY AT.attp_code";
+
+  //   if ($this->db->runQuery($query)) {
+  //     return $this->db->getResults(DB_MULTIPLE);
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   public function getAttrbValues($parentId)
   {

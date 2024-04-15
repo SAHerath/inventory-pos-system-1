@@ -32,22 +32,22 @@
                 <label class="mb-1">Brand</label>
                 <select class="" id="prodt_brand" name="prodt_brand" required>
                   <option value="" selected></option>
-                  <?php
-                  foreach ($data['brand'] as $row) {
-                    echo "<option value='{$row['brand_id']}'>{$row['brand_name']}</option>";
-                  }
-                  ?>
+                  <?php foreach ($data['brand'] as $row) : ?>
+                    <option value="<?php echo $row['brnd_code']; ?>">
+                      <?php echo $row['brnd_name']; ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
               </div>
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Category</label>
                 <select class="" id="prodt_category" name="prodt_category" required>
                   <option value="" selected></option>
-                  <?php
-                  foreach ($data['categ'] as $row) {
-                    echo "<option value='{$row['categ_id']}'>{$row['categ_name']}</option>";
-                  }
-                  ?>
+                  <?php foreach ($data['categ'] as $row) : ?>
+                    <option value="<?php echo $row['catg_code']; ?>">
+                      <?php echo $row['catg_name']; ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </div>
@@ -116,11 +116,11 @@
                 <label class="mb-1">Vendor Name</label>
                 <select class="" id="prodt_vendor" name="prodt_vendor" required>
                   <option value="" selected></option>
-                  <?php
-                  foreach ($data['vendr'] as $row) {
-                    echo "<option value='{$row['vendr_id']}'>{$row['vendr_name']}</option>";
-                  }
-                  ?>
+                  <?php foreach ($data['vendr'] as $row) : ?>
+                    <option value="<?php echo $row['vend_code']; ?>">
+                      <?php echo $row['vend_name']; ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
               </div>
               <div class="row pb-2 pb-sm-3">
@@ -196,11 +196,11 @@
         <label class="mb-1">Location</label>
         <select class="" id="selt_locat_stock" name="selt_locat_stock" data-name-text="Quantity At: " required autocomplete="off">
           <option value="" selected></option>
-          <?php
-          foreach ($data['locat'] as $row) {
-            echo "<option value='{$row['locat_id']}'>{$row['locat_name']}</option>";
-          }
-          ?>
+          <?php foreach ($data['locat'] as $row) : ?>
+            <option value="<?php echo $row['loca_code']; ?>">
+              <?php echo $row['loca_name']; ?>
+            </option>
+          <?php endforeach; ?>
         </select>
       </div>
       <div class="row pt-3">
@@ -226,11 +226,11 @@
         <label class="mb-1">Location</label>
         <select class="" id="delt_locat_stock" name="delt_locat_stock" required autocomplete="off">
           <option value="" selected></option>
-          <?php
-          foreach ($data['locat'] as $row) {
-            echo "<option value='{$row['locat_id']}' disabled>{$row['locat_name']}</option>";
-          }
-          ?>
+          <?php foreach ($data['locat'] as $row) : ?>
+            <option value="<?php echo $row['loca_code']; ?>" disabled>
+              <?php echo $row['loca_name']; ?>
+            </option>
+          <?php endforeach; ?>
         </select>
       </div>
       <div class="row right pt-3">
@@ -257,11 +257,11 @@
         <label class="mb-1">Attribute Name</label>
         <select class="" id="selt_attrb_atval" name="selt_attrb_atval" data-name-text="Attribute: " required autocomplete="off">
           <option value="" selected></option>
-          <?php
-          foreach ($data['attrb'] as $row) {
-            echo "<option value='{$row['attrb_id']}'>{$row['attrb_name']}</option>";
-          }
-          ?>
+          <?php foreach ($data['attrb'] as $row) : ?>
+            <option value="<?php echo $row['attp_code']; ?>">
+              <?php echo $row['attp_name']; ?>
+            </option>
+          <?php endforeach; ?>
         </select>
       </div>
       <div class="row pt-3">
@@ -287,11 +287,11 @@
         <label class="mb-1">Attribute Name</label>
         <select class="" id="delt_attrb_atval" name="delt_attrb_atval" required autocomplete="off">
           <option value="" selected></option>
-          <?php
-          foreach ($data['attrb'] as $row) {
-            echo "<option value='{$row['attrb_id']}' disabled>{$row['attrb_name']}</option>";
-          }
-          ?>
+          <?php foreach ($data['attrb'] as $row) : ?>
+            <option value="<?php echo $row['attp_code']; ?>" disabled>
+              <?php echo $row['attp_name']; ?>
+            </option>
+          <?php endforeach; ?>
         </select>
       </div>
       <div class="row right pt-3">

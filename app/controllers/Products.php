@@ -26,9 +26,9 @@ class Products extends Controller
     ];
     $data['categ'] = $this->userModel->getCategoryList();
     $data['brand'] = $this->userModel->getBrandList();
-    $data['locat'] = $this->userModel->getLocation();
+    $data['locat'] = $this->userModel->getLocationList();
     $data['vendr'] = $this->userModel->getVendorList();
-    $data['attrb'] = $this->userModel->getAttribute();
+    $data['attrb'] = $this->userModel->getAttributeList();
     // echo '<pre>';
     // var_dump($data);
     // echo '</pre>';
@@ -41,10 +41,15 @@ class Products extends Controller
 
     $data = [
       'title' => 'product_edit',
-      'prodt' => [],
-      'stock' => [],
+      'categ' => [],
+      'brand' => [],
+      'locat' => [],
+      'vendr' => [],
       'attrb' => [],
-      'image' => []
+      'prodt' => [],
+      'prdstk' => [],
+      'prdatv' => [],
+      'prdimg' => []
     ];
 
     $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
@@ -55,53 +60,40 @@ class Products extends Controller
     } else {
       $data['categ'] = $this->userModel->getCategoryList();
       $data['brand'] = $this->userModel->getBrandList();
-      $data['locat'] = $this->userModel->getLocation();
+      $data['locat'] = $this->userModel->getLocationList();
       $data['vendr'] = $this->userModel->getVendorList();
-      $data['attrb'] = $this->userModel->getAttribute();
+      $data['attrb'] = $this->userModel->getAttributeList();
       // $data['attrb'] = $this->userModel->getProdtAttrb($prodtId);
 
       $data['prodt'] = $this->userModel->getProduct($prodtId);
-      $data['image'] = $this->userModel->getProdtImage($prodtId);
-      $data['stock'] = $this->userModel->getProdtStock($prodtId);
-      $data['atval'] = $this->userModel->getProdtAtval($prodtId);
+      $data['prdimg'] = $this->userModel->getProdtImage($prodtId);
+      $data['prdstk'] = $this->userModel->getProdtStock($prodtId);
+      $data['prdatv'] = $this->userModel->getProdtAtval($prodtId);
 
       //prepare $data['atval'] for ui easyness
-      for ($i = 0; $i < count($data['atval']); $i++) {
-        $data['atval'][$i]['atval_list'] = $this->userModel->getProdtAtvalAll($data['atval'][$i]['attp_code']);
+      for ($i = 0; $i < count($data['prdatv']); $i++) {
+        $data['prdatv'][$i]['atval_list'] = $this->userModel->getProdtAtvalAll($data['prdatv'][$i]['attp_code']);
       }
 
       //prepare $data['attrb'] for ui easyness
       for ($i = 0; $i < count($data['attrb']); $i++) {
-        $temp = true;
-        // echo '<', $data['attrb'][$i]['attrb_id'], '<br>';
-        for ($j = 0; $j < count($data['atval']); $j++) {
-          // echo '>>>>>>>>>', $data['atval'][$j]['attp_code'];
-          if ($data['atval'][$j]['attp_code'] == $data['attrb'][$i]['attrb_id']) {
-            $data['attrb'][$i]['select'] = true;
-            // echo ' matched <br>';
-            $temp = false;
+        $data['attrb'][$i]['selected'] = false;
+        for ($j = 0; $j < count($data['prdatv']); $j++) {
+          if ($data['prdatv'][$j]['attp_code'] == $data['attrb'][$i]['attp_code']) {
+            $data['attrb'][$i]['selected'] = true;
             break;
           }
-          // echo '<br>';
-        }
-        if ($temp) {
-          $data['attrb'][$i]['select'] = false;
-          // echo ' not matched <br>';
         }
       }
 
       //prepare $data['locat'] for ui easyness
       for ($i = 0; $i < count($data['locat']); $i++) {
-        $temp = true;
-        for ($j = 0; $j < count($data['stock']); $j++) {
-          if ($data['stock'][$j]['stok_loca_code'] == $data['locat'][$i]['locat_id']) {
-            $data['locat'][$i]['select'] = true;
-            $temp = false;
+        $data['locat'][$i]['selected'] = false;
+        for ($j = 0; $j < count($data['prdstk']); $j++) {
+          if ($data['prdstk'][$j]['stok_loca_code'] == $data['locat'][$i]['loca_code']) {
+            $data['locat'][$i]['selected'] = true;
             break;
           }
-        }
-        if ($temp) {
-          $data['locat'][$i]['select'] = false;
         }
       }
       // echo '<pre>';
