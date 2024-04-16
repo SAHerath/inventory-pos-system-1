@@ -1,6 +1,6 @@
 <footer class="footer">
   <div class="">&copy; 2020 SAH</div>
-  <div class="">Developed by SAH</div>
+  <div class="" onclick="showHide('mod_loader')">Developed by SAH</div>
 </footer>
 
 </div>

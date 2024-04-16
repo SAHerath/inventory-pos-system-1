@@ -25,4 +25,18 @@
 </head>
 
 <body>
+  <div id="mod_loader" class="modal">
+    <div class="loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
   <div id="grid_container">

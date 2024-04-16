@@ -30,6 +30,18 @@
   }
 }
 
+@keyframes loader1 {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
 // @keyframes anim_icon {
 //   0% {
 //     font-size: 2rem;

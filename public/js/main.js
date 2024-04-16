@@ -217,7 +217,7 @@ class DashboardController {
     const dropMenus = document.getElementById(menuwrapId).getElementsByClassName("menu-drop");
 
     for (const dmenu of dropMenus) {
-      console.log(dmenu);
+      // console.log(dmenu);
       const childMenu = dmenu.children;
       dmenu.addEventListener("mouseenter", function () {
         // event.stopPropagation();
@@ -338,11 +338,17 @@ class ServerCall {
       body: '' // ArrayBuffer, ArrayBufferView, Blob/File, string, URLSearchParams, FormData
       // body data type must match "Content-Type" header
     };
+
+    this.loader = document.getElementById('mod_loader');
   }
 
   set setCallback(callback) {
     this.callback = callback;
   }
+
+  // set setLoader(loaderId) {
+  //   this.loaderId = loaderId;
+  // }
 
   set setMethod(method) {
     if (method == 'GET' || 'HEAD') {
@@ -365,6 +371,7 @@ class ServerCall {
   }
 
   async fetchServer() {
+    this.loader.classList.add("active");
     let response;
     try {
       response = await fetch(this.url, this.fetchInit);
@@ -378,6 +385,8 @@ class ServerCall {
     } catch (error) {
       response = error;
     }
+
+    this.loader.classList.remove("active");
 
     if (typeof this.callback === "function") {
       this.callback(response); // call callback function to handel the response
