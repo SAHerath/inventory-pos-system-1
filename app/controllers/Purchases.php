@@ -589,7 +589,7 @@ class Purchases extends Controller
         if ($this->userModel->update($param)) {
           unset($param);
           $data['state']  = 'success';
-          $data['frm_msg']['edit_pordr_msg'] = 'Order successfully added';
+          $data['frm_msg']['edit_pordr_msg'] = 'Order successfully updated';
         } else {
           $data['frm_msg']['edit_pordr_msg'] = 'Someting went wrong';
         }
