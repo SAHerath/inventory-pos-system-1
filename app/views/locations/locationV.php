@@ -3,7 +3,7 @@
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Location</h2>
+      <span>Location</span>
     </div>
 
     <ul class="breadcrumb">

@@ -4,7 +4,7 @@
 <main class="main" id="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Add Purchase Order</h2>
+      <span>Add Purchase Order</span>
     </div>
 
     <ul class="breadcrumb">

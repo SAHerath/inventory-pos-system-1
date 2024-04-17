@@ -611,10 +611,16 @@ a {
     background-color: darken($white, 10%);
 
     .heading{
-      font-family: Roboto_light, sans-serif;
+      // font-family: Roboto_light, sans-serif;
       // letter-spacing: 1px;
+      font-weight: 300;
+      font-size: 1.75rem;
       color: $black;
       padding: 0.5rem 0.75rem;
+
+      span {
+        display: block;
+      }
     }
 
     .breadcrumb {

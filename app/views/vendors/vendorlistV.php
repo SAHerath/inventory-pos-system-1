@@ -3,7 +3,7 @@
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Vendor</h2>
+      <span>Vendor</span>
     </div>
 
     <ul class="breadcrumb">

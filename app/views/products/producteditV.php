@@ -1,15 +1,10 @@
-<!-- <pre>
-  <?php
-  // var_dump($data);
-  ?>
-</pre> -->
 <?php include_once(APPROOT . '/views/includes/header.php'); ?>
 <?php include_once(APPROOT . '/views/includes/navigation.php'); ?>
 
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Edit Product</h2>
+      <span>Edit Product</span>
     </div>
 
     <ul class="breadcrumb">

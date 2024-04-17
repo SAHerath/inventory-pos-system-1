@@ -3,8 +3,8 @@
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Attribute Values</h2>
-      <h3>of <?php echo $data['display']; ?> Attribute</h3>
+      <span>Attribute Values</span>
+      <span><small> of Attribute </small><?php echo $data['display']; ?></span>
     </div>
 
     <ul class="breadcrumb">

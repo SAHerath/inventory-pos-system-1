@@ -4,7 +4,7 @@
 <main class="main" id="main">
   <div class="main-header">
     <div class="heading">
-      <h2>Add PO Receive Info</h2>
+      <span>Add PO Receive Info</span>
     </div>
 
     <ul class="breadcrumb">

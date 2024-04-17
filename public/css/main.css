@@ -645,9 +645,14 @@ a {
 }
 
 .main .main-header .heading {
-  font-family: Roboto_light, sans-serif;
+  font-weight: 300;
+  font-size: 1.75rem;
   color: #202020;
   padding: 0.5rem 0.75rem;
+}
+
+.main .main-header .heading span {
+  display: block;
 }
 
 .main .main-header .breadcrumb {

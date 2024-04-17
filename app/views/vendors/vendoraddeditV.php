@@ -7,7 +7,7 @@
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h2><?php echo (($data['title'] == 'vendor_add') ? 'Add Vendor' : 'Edit Vendor'); ?></h2>
+      <span><?php echo (($data['title'] == 'vendor_add') ? 'Add Vendor' : 'Edit Vendor'); ?></span>
     </div>
 
     <ul class="breadcrumb">

@@ -3,7 +3,7 @@
 <main class="main">
   <div class="main-header">
     <div class="heading">
-      <h1><?php echo $data['title']; ?></h1>
+      <span><?php echo $data['title']; ?></span>
     </div>
 
     <ul class="breadcrumb">
