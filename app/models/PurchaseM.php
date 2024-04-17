@@ -127,7 +127,7 @@ class PurchaseM
     } catch (Exception $e) {
       $this->db->cancelTransaction();
       // echo $e->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "PurchaseM: create: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("PurchaseM: create: {$e->getMessage()}", APP_ERROR);
       return false;
     }
   }
@@ -173,7 +173,7 @@ class PurchaseM
     } catch (Exception $e) {
       $this->db->cancelTransaction();
       // echo $e->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "PurchaseM: update: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("PurchaseM: update: {$e->getMessage()}", APP_ERROR);
       return false;
     }
   }
