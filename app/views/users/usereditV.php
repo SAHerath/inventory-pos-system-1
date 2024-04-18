@@ -27,14 +27,14 @@
           <div class="col col-sm-4 pb-2 pr-sm-3">
             <label class="mb-1">Image</label>
             <input onchange="previewFile(this, 'image_wrapper', 1)" class="" id="users_image" name="users_image[]" data-name="Image" type="file" accept="image/*" hidden>
-            <div class="border-wrap p-2" style="min-height: 14.75rem;">
+            <div class="border-wrap p-2" style="min-height: 20.5rem;">
               <a class="btn blue mb-1 mr-2" tabindex="0">
                 <label for="users_image">Choose</label>
               </a>
               <a class="btn blue mb-1" onclick="resetFile('users_image', 'image_wrapper')" tabindex="0">Remove</a>
               <div class="dynamic-wrap image-wrap" id="image_wrapper">
                 <?php if (!empty($data['users']['user_photo'])) : ?>
-                  <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $data['users']['user_photo']; ?>" alt="User_Image">
+                  <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $data['users']['user_photo']; ?>" alt="User Photo">
                 <?php endif; ?>
               </div>
               <span class="empty">Image Added. Click Choose to change</span>

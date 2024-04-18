@@ -27,7 +27,7 @@
           <div class="col col-sm-4 pb-2 pr-sm-3">
             <label class="mb-1">Image</label>
             <input onchange="previewFile(this, 'image_wrapper', 1)" class="" id="users_image" name="users_image[]" data-name="Image" type="file" accept="image/*" hidden>
-            <div class="border-wrap p-2" style="min-height: 14.75rem;">
+            <div class="border-wrap p-2" style="min-height: 20.5rem;">
               <a class="btn blue mb-1 mr-2" tabindex="0">
                 <label for="users_image">Choose</label>
               </a>

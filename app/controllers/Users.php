@@ -409,6 +409,8 @@ class Users extends Controller
           } else {
             $data['frm_msg']['edit_users_msg'] = 'Image: File not saved';
           }
+        } else {
+          unset($param['usersimage']);
         }
 
         if ($this->userModel->update($param)) {
