@@ -51,10 +51,13 @@
                 <div class="td">Admin</div>
                 <div class="td">Active</div>
                 <div class="td">
-                  <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit User">
+                  <a class="btn-sm green mr-md-1" role="button" title="View User">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <a class="btn-sm yellow mr-md-1" role="button" title="Edit User">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="tbl_btn_delt btn red" role="button" title="Delete User">
+                  <a class="btn-sm red mr-md-1" role="button" title="Delete User">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>

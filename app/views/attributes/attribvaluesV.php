@@ -43,10 +43,10 @@
             <div class="tr" data-row-id="1">
               <div class="td">AttributeValue_1</div>
               <div class="td">
-                <a class="yellow mr-1" role="button" title="Edit Attribute Value">
+                <a class="btn-sm yellow mr-md-1" role="button" title="Edit Attribute Value">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="btn red" role="button" title="Delete Attribute Value">
+                <a class="btn-sm red mr-md-1" role="button" title="Delete Attribute Value">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>

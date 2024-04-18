@@ -62,13 +62,13 @@
                 <div class="td">3</div>
                 <div class="td">Inactive</div>
                 <div class="td">
-                  <a class="btn green mr-1" role="button" title="View more">
+                  <a class="btn-sm green mr-md-1" role="button" title="View more">
                     <i class="fas fa-eye"></i>
                   </a>
-                  <a class="btn yellow mr-1" role="button" title="Edit Vendor">
+                  <a class="btn-sm yellow mr-md-1" role="button" title="Edit Vendor">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="btn red" role="button" title="Delete Vendor">
+                  <a class="btn-sm red mr-md-1" role="button" title="Delete Vendor">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>

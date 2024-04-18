@@ -47,10 +47,10 @@
                 <div class="td">Category_1</div>
                 <div class="td">Inactive</div>
                 <div class="td">
-                  <a class="tbl_btn_edit btn yellow mr-1" role="button" title="Edit Category">
+                  <a class="btn-sm yellow mr-md-1" role="button" title="Edit Category">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="tbl_btn_delt btn red" role="button" title="Delete Category">
+                  <a class="btn-sm red mr-md-1" role="button" title="Delete Category">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>

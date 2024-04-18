@@ -45,10 +45,10 @@
                 <div class="td">Location_1</div>
                 <div class="td">Location_Address</div>
                 <div class="td">
-                  <a class="btn yellow mr-1" role="button" title="Edit Location">
+                  <a class="btn-sm yellow mr-md-1" role="button" title="Edit Location">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a class="btn red" role="button" title="Delete Location">
+                  <a class="btn-sm red mr-md-1" role="button" title="Delete Location">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </div>

@@ -43,10 +43,10 @@
               <div class="td">Brand_1</div>
               <div class="td">Inactive</div>
               <div class="td">
-                <a class="btn yellow mr-1" role="button" title="Edit Brand">
+                <a class="btn-sm red mr-md-1" role="button" title="Edit Brand">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a class="btn red" role="button" title="Delete Brand">
+                <a class="btn-sm red mr-md-1" role="button" title="Delete Brand">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
