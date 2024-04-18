@@ -26,10 +26,19 @@ class UserM
     }
   }
 
+  public function getRole($roleId)
+  {
+    $query = "SELECT role_name FROM tabl_role WHERE role_code = :roleid";
+    $param = ['roleid' => $roleId];
+    if ($this->db->runQuery($query, $param)) {
+      return $this->db->getResults(DB_SINGLE);
+    }
+  }
+
   public function create($param)
   {
-    $query = "INSERT INTO tabl_user(user_role_code, user_username, user_password, user_first_name, user_last_name, user_birthday, user_gender, user_address, user_phone, user_photo, user_status) 
-               VALUES(:usersrole, :usersusname, :userspasswd, :usersfirname, :userslasname, :usersbirthd, :usersgender, :usersaddres, :usersphone, :usersimage, :usersstate)";
+    $query = "INSERT INTO tabl_user(user_role_code, user_username, user_password, user_first_name, user_last_name, user_birthday, user_gender, user_address, user_phone, user_email, user_photo, user_status) 
+               VALUES(:usersrole, :usersusname, :userspasswd, :usersfirname, :userslasname, :usersbirthd, :usersgender, :usersaddres, :usersphone, :usersemail, :usersimage, :usersstate)";
 
     if ($this->db->runQuery($query, $param)) {
       return $this->db->getResults(DB_COUNT);
@@ -40,15 +49,27 @@ class UserM
 
   public function update($param)
   {
+    $query = "UPDATE tabl_user SET user_role_code=:usersrole, user_username=:usersusname, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_email=:usersemail, user_status=:usersstate";
+
     if (isset($param['userspasswd'])) {
-      $query = "UPDATE tabl_user 
-      SET user_role_code=:usersrole, user_username=:usersusname, user_password=:userspasswd, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
-      WHERE user_code=:usersid";
-    } else {
-      $query = "UPDATE tabl_user 
-      SET user_role_code=:usersrole, user_username=:usersusname, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
-      WHERE user_code=:usersid";
+      $query .= ", user_password=:userspasswd";
     }
+    if (isset($param['usersimage'])) {
+      $query .= ", user_photo=:usersimage";
+    }
+    $query .= " WHERE user_code=:usersid";
+
+    // var_dump($query);
+    // return;
+    // if (isset($param['userspasswd'])) {
+    //   $query = "UPDATE tabl_user 
+    //   SET user_role_code=:usersrole, user_username=:usersusname, user_password=:userspasswd, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
+    //   WHERE user_code=:usersid";
+    // } else {
+    //   $query = "UPDATE tabl_user 
+    //   SET user_role_code=:usersrole, user_username=:usersusname, user_first_name=:usersfirname, user_last_name=:userslasname, user_birthday=:usersbirthd, user_gender=:usersgender, user_address=:usersaddres, user_phone=:usersphone, user_photo=:usersimage, user_status=:usersstate 
+    //   WHERE user_code=:usersid";
+    // }
 
     if ($this->db->runQuery($query, $param)) {
       return $this->db->getResults(DB_COUNT);

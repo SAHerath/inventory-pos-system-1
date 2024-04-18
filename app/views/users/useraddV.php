@@ -62,17 +62,18 @@
               </div>
             </div>
             <div class="row pb-2 pb-sm-3">
-              <label class="mb-1">Address</label>
-              <input class="" id="users_address" name="users_address" data-name="Address" type="text" placeholder="" required>
-            </div>
-            <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Phone</label>
               <input class="" id="users_phone" name="users_phone" data-name="Phone" type="tel" placeholder="" required>
             </div>
-            <!-- <div class="row pb-2 pb-sm-3">
+            <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Email</label>
-              <input class="" type="text" placeholder="Enter Email Address" id="users_email" name="users_email" required autocomplete="off">
-            </div> -->
+              <input class="" id="users_email" name="users_email" data-name="Email" type="email" placeholder="" required>
+            </div>
+            <div class="row pb-2 pb-sm-3">
+              <label class="mb-1">Address</label>
+              <!-- <input class="" id="users_address" name="users_address" data-name="Address" type="text" placeholder="" required> -->
+              <textarea class="" id="users_address" name="users_address" data-name="Address" type="text" placeholder="" rows="2" required></textarea>
+            </div>
           </div>
         </div>
 
@@ -93,7 +94,7 @@
             </select>
           </div>
           <div class="col pb-2 col-sm-6 pl-sm-3 pb-sm-3">
-            <label class="mb-1">Username (Email)</label>
+            <label class="mb-1">Username</label>
             <input class="" id="users_username" name="users_username" data-name="Username" type="text" placeholder="" required>
           </div>
         </div>

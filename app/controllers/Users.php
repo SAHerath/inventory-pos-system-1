@@ -40,7 +40,7 @@ class Users extends Controller
 
     // validate product id
     if (empty($userId) || !preg_match($validator2, $userId)) {
-      exit('Error! : No valied Order Id found. ');
+      exit('Error! : No valied User Id found. ');
     } else {
       $data['roles'] = $this->userModel->getRoleList();
       $data['users'] = $this->userModel->getUser($userId);
@@ -88,6 +88,7 @@ class Users extends Controller
         'usersgender' => trim($_POST['users_gender']),
         'usersaddres' => trim($_POST['users_address']),
         'usersphone' => trim($_POST['users_phone']),
+        'usersemail' => trim($_POST['users_email']),
         'usersrole' => trim($_POST['users_role']),
         'usersusname' => trim($_POST['users_username']),
         'userspasswd' => trim($_POST['users_password']),
@@ -151,16 +152,23 @@ class Users extends Controller
         $data['frm_msg']['users_gender'] = 'Gender: Invalied value';
       }
 
-      // validate address
-      if (empty($param['usersaddres'])) {
-        $data['frm_msg']['users_address'] = 'Address: Field is empty';
-      }
-
       // validate telphone number
       if (empty($param['usersphone'])) {
         $data['frm_msg']['users_phone'] = 'Phone: Field is empty';
       } elseif (!preg_match($validator3, $param['usersphone'])) {
         $data['frm_msg']['users_phone'] = 'Phone: Invalied phone number format';
+      }
+
+      // validate email
+      if (empty($param['usersemail'])) {
+        $data['frm_msg']['users_email'] = 'Email: Field is empty';
+      } elseif (!filter_var($param['usersemail'], FILTER_VALIDATE_EMAIL)) {
+        $data['frm_msg']['users_email'] = 'Email: Insert valid email address';
+      }
+
+      // validate address
+      if (empty($param['usersaddres'])) {
+        $data['frm_msg']['users_address'] = 'Address: Field is empty';
       }
 
       if (!empty($data['frm_msg'])) {
@@ -178,8 +186,8 @@ class Users extends Controller
       // validate username
       if (empty($param['usersusname'])) {
         $data['frm_msg']['users_username'] = 'Username: Field is empty';
-      } elseif (!filter_var($param['usersusname'], FILTER_VALIDATE_EMAIL)) {
-        $data['frm_msg']['users_username'] = 'Username: Insert valid email address';
+      } elseif (!preg_match($validator1, $param['usersusname'])) {
+        $data['frm_msg']['users_username'] = 'Username: Invalied username format';
       } else {
         $user = $this->userModel->findUsername($param['usersusname']);
         if (!$user) {
@@ -248,6 +256,7 @@ class Users extends Controller
         'usersgender' => trim($_POST['users_gender']),
         'usersaddres' => trim($_POST['users_address']),
         'usersphone' => trim($_POST['users_phone']),
+        'usersemail' => trim($_POST['users_email']),
         'usersrole' => trim($_POST['users_role']),
         'usersusname' => trim($_POST['users_username']),
         'userspasswd' => trim($_POST['users_password']),
@@ -318,16 +327,23 @@ class Users extends Controller
         $data['frm_msg']['users_gender'] = 'Gender: Invalied value';
       }
 
-      // validate address
-      if (empty($param['usersaddres'])) {
-        $data['frm_msg']['users_address'] = 'Address: Field is empty';
-      }
-
       // validate telphone number
       if (empty($param['usersphone'])) {
         $data['frm_msg']['users_phone'] = 'Phone: Field is empty';
       } elseif (!preg_match($validator3, $param['usersphone'])) {
         $data['frm_msg']['users_phone'] = 'Phone: Invalied phone number format';
+      }
+
+      // validate email
+      if (empty($param['usersemail'])) {
+        $data['frm_msg']['users_email'] = 'Email: Field is empty';
+      } elseif (!filter_var($param['usersemail'], FILTER_VALIDATE_EMAIL)) {
+        $data['frm_msg']['users_email'] = 'Email: Insert valid email address';
+      }
+
+      // validate address
+      if (empty($param['usersaddres'])) {
+        $data['frm_msg']['users_address'] = 'Address: Field is empty';
       }
 
       if (!empty($data['frm_msg'])) {
@@ -345,8 +361,8 @@ class Users extends Controller
       // validate username
       if (empty($param['usersusname'])) {
         $data['frm_msg']['users_username'] = 'Username: Field is empty';
-      } elseif (!filter_var($param['usersusname'], FILTER_VALIDATE_EMAIL)) {
-        $data['frm_msg']['users_username'] = 'Username: Insert valid email address';
+      } elseif (!preg_match($validator1, $param['usersusname'])) {
+        $data['frm_msg']['users_username'] = 'Username: Invalied username format';
       } else {
         $user = $this->userModel->findUsername($param['usersusname']);
         if (!$user) {
