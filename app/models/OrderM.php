@@ -88,7 +88,7 @@ class OrderM
     } catch (Exception $e) {
       $this->db->cancelTransaction();
       // echo $e->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "OrderM: create: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("OrderM: create: {$e->getMessage()}", APP_ERROR);
       return false;
     }
   }
@@ -134,7 +134,7 @@ class OrderM
     } catch (Exception $e) {
       $this->db->cancelTransaction();
       // echo $e->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "OrderM: update: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("OrderM: update: {$e->getMessage()}", APP_ERROR);
       return false;
     }
   }
