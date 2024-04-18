@@ -108,6 +108,12 @@
   const urlroot = "<?php echo URLROOT; ?>users/";
   /////////////////////////////////////////////////////////////////////////////
 
+  function viewUserLoader() {
+    let rowId = this.parentElement.parentElement.dataset.rowId;
+    location.href = urlroot + "show/" + encodeURIComponent(rowId);
+  }
+  /////////////////////////////////////////////////////////////////////////////
+
   function editUserLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
     location.href = urlroot + "edit/" + encodeURIComponent(rowId);
@@ -179,24 +185,33 @@
     tblData5.appendChild(span5);
 
     // create Action column
-    let tblData6 = document.createElement("div");
-    tblData6.className = "td txt-center";
-    tblRow.appendChild(tblData6);
+    let tblDataAct = document.createElement("div");
+    tblDataAct.className = "td txt-center";
+    tblRow.appendChild(tblDataAct);
+    // create view button
+    let btnView = document.createElement("a");
+    btnView.className = "btn-sm green mr-md-1";
+    btnView.title = "View User";
+    btnView.onclick = viewUserLoader;
+    tblDataAct.appendChild(btnView);
+    let icoView = document.createElement("i");
+    icoView.className = "fas fa-eye";
+    btnView.appendChild(icoView);
     // create edit button
     let btnEdit = document.createElement("a");
-    btnEdit.className = "btn-sm yellow mr-md-2";
+    btnEdit.className = "btn-sm yellow mr-md-1";
     btnEdit.title = "Edit User";
     btnEdit.onclick = editUserLoader;
-    tblData6.appendChild(btnEdit);
+    tblDataAct.appendChild(btnEdit);
     let icoEdit = document.createElement("i");
     icoEdit.className = "fas fa-edit";
     btnEdit.appendChild(icoEdit);
     // create delete button
     let btnDelt = document.createElement("a");
-    btnDelt.className = "btn-sm red mr-md-2";
+    btnDelt.className = "btn-sm red mr-md-1";
     btnDelt.title = "Delete User";
     btnDelt.onclick = deltUserLoader;
-    tblData6.appendChild(btnDelt);
+    tblDataAct.appendChild(btnDelt);
     let icoDelt = document.createElement("i");
     icoDelt.className = "fas fa-trash-alt";
     btnDelt.appendChild(icoDelt);

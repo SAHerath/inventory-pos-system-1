@@ -53,6 +53,29 @@ class Users extends Controller
     }
   }
 
+  public function show($userId = null)
+  {
+    $userId = trim($userId);
+    $data = [
+      'title' => 'user_view'
+    ];
+    $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+
+    // validate product id
+    if (empty($userId) || !preg_match($validator2, $userId)) {
+      exit('Error! : No valied User Id found. ');
+    } else {
+      $data['users'] = $this->userModel->getUser($userId);
+      $data['roles'] = $this->userModel->getRole($data['users']['user_role_code']);
+
+      // echo '<pre>';
+      // var_dump($data);
+      // echo '</pre>';
+
+      $this->view('users/userviewV', $data);
+    }
+  }
+
   public function addUser()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

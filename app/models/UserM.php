@@ -76,10 +76,10 @@ class UserM
     }
   }
 
-  public function getUser($rowId)
+  public function getUser($userId)
   {
     $query = "SELECT * FROM tabl_user WHERE user_code = :userid";
-    $param = ['userid' => $rowId];
+    $param = ['userid' => $userId];
     if ($this->db->runQuery($query, $param)) {
       $row = $this->db->getResults(DB_SINGLE);
       unset($row['user_password']);
