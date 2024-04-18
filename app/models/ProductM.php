@@ -85,18 +85,18 @@ class ProductM
     }
   }
 
-  public function getAttrbAtval($atvalId)
-  {
-    $query = "SELECT tabl_attribute_type.attp_name AS attrb_name, tabl_attribute_value.atvl_value AS atval_name 
-    FROM tabl_attribute_value 
-    INNER JOIN tabl_attribute_type ON tabl_attribute_value.atvl_attp_code = tabl_attribute_type.attp_code 
-    WHERE tabl_attribute_value.atvl_code = :atvalid";
+  // public function getAttrbAtval($atvalId)
+  // {
+  //   $query = "SELECT tabl_attribute_type.attp_name AS attrb_name, tabl_attribute_value.atvl_value AS atval_name 
+  //   FROM tabl_attribute_value 
+  //   INNER JOIN tabl_attribute_type ON tabl_attribute_value.atvl_attp_code = tabl_attribute_type.attp_code 
+  //   WHERE tabl_attribute_value.atvl_code = :atvalid";
 
-    $param = ['atvalid' => $atvalId];
-    if ($this->db->runQuery($query, $param)) {
-      return $this->db->getResults(DB_SINGLE);
-    }
-  }
+  //   $param = ['atvalid' => $atvalId];
+  //   if ($this->db->runQuery($query, $param)) {
+  //     return $this->db->getResults(DB_SINGLE);
+  //   }
+  // }
 
   public function getAttributeList()
   {
@@ -206,7 +206,8 @@ class ProductM
     } catch (Exception $e) {
       $this->db->cancelTransaction();
       // echo $e->getMessage();
-      error_log(date('D d-M-Y H:i:s e | ') . "ProductM: create: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
+      logger("ProductM: create: {$e->getMessage()}", APP_ERROR);
+      // error_log(date('D d-M-Y H:i:s e | ') . "ProductM: create: {$e->getMessage()}" . PHP_EOL, 3, APPROOT . '/logs/error.log');
       return false;
     }
   }
@@ -261,22 +262,97 @@ class ProductM
     }
   }
 
-  /*
-    public function getProdtAttrb($prodtId)
-    {
-      $query = "SELECT tabl_attribute_type.attp_code, tabl_attribute_type.attp_name, tabl_attribute_product.atpr_prod_code 
-      FROM tabl_attribute_type 
-      LEFT JOIN tabl_attribute_value ON tabl_attribute_type.attp_code = tabl_attribute_value.atvl_attp_code 
-      LEFT JOIN tabl_attribute_product ON tabl_attribute_value.atvl_code = tabl_attribute_product.atpr_atvl_code 
-      WHERE (tabl_attribute_product.atpr_prod_code = :prodtid) OR (tabl_attribute_product.atpr_prod_code IS NULL) 
-      GROUP BY tabl_attribute_type.attp_name";
+  public function update($param)
+  {
+    // var_dump($param);
+    // return;
+    try {
+      $this->db->beginTransaction();
 
-      $param = ['prodtid' => $prodtId];
-      if ($this->db->runQuery($query, $param)) {
-        return $this->db->getResults(DB_MULTIPLE);
+      $query = "UPDATE tabl_product SET prod_catg_code=:prodtcategry, prod_brnd_code=:prodtbrand, prod_vend_code=:prodtvendor, prod_name=:prodtname, prod_descrip=:prodtdescrip, prod_retl_price=:prodtrtlprce, prod_whsa_price=:prodtwslprce, prod_reod_level=:prodtreodlvl, prod_reod_quant=:prodtreodqty, prod_vend_price=:prodtvndprce, prod_vend_prtno=:prodtvndptno, prod_active=:prodtstatus WHERE prod_code = :prodtid";
+
+      if ($this->db->runQuery($query, $param['prodt'])) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 1 failed');
       }
+
+      $query = "DELETE FROM tabl_stock WHERE stok_prod_code = :prodtid";
+      $para_arr = ['prodtid' => $param['prodt']['prodtid']];
+      if ($this->db->runQuery($query, $para_arr)) {
+        // $this->db->getResults(DB_COUNT);
+        // unset($para_arr);
+      } else {
+        throw new Exception('Query 2 failed');
+      }
+
+      $query = "INSERT INTO tabl_stock (stok_loca_code, stok_prod_code, stok_quantity) 
+      VALUES(:locat, :prodtid, :stock)";
+
+      foreach ($param['stock'] as $para_arr) {
+        $para_arr['prodtid'] = $param['prodt']['prodtid'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 3 failed');
+        }
+      }
+
+      $query = "DELETE FROM tabl_attribute_product WHERE atpr_prod_code = :prodtid";
+      $para_arr = ['prodtid' => $param['prodt']['prodtid']];
+      if ($this->db->runQuery($query, $para_arr)) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 4 failed');
+      }
+
+      $query = "INSERT INTO tabl_attribute_product (atpr_prod_code, atpr_atvl_code) 
+      VALUES(:prodtid, :atval)";
+
+      foreach ($param['attrb'] as $para_arr) {
+        $para_arr['prodtid'] = $param['prodt']['prodtid'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 5 failed');
+        }
+      }
+
+      if (!empty($param['image'])) {
+
+        $query = "DELETE FROM tabl_image_product WHERE impr_prod_code = :prodtid";
+        $para_arr = ['prodtid' => $param['prodt']['prodtid']];
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 6 failed');
+        }
+
+        $query = "INSERT INTO tabl_image_product (impr_prod_code, impr_img_name) 
+        VALUES(:prodtid, :prodtimage)";
+
+        foreach ($param['image'] as $para_arr) {
+          $para_arr['prodtid'] = $param['prodt']['prodtid'];
+
+          if ($this->db->runQuery($query, $para_arr)) {
+            // $this->db->getResults(DB_COUNT);
+          } else {
+            throw new Exception('Query 7 failed');
+          }
+        }
+      }
+
+      $this->db->endTransaction();
+      return true;
+    } catch (Exception $e) {
+      $this->db->cancelTransaction();
+      // echo $e->getMessage();;
+      logger("ProductM: update: {$e->getMessage()}", APP_ERROR);
+      return false;
     }
-  */
+  }
 
   public function getRowCount($searchVal = null)
   {

@@ -40,16 +40,16 @@ class Products extends Controller
     $prodtId = trim($prodtId);
 
     $data = [
-      'title' => 'product_edit',
-      'categ' => [],
-      'brand' => [],
-      'locat' => [],
-      'vendr' => [],
-      'attrb' => [],
-      'prodt' => [],
-      'prdstk' => [],
-      'prdatv' => [],
-      'prdimg' => []
+      'title' => 'product_edit'
+      // 'categ' => [],
+      // 'brand' => [],
+      // 'locat' => [],
+      // 'vendr' => [],
+      // 'attrb' => [],
+      // 'prodt' => [],
+      // 'prdstk' => [],
+      // 'prdatv' => [],
+      // 'prdimg' => []
     ];
 
     $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
@@ -206,7 +206,7 @@ class Products extends Controller
           $param['stock']['prodtstock'][] = trim($value);
         }
       }
-    */
+     */
       // echo json_encode($param);
       // return;
 
@@ -405,6 +405,221 @@ class Products extends Controller
 
   public function editProduct()
   {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      // echo json_encode($_POST);
+      // echo json_encode($_FILES);
+      // return;
+
+      $param = [
+        'prodt' => [
+          'prodtid' => trim($_POST['prodt_id']),
+          'prodtname' => trim($_POST['prodt_name']),
+          'prodtbrand' => trim($_POST['prodt_brand']),
+          'prodtcategry' => trim($_POST['prodt_category']),
+          'prodtvendor' => trim($_POST['prodt_vendor']),
+          'prodtreodlvl' => trim($_POST['prodt_rorderlvl']),
+          'prodtreodqty' => trim($_POST['prodt_rorderqty']),
+          'prodtrtlprce' => trim($_POST['prodt_rtlprice']),
+          'prodtwslprce' => trim($_POST['prodt_wslprice']),
+          'prodtdescrip' => trim($_POST['prodt_descrip']),
+          'prodtstatus' => trim($_POST['prodt_state']),
+          'prodtvndptno' => trim($_POST['prodt_vendprtno']),
+          'prodtvndprce' => trim($_POST['prodt_vendprice'])
+        ],
+        'stock' => $this->findKeyVal($_POST, 'dynm_locat_stock'),   // find given key from POST then decode location id and stock quantity
+        'attrb' => $this->findKeyVal($_POST, 'dynm_attrb_atval'),  // find given key from POST then decode attribute id and attribute value
+        'image' => []
+      ];
+
+      $data = [
+        'state' => 'invalid',
+        'frm_msg' => []
+      ];
+
+      // echo json_encode($param);
+      // return;
+
+      $validator0 = ['jpeg', 'png', 'gif'];  // filter image types
+      $validator1 = "/^[a-zA-Z0-9 _-]*$/";   // filter only lowercase/uppercase/numbers/space/underscor/dash
+      $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
+      $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
+      $validator9 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
+
+      // validate prodct id
+      if (empty($param['prodt']['prodtid'])) {
+        $data['frm_msg']['edit_prodt_msg'] = 'Product Id: Field is empty';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtid'])) {
+        $data['frm_msg']['edit_prodt_msg'] = 'Product Id: Invalied format';
+      }
+
+      // validate product name
+      if (empty($param['prodt']['prodtname'])) {
+        $data['frm_msg']['prodt_name'] = 'Product Name: Field is empty';
+      } elseif (!preg_match($validator1, $param['prodt']['prodtname'])) {
+        $data['frm_msg']['prodt_name'] = 'Product Name: Can only contain letters and numbers';
+      }
+
+      // validate brand
+      if (empty($param['prodt']['prodtbrand'])) {
+        $data['frm_msg']['prodt_brand'] = 'Brand: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtbrand'])) {
+        $data['frm_msg']['prodt_brand'] = 'Brand: Invalied format';
+      }
+
+      // validate category
+      if (empty($param['prodt']['prodtcategry'])) {
+        $data['frm_msg']['prodt_category'] = 'Category: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtcategry'])) {
+        $data['frm_msg']['prodt_category'] = 'Category: Invalied format';
+      }
+
+      // validate image
+      $fileData = validateFiles('prodt_image', 3, $validator0);
+      if (empty($fileData['error'])) {
+        // $data['frm_msg']['prodt_image'] = 'Image: File not found';
+      } elseif ($fileData['error'] != 'NoError') {
+        $data['frm_msg']['prodt_image'] = 'Image: ' . $fileData['error'];
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate reorder level
+      if (empty($param['prodt']['prodtreodlvl'])) {
+        $data['frm_msg']['prodt_rorderlvl'] = 'Reorder Level: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtreodlvl'])) {
+        $data['frm_msg']['prodt_rorderlvl'] = 'Reorder Level: Not a valied number';
+      }
+
+      // validate reorder quantity
+      if (empty($param['prodt']['prodtreodqty'])) {
+        $data['frm_msg']['prodt_rorderqty'] = 'Reorder Quantity: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtreodqty'])) {
+        $data['frm_msg']['prodt_rorderqty'] = 'Reorder Quantity: Not a valied number';
+      }
+
+      // validate stocks
+      if (empty($param['stock'])) {
+        $data['frm_msg']['prodt_totstock'] = 'Total Stock: No fields';
+      } else {
+        foreach ($param['stock'] as $elem_id => $stock_data) {
+          if (!preg_match($validator2, $stock_data['locat'])) {                       // check location id which is embeded in POST->key
+            $data['frm_msg'][$elem_id] = 'Total Stock: Unknown format error';
+          } elseif (empty($stock_data['stock'])) {                                    // check quantity 
+            $data['frm_msg'][$elem_id] = 'Stock Quantity: Field is empty';
+          } elseif (!preg_match($validator2, $stock_data['stock'])) {
+            $data['frm_msg'][$elem_id] = 'Stock Quantity: Not a valied number';
+          }
+        }
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate retail price
+      if (empty($param['prodt']['prodtrtlprce'])) {
+        $data['frm_msg']['prodt_rtlprice'] = 'Retail Price: Field not selected';
+      } elseif (!preg_match($validator9, $param['prodt']['prodtrtlprce'])) {
+        $data['frm_msg']['prodt_rtlprice'] = 'Retail Price: Not a valied number';
+      }
+
+      // validate wholesale price
+      if (empty($param['prodt']['prodtwslprce'])) {
+        $data['frm_msg']['prodt_wslprice'] = 'Wholesale Price: Field not selected';
+      } elseif (!preg_match($validator9, $param['prodt']['prodtwslprce'])) {
+        $data['frm_msg']['prodt_wslprice'] = 'Wholesale Price: Not a valied number';
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate vendor
+      if (empty($param['prodt']['prodtvendor'])) {
+        $data['frm_msg']['prodt_vendor'] = 'Vendor Name: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtvendor'])) {
+        $data['frm_msg']['prodt_vendor'] = 'Vendor Name: Invalied format';
+      }
+
+      // validate vendor part no
+      if (empty($param['prodt']['prodtvndptno'])) {
+        $data['frm_msg']['prodt_vendprtno'] = 'Vendor\'s Part No: Field is empty';
+      } elseif (!preg_match($validator1, $param['prodt']['prodtvndptno'])) {
+        $data['frm_msg']['prodt_vendprtno'] = 'Vendor\'s Part No: Can only contain letters and numbers';
+      }
+
+      // validate vendor price
+      if (empty($param['prodt']['prodtvndprce'])) {
+        $data['frm_msg']['prodt_vendprice'] = 'Vendor\'s Price: Field not selected';
+      } elseif (!preg_match($validator9, $param['prodt']['prodtvndprce'])) {
+        $data['frm_msg']['prodt_vendprice'] = 'Vendor\'s Price: Not a valied number';
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      // validate attributes
+      if (empty($param['attrb'])) {
+        // $data['frm_msg']['prodt_attributes'] = 'Attributes: No fields';
+      } else {
+        foreach ($param['attrb'] as $elem_id => $attrb_data) {
+          if (!preg_match($validator2, $attrb_data['attrb'])) {
+            $data['frm_msg'][$elem_id] = 'Attributes: Unknown format error';
+          } elseif (empty($attrb_data['atval'])) {
+            $data['frm_msg'][$elem_id] = 'Attribute Value: Field is empty';
+          } elseif (!preg_match($validator2, $attrb_data['atval'])) {
+            $data['frm_msg'][$elem_id] = 'Attribute Value: Invalied format';
+          }
+        }
+      }
+
+      // validate description
+      if (empty($param['prodt']['prodtdescrip'])) {
+        $data['frm_msg']['prodt_descrip'] = 'Product Description: Field is empty';
+      } elseif (!preg_match($validator5, $param['prodt']['prodtdescrip'])) {
+        $data['frm_msg']['prodt_descrip'] = 'Product Description: Can only contain letters, numbers and special char*';
+      }
+
+      // validate status
+      if (empty($param['prodt']['prodtstatus'])) {
+        $data['frm_msg']['prodt_state'] = 'Status: Field not selected';
+      } elseif (!preg_match($validator2, $param['prodt']['prodtstatus'])) {
+        $data['frm_msg']['prodt_state'] = 'Status: Not a valied number';
+      }
+
+      if (!empty($data['frm_msg'])) {
+        echo json_encode($data);
+        return;
+      }
+
+      if (empty($data['frm_msg'])) {
+
+        for ($i = 0; $i < count($fileData['path']); $i++) {
+          if (move_uploaded_file($fileData['path'][$i], 'img/uploads/product/' . $fileData['prodt_image'][$i])) {
+            $param['image']['prodt_image_' . $i]['prodtimage'] = $fileData['prodt_image'][$i];
+          } else {
+            $data['frm_msg']['edit_prodt_msg'] = 'Image: File not saved';
+          }
+        }
+
+        if ($this->userModel->update($param)) {
+          unset($param);
+          $data['state']  = 'success';
+          $data['frm_msg']['edit_prodt_msg'] = 'Product successfully updated';
+        } else {
+          $data['frm_msg']['edit_prodt_msg'] = 'Someting went wrong';
+        }
+        echo json_encode($data);
+      }
+    }
   }
 
   public function deleteProduct()
