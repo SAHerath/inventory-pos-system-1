@@ -1,4 +1,19 @@
 @font-face {
+  font-family: 'Inter';
+  src: url(../font/Inter[slnt,wght].woff2);
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url(../font/Montserrat-Medium.ttf);
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url(../font/Poppins-Regular.ttf);
+}
+
+@font-face {
   font-family: 'Roboto';
   src: url(../font/Roboto-Regular.ttf);
 }
@@ -6,6 +21,17 @@
 @font-face {
   font-family: 'Roboto_light';
   src: url(../font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: 'RobotoFlex';
+  src: url(../font/RobotoFlex[slnt,wdth,wght,opsz].woff2) format("woff2 variations"), url(../font/Poppins-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: 'SourceSans';
+  src: url(../font/SourceSansVariable-Roman.woff2) format("woff2-variations"), url(../font/Poppins-Regular.ttf) format("truetype");
+  font-weight: normal;
 }
 
 /* @custom-media --sm-viewport only screen and (min-width: 40em);
