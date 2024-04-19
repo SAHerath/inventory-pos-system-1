@@ -220,6 +220,7 @@ class Products extends Controller
       // $validator2 = "/^[1-9]\d*$/";   // filter any number except 0
       $validator2 = "/^[1-9][0-9]*$/";  // filter any number except 0
       $validator5 = "/^[a-zA-Z0-9 _,.-\/\r\n]*$/"; // filter address
+      $validator9 = "/^[0-9]*.[0-9]+?$/"; // check for floats which has at least one floating point
 
       // validate product name
       if (empty($param['prodt']['prodtname'])) {
@@ -292,14 +293,14 @@ class Products extends Controller
       // validate retail price
       if (empty($param['prodt']['prodtrtlprce'])) {
         $data['frm_msg']['prodt_rtlprice'] = 'Retail Price: Field not selected';
-      } elseif (!preg_match($validator2, $param['prodt']['prodtrtlprce'])) {
+      } elseif (!preg_match($validator9, $param['prodt']['prodtrtlprce'])) {
         $data['frm_msg']['prodt_rtlprice'] = 'Retail Price: Not a valied number';
       }
 
       // validate wholesale price
       if (empty($param['prodt']['prodtwslprce'])) {
         $data['frm_msg']['prodt_wslprice'] = 'Wholesale Price: Field not selected';
-      } elseif (!preg_match($validator2, $param['prodt']['prodtwslprce'])) {
+      } elseif (!preg_match($validator9, $param['prodt']['prodtwslprce'])) {
         $data['frm_msg']['prodt_wslprice'] = 'Wholesale Price: Not a valied number';
       }
 
@@ -325,7 +326,7 @@ class Products extends Controller
       // validate vendor price
       if (empty($param['prodt']['prodtvndprce'])) {
         $data['frm_msg']['prodt_vendprice'] = 'Vendor\'s Price: Field not selected';
-      } elseif (!preg_match($validator2, $param['prodt']['prodtvndprce'])) {
+      } elseif (!preg_match($validator9, $param['prodt']['prodtvndprce'])) {
         $data['frm_msg']['prodt_vendprice'] = 'Vendor\'s Price: Not a valied number';
       }
 

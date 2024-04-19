@@ -24,6 +24,10 @@
         <section class="">
           <div class="row">
             <div class="col col-sm-5 pr-sm-3">
+              <!-- <div class="row pb-2 pb-sm-3">
+                <label class="mb-1">Product Id</label> -->
+              <input class="" id="prodt_id" name="prodt_id" type="hidden" placeholder="" required value="<?php echo $data['prodt']['prod_code']; ?>" hidden>
+              <!-- </div> -->
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Product Name</label>
                 <input class="" id="prodt_name" name="prodt_name" type="text" placeholder="" required value="<?php echo $data['prodt']['prod_name']; ?>">
@@ -109,11 +113,11 @@
             <section class="">
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Retail Price</label>
-                <input class="" id="prodt_rtlprice" name="prodt_rtlprice" type="number" placeholder="" required value="<?php echo $data['prodt']['prod_retl_price']; ?>">
+                <input class="" id="prodt_rtlprice" name="prodt_rtlprice" type="text" placeholder="" required value="<?php echo $data['prodt']['prod_retl_price']; ?>">
               </div>
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Wholesale Price</label>
-                <input class="" id="prodt_wslprice" name="prodt_wslprice" type="number" placeholder="" required value="<?php echo $data['prodt']['prod_whsa_price']; ?>">
+                <input class="" id="prodt_wslprice" name="prodt_wslprice" type="text" placeholder="" required value="<?php echo $data['prodt']['prod_whsa_price']; ?>">
               </div>
             </section>
             <div class="row pt-3 pb-3">
