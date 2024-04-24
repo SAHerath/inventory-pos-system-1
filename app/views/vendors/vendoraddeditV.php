@@ -20,7 +20,7 @@
   <div class="main-cards">
 
     <div class="card">
-      <form id="vendr" name="vendr" novalidate>
+      <form id="vendr" name="vendr" novalidate autocomplete="off">
         <span id="vendr_msg" class="status" aria-live="polite"></span>
         <div class="row">
           <!-- <label class="mb-1">Id</label> -->
@@ -32,7 +32,7 @@
           <div class="col col-md-6 pr-md-3">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Name</label>
-              <input class="" id="vendr_name" name="vendr_name" data-name="Name" type="text" placeholder="Enter Vendor Name" required autocomplete="off" value="<?php echo $data['param']['vend_name']; ?>">
+              <input class="" id="vendr_name" name="vendr_name" data-name="Name" type="text" placeholder="Enter Vendor Name" required value="<?php echo $data['param']['vend_name']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Phone</label>

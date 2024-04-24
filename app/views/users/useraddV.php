@@ -135,10 +135,6 @@
 
 <script type="text/javascript">
   const urlroot = "<?php echo URLROOT; ?>users/";
-
-  function goBack() {
-    location.href = urlroot;
-  }
   /////////////////////////////////////////////////////////////////////////////
 
   function usersAdded() {

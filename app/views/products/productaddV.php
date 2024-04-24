@@ -101,11 +101,11 @@
             <section class="">
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Retail Price</label>
-                <input class="" id="prodt_rtlprice" name="prodt_rtlprice" type="number" placeholder="" required>
+                <input class="" id="prodt_rtlprice" name="prodt_rtlprice" type="text" placeholder="" required>
               </div>
               <div class="row pb-2 pb-sm-3">
                 <label class="mb-1">Wholesale Price</label>
-                <input class="" id="prodt_wslprice" name="prodt_wslprice" type="number" placeholder="" required>
+                <input class="" id="prodt_wslprice" name="prodt_wslprice" type="text" placeholder="" required>
               </div>
             </section>
             <div class="row pt-3 pb-3">
