@@ -175,7 +175,7 @@
 
         <div class="row pt-3">
           <button class="btn green mr-2" type="submit">Save</button>
-          <button class="btn blue ml-2" type="reset" onclick="location.href = urlroot;">Cancel</button>
+          <button class="btn blue ml-2" type="reset" onclick="goBack();">Cancel</button>
         </div>
 
       </form>
