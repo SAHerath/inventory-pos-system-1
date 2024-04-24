@@ -2940,7 +2940,8 @@ a {
 }
 
 .modal .modal-content {
-  margin-bottom: 10rem;
+  position: relative;
+  margin-bottom: 8rem;
   padding-bottom: 0.5rem;
   width: 80%;
   overflow: hidden;
