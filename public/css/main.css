@@ -715,7 +715,7 @@ a {
   -ms-grid-columns: (minmax(14rem, 1fr))[auto-fit];
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   /* Where the magic happens */
-  grid-auto-rows: 8rem;
+  grid-auto-rows: 7.5rem;
   grid-gap: 1.25rem;
   margin: 1.25rem;
 }
@@ -737,7 +737,7 @@ a {
 }
 
 .overviewcard i {
-  font-size: 4rem;
+  font-size: 3.5rem;
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -1241,6 +1241,32 @@ a {
 
 .txt-center {
   text-align: center;
+}
+
+/******** heading *******/
+[class*="h-"] {
+  font-weight: 500;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.h-3 {
+  font-size: 2rem;
+}
+
+.h-4 {
+  font-size: 1.5rem;
+}
+
+.h-5 {
+  font-size: 1.25rem;
+}
+
+.h-6 {
+  font-size: 1.125rem;
 }
 
 /******** margin *******/

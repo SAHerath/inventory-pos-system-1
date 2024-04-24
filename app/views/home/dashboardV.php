@@ -18,7 +18,7 @@
         <span>Total Products</span>
       </div>
       <div class="row">
-        <div class="col-4 p-3 txt-center">
+        <div class="col-4 pt-2 pl-4 txt-center">
           <i class="fas fa-box"></i>
         </div>
         <div class="col-7 p-4 txt-right">
@@ -32,7 +32,7 @@
         <span>Total Orders</span>
       </div>
       <div class="row">
-        <div class="col-4 p-3 txt-center">
+        <div class="col-4 pt-2 pl-4 txt-center">
           <i class="fas fa-shopping-cart"></i>
         </div>
         <div class="col-7 p-4 txt-right">
@@ -46,7 +46,7 @@
         <span>Total Users</span>
       </div>
       <div class="row">
-        <div class="col-4 p-3 txt-center">
+        <div class="col-4 pt-2 pl-4 txt-center">
           <i class="fas fa-users"></i>
         </div>
         <div class="col-7 p-4 txt-right">
@@ -60,7 +60,7 @@
         <span>Total Locations</span>
       </div>
       <div class="row">
-        <div class="col-4 p-3 txt-center">
+        <div class="col-4 pt-2 pl-4 txt-center">
           <i class="fas fa-map-marker-alt"></i>
         </div>
         <div class="col-7 p-4 txt-right">

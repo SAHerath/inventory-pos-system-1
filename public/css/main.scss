@@ -655,7 +655,7 @@ a {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     /* Where the magic happens */
-    grid-auto-rows: 8rem;
+    grid-auto-rows: 7.5rem;
     grid-gap: 1.25rem;
     margin: 1.25rem;
   }
@@ -683,7 +683,7 @@ a {
   }
 
   i {
-    font-size: 4rem;
+    font-size: 3.5rem;
     // opacity: 0.5;
     color: rgba(0, 0, 0, 0.5);
   }
