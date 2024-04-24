@@ -16,7 +16,7 @@
     <a class="" href="#">Notifications</a>
     <div class="drop">
       <a class="" onclick="showDrop(this);">
-        <?php if (isset($_SESSION['userfname'])) : ?>
+        <?php if (isset($_SESSION['usercode'])) : ?>
           <img src="<?php echo URLROOT; ?>img/uploads/user/<?php echo $_SESSION['userphoto']; ?>" alt="User_Photo">
           <?php echo $_SESSION['userfname']; ?>
         <?php else : ?>
@@ -25,7 +25,7 @@
         <?php endif ?>
       </a>
       <div class="drop-content">
-        <a href="#">Profile</a>
+        <a href="<?php echo URLROOT; ?>users/show/<?php echo (isset($_SESSION['usercode']) ? $_SESSION['usercode'] : ''); ?>">Profile</a>
         <a href="<?php echo URLROOT; ?>auth/logout">Logout</a>
       </div>
     </div>
