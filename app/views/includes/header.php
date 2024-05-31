@@ -9,7 +9,7 @@
   <meta name="description" content="inventory application">
   <meta name="author" content="SAH">
 
-  <link rel="shortcut icon" type="image/x-icon" href="<?php echo URLROOT; ?>icon/bl_paws_Favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="<?php echo URLROOT; ?>icon/nawalankaent.ico">
   <title><?php echo SITENAME; ?></title>
 
   <link rel="stylesheet" href="<?php echo URLROOT; ?>icon/fontawesome/css/all.css">
