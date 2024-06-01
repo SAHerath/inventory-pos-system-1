@@ -22,6 +22,8 @@ class Home extends Controller
     $data['tot_users'] = $this->userModel->getUserCount();
     $data['tot_locat'] = $this->userModel->getLocationCount();
 
+    $data['low_stock'] = $this->userModel->getLowProductCount();
+
     $this->view('home/dashboardV', $data);
   }
 

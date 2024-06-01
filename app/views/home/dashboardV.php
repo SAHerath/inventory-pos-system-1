@@ -29,7 +29,7 @@
     </div>
     <div class="overviewcard">
       <div class="row pt-2 center-h">
-        <span>Total Orders</span>
+        <span>Total Sales</span>
       </div>
       <div class="row">
         <div class="col-4 pt-2 pl-4 txt-center">
@@ -69,9 +69,29 @@
         </div>
       </div>
     </div>
+    <div class="overviewcard">
+      <div class="row pt-2 center-h">
+        <span>Low Stock Count</span>
+      </div>
+      <div class="row">
+        <div class="col-4 pt-2 pl-4 txt-center">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="col-7 p-4 txt-right">
+          <!-- <span><b>2</b></span> -->
+          <span><b><?php echo $data['low_stock']; ?></b></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- <div class="main-cards">
+    <div class="row">
+      <h3>Nortifications</h3>
+    </div>
+    <div class="row">
+      <span></span>
+    </div>
     <h1>Hello There!</h1>
     <pre>
       <?php var_dump($_SESSION); ?>

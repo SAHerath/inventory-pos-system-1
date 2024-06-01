@@ -54,4 +54,15 @@ class HomeM
       return false;
     }
   }
+
+  public function getLowProductCount()
+  {
+    $query = "SELECT SUM(CASE WHEN TEMP.prodt_qty < TEMP.prod_reod_level THEN 1 ELSE 0 END) AS low_count FROM (SELECT P.prod_reod_level, SUM(S.stok_quantity) AS prodt_qty FROM tabl_product P LEFT JOIN tabl_stock S ON P.prod_code = S.stok_prod_code WHERE P.prod_active = 1 GROUP BY P.prod_code) AS TEMP";
+    if ($this->db->runQuery($query)) {
+      $count = $this->db->getResults(DB_SINGLE);
+      return $count['low_count'];
+    } else {
+      return false;
+    }
+  }
 }
