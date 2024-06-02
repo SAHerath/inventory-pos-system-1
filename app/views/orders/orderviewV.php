@@ -131,8 +131,8 @@
       <div class="row">
         <a class="btn blue mr-3" href="<?php echo URLROOT; ?>orders">Back</a>
         <a class="btn yellow mr-3" href="<?php echo URLROOT; ?>orders/edit/<?php echo $data['order']['ordr_code']; ?>">Edit</a>
-        <a class="btn purple mr-3" href="<?php echo URLROOT; ?>orders/print/in/<?php echo $data['order']['ordr_code']; ?>">Print</a>
-        <a class="btn purple mr-3" href="<?php echo URLROOT; ?>orders/print/rc/<?php echo $data['order']['ordr_code']; ?>">Print</a>
+        <a class="btn purple mr-3" href="<?php echo URLROOT; ?>orders/print/in/<?php echo $data['order']['ordr_code']; ?>">Print Invoice</a>
+        <a class="btn purple mr-3" href="<?php echo URLROOT; ?>orders/print/rc/<?php echo $data['order']['ordr_code']; ?>">Print Recipt</a>
         <!-- <?php if ($data['order']['ordr_status']) : ?>
           <a class="btn purple mr-3" href="<?php echo URLROOT; ?>orders/print/iv/<?php echo $data['order']['ordr_code']; ?>">Print</a>
         <?php endif; ?> -->
