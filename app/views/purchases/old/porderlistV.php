@@ -40,8 +40,8 @@
                 <div class="th" id="dl_sort_3" title="Sort by Vendor">Vendor<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
                 <div class="th" id="dl_sort_4" title="Sort by Status">Status<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
                 <div class="th" id="dl_sort_5" title="Sort by Total Amt.">Total<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-                <div class="th" id="dl_sort_6" title="Sort by Paid Amt.">Paid<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
-                <div class="th" id="dl_sort_7" title="Sort by Balance">Balance<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+                <!-- <div class="th" id="dl_sort_6" title="Sort by Paid Amt.">Paid<i class="fas fa-exchange-alt fa-rotate-90"></i></div>
+                <div class="th" id="dl_sort_7" title="Sort by Balance">Balance<i class="fas fa-exchange-alt fa-rotate-90"></i></div> -->
                 <div class="th">Action</div>
               </div>
             </div>
@@ -52,8 +52,8 @@
                 <div class="td">ABC Pvt. Ltd.</div>
                 <div class="td">Open</div>
                 <div class="td">1250.00</div>
-                <div class="td">1500.00</div>
-                <div class="td">250.00</div>
+                <!-- <div class="td">1500.00</div>
+                <div class="td">250.00</div> -->
                 <div class="td txt-center">
                   <a class=" btn-sm green mr-md-1" role="button" title="View more">
                     <i class="fas fa-eye"></i>
@@ -79,9 +79,9 @@
   </div>
 </main>
 
-<div id="mod_deltorder" class="modal">
+<div id="mod_deltpurchase" class="modal">
   <div class="modal-content">
-    <span class="modal-close" onclick="showHide('mod_deltorder')">&times;</span>
+    <span class="modal-close" onclick="showHide('mod_deltpurchase')">&times;</span>
     <div class="modal-header">
       <!-- <span class="fas fa-check-circle" style="color: #5cb85c;"></span> -->
       <span class="fas fa-times-circle" style="color: #f44336;"></span>
@@ -95,14 +95,14 @@
         <p>Are you sure you want to delete this Purchase Order?</p>
         <p>This will delete all the information of this Order.</p>
       </div>
-      <form id="delt_porder" name="delt_porder" novalidate autocomplete="off">
-        <span id="delt_porder_msg" class="status" aria-live="polite"></span>
+      <form id="delt_purch" name="delt_purch" novalidate autocomplete="off">
+        <span id="delt_purch_msg" class="status" aria-live="polite"></span>
         <div class="row">
           <!-- <label class="mb-1">Order Id</label> -->
-          <input class="" type="hidden" id="delt_porder_id" name="delt_porder_id" required hidden>
+          <input class="" type="hidden" id="delt_purch_id" name="delt_purch_id" required hidden>
         </div>
         <div class="row right pt-3">
-          <button class="btn blue" type="button" onclick="showHide('mod_deltorder');">Cancel</button>
+          <button class="btn blue" type="button" onclick="showHide('mod_deltpurchase');">Cancel</button>
           <button class="btn red ml-3" type="submit">Delete</button>
         </div>
       </form>
@@ -115,13 +115,13 @@
   const urlroot = "<?php echo URLROOT; ?>purchases/";
   /////////////////////////////////////////////////////////////////////////////////
 
-  function viewOrderLoader() {
+  function viewPurchaseLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
     location.href = urlroot + "show/" + encodeURIComponent(rowId);
   }
   /////////////////////////////////////////////////////////////////////////////////
 
-  function editOrderLoader() {
+  function editPurchaseLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
     location.href = urlroot + "edit/" + encodeURIComponent(rowId);
   }
@@ -129,17 +129,23 @@
   function orderDeleted() {
     // console.log("hi");
     dataList.refreshData();
-    showHide('mod_deltorder');
+    showHide('mod_deltpurchase');
   }
 
-  let deltOrder = new FormHandler('delt_porder', 'delt_porder_msg', `${urlroot}deleteOrder`);
+  let deltOrder = new FormHandler('delt_purch', 'delt_purch_msg', `${urlroot}deletePurchase`);
   deltOrder.setCallback(orderDeleted);
 
-  function deltOrderLoader() {
+  function deltPurchaseLoader() {
     let rowId = this.parentElement.parentElement.dataset.rowId;
-    document.getElementById("delt_porder_id").value = rowId;
-    showHide('mod_deltorder');
+    document.getElementById("delt_purch_id").value = rowId;
+    showHide('mod_deltpurchase');
   }
+  /////////////////////////////////////////////////////////////////////////////////
+
+  // function grnPurchaseLoader() {
+  //   let rowId = this.parentElement.parentElement.dataset.rowId;
+  //   location.href = urlroot + "grn/" + encodeURIComponent(rowId);
+  // }
   /////////////////////////////////////////////////////////////////////////////////
   const tblBody = document.getElementById("dl_tbl_body");
 
@@ -189,21 +195,21 @@
     span5.textContent = dataRow["purch_totalamt"];
     tblData5.appendChild(span5);
 
-    // create paid column
-    let tblData6 = document.createElement("div");
-    tblData6.className = "td txt-right";
-    tblRow.appendChild(tblData6);
-    let span6 = document.createElement("span");
-    span6.textContent = dataRow["purch_paidamt"];
-    tblData6.appendChild(span6);
+    // // create paid column
+    // let tblData6 = document.createElement("div");
+    // tblData6.className = "td txt-right";
+    // tblRow.appendChild(tblData6);
+    // let span6 = document.createElement("span");
+    // span6.textContent = dataRow["purch_paidamt"];
+    // tblData6.appendChild(span6);
 
-    // create balance column
-    let tblData7 = document.createElement("div");
-    tblData7.className = "td txt-right";
-    tblRow.appendChild(tblData7);
-    let span7 = document.createElement("span");
-    span7.textContent = dataRow["purch_balance"];
-    tblData7.appendChild(span7);
+    // // create balance column
+    // let tblData7 = document.createElement("div");
+    // tblData7.className = "td txt-right";
+    // tblRow.appendChild(tblData7);
+    // let span7 = document.createElement("span");
+    // span7.textContent = dataRow["purch_balance"];
+    // tblData7.appendChild(span7);
 
     // create Action column
     let tblDataAct = document.createElement("div");
@@ -211,31 +217,40 @@
     tblRow.appendChild(tblDataAct);
     // create view button
     let btnView = document.createElement("a");
-    btnView.className = "btn-sm green mr-md-1";
+    btnView.className = "btn-sm green mr-md-1 mb-md-1";
     btnView.title = "View Order";
-    btnView.onclick = viewOrderLoader;
+    btnView.onclick = viewPurchaseLoader;
     tblDataAct.appendChild(btnView);
     let icoView = document.createElement("i");
     icoView.className = "fas fa-eye";
     btnView.appendChild(icoView);
     // create edit button
     let btnEdit = document.createElement("a");
-    btnEdit.className = "btn-sm yellow mr-md-1";
+    btnEdit.className = "btn-sm yellow mr-md-1 mb-md-1";
     btnEdit.title = "Edit Order";
-    btnEdit.onclick = editOrderLoader;
+    btnEdit.onclick = editPurchaseLoader;
     tblDataAct.appendChild(btnEdit);
     let icoEdit = document.createElement("i");
     icoEdit.className = "fas fa-edit";
     btnEdit.appendChild(icoEdit);
     // create delete button
     let btnDelt = document.createElement("a");
-    btnDelt.className = "btn-sm red mr-md-1";
+    btnDelt.className = "btn-sm red mr-md-1 mb-md-1";
     btnDelt.title = "Delete Order";
-    btnDelt.onclick = deltOrderLoader;
+    btnDelt.onclick = deltPurchaseLoader;
     tblDataAct.appendChild(btnDelt);
     let icoDelt = document.createElement("i");
     icoDelt.className = "fas fa-trash-alt";
     btnDelt.appendChild(icoDelt);
+    // create grn button
+    // let btnGrn = document.createElement("a");
+    // btnGrn.className = "btn-sm orange mr-md-1 mb-md-1";
+    // btnGrn.title = "GRN Order";
+    // btnGrn.onclick = grnPurchaseLoader;
+    // tblDataAct.appendChild(btnGrn);
+    // let icoGrn = document.createElement("i");
+    // icoGrn.className = "fas fa-vote-yea";
+    // btnGrn.appendChild(icoGrn);
 
     return tblRow;
   }
@@ -250,7 +265,7 @@
     }
   }
 
-  let dataList = new DataList(`${urlroot}getPorderDataset`, displayData);
+  let dataList = new DataList(`${urlroot}getPurchaseDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
   dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3");

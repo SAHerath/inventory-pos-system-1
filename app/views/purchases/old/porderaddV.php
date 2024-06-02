@@ -16,18 +16,18 @@
   </div>
   <div class="main-cards">
     <div class="card">
-      <form id="add_pordr" name="add_pordr" novalidate autocomplete="off">
-        <span id="add_pordr_msg" class="status" aria-live="polite"></span>
+      <form id="add_purch" name="add_purch" novalidate autocomplete="off">
+        <span id="add_purch_msg" class="status" aria-live="polite"></span>
 
-        <div class="row pb-4">
+        <div class="row pb-2">
           <div class="col col-sm-6 o-sm-2 pl-sm-4 pl-md-8">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Date</label>
-              <input class="" id="pordr_date" name="pordr_date" type="date" placeholder="" required value="<?php echo $data['date']; ?>">
+              <input class="" id="purch_date" name="purch_date" type="date" placeholder="" required value="<?php echo $data['date']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Location</label>
-              <select class="" id="pordr_locat" name="pordr_locat" required>
+              <select class="" id="purch_locat" name="purch_locat" required>
                 <option value="" selected></option>
                 <?php foreach ($data['locat'] as $row) : ?>
                   <option value="<?php echo $row['loca_code']; ?>"><?php echo $row['loca_name']; ?></option>
@@ -38,20 +38,22 @@
           <div class="col col-sm-6 o-sm-1 pr-sm-4 pr-md-6">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Vendor Name</label>
-              <select class="" id="pordr_vendr" name="pordr_vendr" required>
+              <select class="" id="purch_vendr" name="purch_vendr" required>
                 <option value="" selected></option>
                 <?php foreach ($data['vendr'] as $row) : ?>
                   <option value="<?php echo $row['vend_code']; ?>"><?php echo $row['vend_name']; ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
-            <div class="row pb-2 pb-sm-3">
+            <!-- <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Vendor Note</label>
-              <textarea class="" id="pordr_vendnote" name="pordr_vendnote" type="text" placeholder="" rows="2" required></textarea>
-            </div>
+              <textarea class="" id="purch_vendnote" name="purch_vendnote" type="text" placeholder="" rows="2" required></textarea>
+            </div> -->
           </div>
         </div>
 
+
+        <div class="row pb-2">Order Product Details</div>
         <div class="row pb-2 mb-4 table-wrap">
           <div class="table">
             <div class="thead">
@@ -82,28 +84,32 @@
                 <option value="Cheque">Cheque</option>
               </select>
             </div> -->
+            <div class="row pb-2 pb-sm-3">
+              <label class="mb-1">Remarks</label>
+              <textarea class="" id="purch_remarks" name="purch_remarks" type="text" placeholder="" rows="3"></textarea>
+            </div>
           </div>
           <div class="col col-sm-6 pl-sm-4 pl-md-6">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Sub Total</label>
-              <input class="txt-right" id="pordr_subtotal" name="porder_subtotal" type="text" placeholder="" required disabled>
+              <input class="txt-right" id="purch_subtotal" name="purch_subtotal" type="text" placeholder="" required disabled>
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Additinal Charges</label>
-              <input onchange="calculatePay();" class="txt-right" id="pordr_addcharg" name="pordr_addcharg" type="text" placeholder="" required value="0.00">
+              <input onchange="calculatePay();" class="txt-right" id="purch_addcharg" name="purch_addcharg" type="text" placeholder="" required value="0.00">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1"><b>Total</b></label>
-              <input class="txt-right" id="pordr_totalamt" name="pordr_totalamt" type="text" placeholder="" required disabled>
+              <input class="txt-right" id="purch_totalamt" name="purch_totalamt" type="text" placeholder="" required disabled>
             </div>
-            <div class="row pb-2 pb-sm-3 mt-3">
+            <!-- <div class="row pb-2 pb-sm-3 mt-3">
               <label class="mb-1">Paid</label>
-              <input onchange="calculatePay();" class="txt-right" id="pordr_paidamt" name="pordr_paidamt" type="text" placeholder="" required value="0.00">
+              <input onchange="calculatePay();" class="txt-right" id="purch_paidamt" name="purch_paidamt" type="text" placeholder="" required value="0.00">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1"><b>Balance</b></label>
-              <input class="txt-right" id="pordr_balance" name="pordr_balance" type="text" placeholder="" required disabled>
-            </div>
+              <input class="txt-right" id="purch_balance" name="purch_balance" type="text" placeholder="" required disabled>
+            </div> -->
           </div>
         </div>
 
@@ -131,13 +137,13 @@
     // console.log(resp);
     if (resp['prodt']) {
       // parseFloat(this.value).toFixed(2);
-      document.getElementById(rowId + "_pordr_sku").value = resp['prodt']['prodt_sku'];
-      document.getElementById(rowId + "_pordr_prt").value = resp['prodt']['prodt_name'];
-      document.getElementById(rowId + "_pordr_qty").value = 1;
-      document.getElementById(rowId + "_pordr_rat").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
-      document.getElementById(rowId + "_pordr_amt").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
+      document.getElementById(rowId + "_purch_sku").value = resp['prodt']['prodt_sku'];
+      document.getElementById(rowId + "_purch_prt").value = resp['prodt']['prodt_name'];
+      document.getElementById(rowId + "_purch_qty").value = resp['prodt']['prodt_reqty'];
+      document.getElementById(rowId + "_purch_rat").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
+      document.getElementById(rowId + "_purch_amt").value = parseFloat(resp['prodt']['prodt_reqty'] * resp['prodt']['prodt_venprice']).toFixed(2);
       document.getElementById(rowId).getElementsByTagName("button")[0].disabled = false;
-      document.getElementById(rowId + "_pordr_sku").disabled = true;
+      document.getElementById(rowId + "_purch_sku").disabled = true;
       return true;
     } else {
       return false;
@@ -145,9 +151,9 @@
   }
 
   function updateRowTbl(rowId) {
-    let inpQtyVal = document.getElementById(rowId + "_pordr_qty").value;
-    let inpRatVal = document.getElementById(rowId + "_pordr_rat").value;
-    document.getElementById(rowId + "_pordr_amt").value = (inpRatVal * inpQtyVal).toFixed(2);
+    let inpQtyVal = document.getElementById(rowId + "_purch_qty").value;
+    let inpRatVal = document.getElementById(rowId + "_purch_rat").value;
+    document.getElementById(rowId + "_purch_amt").value = (inpRatVal * inpQtyVal).toFixed(2);
   }
 
   async function checkInput(event) {
@@ -164,7 +170,7 @@
             continue;
           }
           // console.log("checkInput-loop", ind);
-          let inpSku = document.getElementById("tblr_" + ind + "_pordr_sku");
+          let inpSku = document.getElementById("tblr_" + ind + "_purch_sku");
 
           if (inpSku) {
             // console.log("checkInput-check", inpSku.value, text);
@@ -178,7 +184,7 @@
               }
             */
             if (text == inpSku.value) {
-              document.getElementById("tblr_" + ind + "_pordr_qty").value++;
+              document.getElementById("tblr_" + ind + "_purch_qty").value++;
               found = true;
               updateRowTbl("tblr_" + ind);
               calculatePay();
@@ -193,11 +199,11 @@
             // console.log("data ok");
 
             tblBody.appendChild(createTblRow(tblRowCount++));
-            document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").focus();
+            document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").focus();
             calculatePay();
           } else {
             // console.log("data not ok");
-            document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").value = "";
+            document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").value = "";
           }
           /* 
             addRowTbl(text, tblRowId).then(function(result) {
@@ -212,7 +218,7 @@
             });
           */
         } else {
-          document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").value = "";
+          document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").value = "";
         }
       }
     }
@@ -234,21 +240,21 @@
   function calculatePay() {
     var subTotal = 0;
     for (let ind = 1; ind < tblRowCount - 1; ind++) {
-      let inpAmt = document.getElementById("tblr_" + ind + "_pordr_amt");
+      let inpAmt = document.getElementById("tblr_" + ind + "_purch_amt");
       if (inpAmt) {
         subTotal = subTotal + (+inpAmt.value); // unary operator makes it number
       }
     }
     // console.log("Total", subTotal);
-    document.getElementById("pordr_subtotal").value = subTotal.toFixed(2);
-    let inpOther = document.getElementById("pordr_addcharg");
+    document.getElementById("purch_subtotal").value = subTotal.toFixed(2);
+    let inpOther = document.getElementById("purch_addcharg");
     inpOther.value = (+inpOther.value).toFixed(2);
     let totalAmt = (subTotal + (+inpOther.value));
-    document.getElementById("pordr_totalamt").value = totalAmt.toFixed(2);
-    let inpPaid = document.getElementById("pordr_paidamt");
-    inpPaid.value = (+inpPaid.value).toFixed(2);
-    let balance = (+inpPaid.value) - totalAmt;
-    document.getElementById("pordr_balance").value = balance.toFixed(2);
+    document.getElementById("purch_totalamt").value = totalAmt.toFixed(2);
+    // let inpPaid = document.getElementById("purch_paidamt");
+    // inpPaid.value = (+inpPaid.value).toFixed(2);
+    // let balance = (+inpPaid.value) - totalAmt;
+    // document.getElementById("purch_balance").value = balance.toFixed(2);
   }
 
   function createTblRow(rowId) {
@@ -263,7 +269,7 @@
     tblRow.appendChild(tblData1);
     let input1 = document.createElement("input");
     input1.type = "text";
-    input1.id = tblRow.id + "_pordr_sku";
+    input1.id = tblRow.id + "_purch_sku";
     input1.placeholder = "Enter Barcode";
     // input1.onkeyup = checkInput;
     input1.addEventListener("keyup", checkInput);
@@ -275,7 +281,7 @@
     tblRow.appendChild(tblData2);
     let input2 = document.createElement("input");
     input2.type = "text";
-    input2.id = tblRow.id + "_pordr_prt";
+    input2.id = tblRow.id + "_purch_prt";
     tblData2.appendChild(input2);
 
     // create Qty column
@@ -284,7 +290,7 @@
     tblRow.appendChild(tblData3);
     let input3 = document.createElement("input");
     input3.type = "number";
-    input3.id = tblRow.id + "_pordr_qty";
+    input3.id = tblRow.id + "_purch_qty";
     // input3.oninput = calculateAll;
     input3.addEventListener("input", calculateAll);
     tblData3.appendChild(input3);
@@ -295,7 +301,7 @@
     tblRow.appendChild(tblData4);
     let input4 = document.createElement("input");
     input4.type = "text";
-    input4.id = tblRow.id + "_pordr_rat";
+    input4.id = tblRow.id + "_purch_rat";
     input4.className = "txt-right";
     input4.disabled = true;
     tblData4.appendChild(input4);
@@ -306,7 +312,7 @@
     tblRow.appendChild(tblData5);
     let input5 = document.createElement("input");
     input5.type = "text";
-    input5.id = tblRow.id + "_pordr_amt";
+    input5.id = tblRow.id + "_purch_amt";
     input5.className = "txt-right";
     input5.disabled = true;
     tblData5.appendChild(input5);
@@ -335,8 +341,8 @@
   var tblRowCount = 1;
   tblBody.appendChild(createTblRow(tblRowCount++));
 
-  function pordrAdded() {
-    console.log("pordrAdded");
+  function purchaseAdded() {
+    console.log("purchaseOrderAdded");
     for (let ind = 1; ind < tblRowCount; ind++) {
       let tblRow = document.getElementById("tblr_" + ind);
       if (tblRow) {
@@ -347,7 +353,7 @@
     tblBody.appendChild(createTblRow(tblRowCount++));
   }
 
-  let addOrder = new FormHandler('add_pordr', 'add_pordr_msg', `${urlroot}addOrder`);
-  addOrder.setCallback(pordrAdded);
+  let addOrder = new FormHandler('add_purch', 'add_purch_msg', `${urlroot}addPurchase`);
+  addOrder.setCallback(purchaseAdded);
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>

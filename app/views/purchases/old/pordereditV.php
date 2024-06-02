@@ -16,24 +16,24 @@
   </div>
   <div class="main-cards">
     <div class="card">
-      <form id="edit_pordr" name="edit_pordr" novalidate autocomplete="off">
-        <span id="edit_pordr_msg" class="status" aria-live="polite"></span>
+      <form id="edit_purch" name="edit_purch" novalidate autocomplete="off">
+        <span id="edit_purch_msg" class="status" aria-live="polite"></span>
 
         <div class="row pb-4">
           <div class="col col-sm-6 o-sm-2 pl-sm-4 pl-md-8">
             <!-- <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Order Id</label> -->
-            <input class="" id="pordr_id" name="pordr_id" type="hidden" placeholder="" required value="<?php echo $data['pordr']['prch_code']; ?>" hidden>
+            <input class="" id="purch_id" name="purch_id" type="hidden" placeholder="" required value="<?php echo $data['purch']['prch_code']; ?>" hidden>
             <!-- </div> -->
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Date</label>
-              <input class="" id="pordr_date" name="pordr_date" type="date" placeholder="" required value="<?php echo $data['pordr']['prch_date']; ?>">
+              <input class="" id="purch_date" name="purch_date" type="date" placeholder="" required value="<?php echo $data['purch']['prch_order_date']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Location</label>
-              <select class="" id="pordr_locat" name="pordr_locat" required>
+              <select class="" id="purch_locat" name="purch_locat" required>
                 <?php foreach ($data['locat'] as $row) : ?>
-                  <option value="<?php echo $row['loca_code']; ?>" <?php echo ($data['pordr']['prch_loca_code'] == $row['loca_code']) ? 'selected' : ''; ?>>
+                  <option value="<?php echo $row['loca_code']; ?>" <?php echo ($data['purch']['prch_loca_code'] == $row['loca_code']) ? 'selected' : ''; ?>>
                     <?php echo $row['loca_name']; ?>
                   </option>
                 <?php endforeach; ?>
@@ -43,17 +43,13 @@
           <div class="col col-sm-6 o-sm-1 pr-sm-4 pr-md-6">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Vendor Name</label>
-              <select class="" id="pordr_vendr" name="pordr_vendr" required>
+              <select class="" id="purch_vendr" name="purch_vendr" required>
                 <?php foreach ($data['vendr'] as $row) : ?>
-                  <option value="<?php echo $row['vend_code']; ?>" <?php echo ($data['pordr']['prch_vend_code'] == $row['vend_code']) ? 'selected' : ''; ?>>
+                  <option value="<?php echo $row['vend_code']; ?>" <?php echo ($data['purch']['prch_vend_code'] == $row['vend_code']) ? 'selected' : ''; ?>>
                     <?php echo $row['vend_name']; ?>
                   </option>
                 <?php endforeach; ?>
               </select>
-            </div>
-            <div class="row pb-2 pb-sm-3">
-              <label class="mb-1">Vendor Note</label>
-              <textarea class="" id="pordr_vendnote" name="pordr_vendnote" type="text" placeholder="" rows="3" required><?php echo $data['pordr']['prch_notes']; ?></textarea>
             </div>
           </div>
         </div>
@@ -76,19 +72,19 @@
               <?php foreach ($data['ordprd'] as $id => $row) : ?>
                 <div class="tr" id="tblr_<?php echo $id + 1; ?>">
                   <div class="td">
-                    <input id="tblr_<?php echo $id + 1; ?>_pordr_sku" type="text" placeholder="Enter Barcode" disabled value="<?php echo $row['prodt_sku']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_purch_sku" type="text" placeholder="Enter Barcode" disabled value="<?php echo $row['prodt_sku']; ?>">
                   </div>
                   <div class="td">
-                    <input id="tblr_<?php echo $id + 1; ?>_pordr_prt" type="text" value="<?php echo $row['prod_vend_prtno']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_purch_prt" type="text" value="<?php echo $row['prod_vend_prtno']; ?>">
                   </div>
                   <div class="td">
-                    <input id="tblr_<?php echo $id + 1; ?>_pordr_qty" type="number" value="<?php echo $row['pcpd_quantity']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_purch_qty" type="number" value="<?php echo $row['pcpd_order_qty']; ?>">
                   </div>
                   <div class="td">
-                    <input id="tblr_<?php echo $id + 1; ?>_pordr_rat" class="txt-right" type="text" disabled value="<?php echo $row['pcpd_unit_price']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_purch_rat" class="txt-right" type="text" disabled value="<?php echo $row['pcpd_unit_price']; ?>">
                   </div>
                   <div class="td">
-                    <input id="tblr_<?php echo $id + 1; ?>_pordr_amt" class="txt-right" type="text" disabled value="<?php echo $row['pcpd_sub_amount']; ?>">
+                    <input id="tblr_<?php echo $id + 1; ?>_purch_amt" class="txt-right" type="text" disabled>
                   </div>
                   <div class="td txt-center">
                     <button class="btn-sm red" type="button" title="Remove Product">
@@ -113,28 +109,32 @@
                 <option value="Cheque">Cheque</option>
               </select>
             </div> -->
+            <div class="row pb-2 pb-sm-3">
+              <label class="mb-1">Remarks</label>
+              <textarea class="" id="purch_remarks" name="purch_remarks" type="text" placeholder="" rows="3"><?php echo $data['purch']['prch_remark']; ?></textarea>
+            </div>
           </div>
           <div class="col col-sm-6 pl-sm-4 pl-md-6">
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Sub Total</label>
-              <input class="txt-right" id="pordr_subtotal" name="pordr_subtotal" type="text" placeholder="" required disabled value="<?php echo $data['pordr']['prch_sub_total']; ?>">
+              <input class="txt-right" id="purch_subtotal" name="purch_subtotal" type="text" placeholder="" required disabled value="<?php echo $data['purch']['prch_sub_total']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1">Other Charges</label>
-              <input onchange="calculatePay();" class="txt-right" id="pordr_addcharg" name="pordr_addcharg" type="text" placeholder="" required value="<?php echo $data['pordr']['prch_charges']; ?>">
+              <input onchange="calculatePay();" class="txt-right" id="purch_addcharg" name="purch_addcharg" type="text" placeholder="" required value="<?php echo $data['purch']['prch_charges']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1"><b>Total</b></label>
-              <input class="txt-right" id="pordr_totalamt" name="pordr_totalamt" type="text" placeholder="" required disabled value="<?php echo $data['pordr']['prch_total']; ?>">
+              <input class="txt-right" id="purch_totalamt" name="purch_totalamt" type="text" placeholder="" required disabled value="<?php echo $data['purch']['prch_total']; ?>">
             </div>
-            <div class="row pb-2 pb-sm-3 mt-3">
+            <!-- <div class="row pb-2 pb-sm-3 mt-3">
               <label class="mb-1">Paid</label>
-              <input onchange="calculatePay();" class="txt-right" id="pordr_paidamt" name="pordr_paidamt" type="text" placeholder="" required value="<?php echo $data['pordr']['prch_paid']; ?>">
+              <input onchange="calculatePay();" class="txt-right" id="purch_paidamt" name="purch_paidamt" type="text" placeholder="" required value="<?php echo $data['purch']['prch_paid']; ?>">
             </div>
             <div class="row pb-2 pb-sm-3">
               <label class="mb-1"><b>Balance</b></label>
-              <input class="txt-right" id="pordr_balance" name="pordr_balance" type="text" placeholder="" required disabled value="<?php echo $data['pordr']['prch_balance']; ?>">
-            </div>
+              <input class="txt-right" id="purch_balance" name="purch_balance" type="text" placeholder="" required disabled value="<?php echo $data['purch']['prch_balance']; ?>">
+            </div> -->
           </div>
         </div>
 
@@ -162,13 +162,13 @@
     // console.log(resp);
     if (resp['prodt']) {
       // parseFloat(this.value).toFixed(2);
-      document.getElementById(rowId + "_pordr_sku").value = resp['prodt']['prodt_sku'];
-      document.getElementById(rowId + "_pordr_prt").value = resp['prodt']['prodt_name'];
-      document.getElementById(rowId + "_pordr_qty").value = 1;
-      document.getElementById(rowId + "_pordr_rat").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
-      document.getElementById(rowId + "_pordr_amt").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
+      document.getElementById(rowId + "_purch_sku").value = resp['prodt']['prodt_sku'];
+      document.getElementById(rowId + "_purch_prt").value = resp['prodt']['prodt_name'];
+      document.getElementById(rowId + "_purch_qty").value = 1;
+      document.getElementById(rowId + "_purch_rat").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
+      document.getElementById(rowId + "_purch_amt").value = parseFloat(resp['prodt']['prodt_venprice']).toFixed(2);
       document.getElementById(rowId).getElementsByTagName("button")[0].disabled = false;
-      document.getElementById(rowId + "_pordr_sku").disabled = true;
+      document.getElementById(rowId + "_purch_sku").disabled = true;
       return true;
     } else {
       return false;
@@ -176,9 +176,9 @@
   }
 
   function updateRowTbl(rowId) {
-    let inpQtyVal = document.getElementById(rowId + "_pordr_qty").value;
-    let inpRatVal = document.getElementById(rowId + "_pordr_rat").value;
-    document.getElementById(rowId + "_pordr_amt").value = (inpRatVal * inpQtyVal).toFixed(2);
+    let inpQtyVal = document.getElementById(rowId + "_purch_qty").value;
+    let inpRatVal = document.getElementById(rowId + "_purch_rat").value;
+    document.getElementById(rowId + "_purch_amt").value = (inpRatVal * inpQtyVal).toFixed(2);
   }
 
   async function checkInput(event) {
@@ -195,7 +195,7 @@
             continue;
           }
           // console.log("checkInput-loop", ind);
-          let inpSku = document.getElementById("tblr_" + ind + "_pordr_sku");
+          let inpSku = document.getElementById("tblr_" + ind + "_purch_sku");
 
           if (inpSku) {
             // console.log("checkInput-check", inpSku.value, text);
@@ -209,7 +209,7 @@
               }
             */
             if (text == inpSku.value) {
-              document.getElementById("tblr_" + ind + "_pordr_qty").value++;
+              document.getElementById("tblr_" + ind + "_purch_qty").value++;
               found = true;
               updateRowTbl("tblr_" + ind);
               calculatePay();
@@ -224,26 +224,26 @@
             // console.log("data ok");
 
             tblBody.appendChild(createTblRow(tblRowCount++));
-            document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").focus();
+            document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").focus();
             calculatePay();
           } else {
             // console.log("data not ok");
-            document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").value = "";
+            document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").value = "";
           }
           /* 
             addRowTbl(text, tblRowId).then(function(result) {
               if (result) {
                 console.log("data ok");
                 tblBody.appendChild(createTblRow(tblRowCount++));
-                document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").focus();
+                document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").focus();
               } else {
                 console.log("data not ok");
-                document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").value = "";
+                document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").value = "";
               }
             });
           */
         } else {
-          document.getElementById("tblr_" + (tblRowCount - 1) + "_pordr_sku").value = "";
+          document.getElementById("tblr_" + (tblRowCount - 1) + "_purch_sku").value = "";
         }
       }
     }
@@ -265,21 +265,21 @@
   function calculatePay() {
     var subTotal = 0;
     for (let ind = 1; ind < tblRowCount - 1; ind++) {
-      let inpAmt = document.getElementById("tblr_" + ind + "_pordr_amt");
+      let inpAmt = document.getElementById("tblr_" + ind + "_purch_amt");
       if (inpAmt) {
         subTotal = subTotal + (+inpAmt.value); // unary operator makes it number
       }
     }
     // console.log("Total", subTotal);
-    document.getElementById("pordr_subtotal").value = subTotal.toFixed(2);
-    let inpOther = document.getElementById("pordr_addcharg");
+    document.getElementById("purch_subtotal").value = subTotal.toFixed(2);
+    let inpOther = document.getElementById("purch_addcharg");
     inpOther.value = (+inpOther.value).toFixed(2);
     let totalAmt = (subTotal + (+inpOther.value));
-    document.getElementById("pordr_totalamt").value = totalAmt.toFixed(2);
-    let inpPaid = document.getElementById("pordr_paidamt");
-    inpPaid.value = (+inpPaid.value).toFixed(2);
-    let balance = (+inpPaid.value) - totalAmt;
-    document.getElementById("pordr_balance").value = balance.toFixed(2);
+    document.getElementById("purch_totalamt").value = totalAmt.toFixed(2);
+    // let inpPaid = document.getElementById("purch_paidamt");
+    // inpPaid.value = (+inpPaid.value).toFixed(2);
+    // let balance = (+inpPaid.value) - totalAmt;
+    // document.getElementById("purch_balance").value = balance.toFixed(2);
   }
 
   function createTblRow(rowId) {
@@ -294,7 +294,7 @@
     tblRow.appendChild(tblData1);
     let input1 = document.createElement("input");
     input1.type = "text";
-    input1.id = tblRow.id + "_pordr_sku";
+    input1.id = tblRow.id + "_purch_sku";
     input1.placeholder = "Enter Barcode";
     // input1.onkeyup = checkInput;
     input1.addEventListener("keyup", checkInput);
@@ -306,7 +306,7 @@
     tblRow.appendChild(tblData2);
     let input2 = document.createElement("input");
     input2.type = "text";
-    input2.id = tblRow.id + "_pordr_prt";
+    input2.id = tblRow.id + "_purch_prt";
     tblData2.appendChild(input2);
 
     // create Qty column
@@ -315,7 +315,7 @@
     tblRow.appendChild(tblData3);
     let input3 = document.createElement("input");
     input3.type = "number";
-    input3.id = tblRow.id + "_pordr_qty";
+    input3.id = tblRow.id + "_purch_qty";
     // input3.oninput = calculateAll;
     input3.addEventListener("input", calculateAll);
     tblData3.appendChild(input3);
@@ -326,7 +326,7 @@
     tblRow.appendChild(tblData4);
     let input4 = document.createElement("input");
     input4.type = "text";
-    input4.id = tblRow.id + "_pordr_rat";
+    input4.id = tblRow.id + "_purch_rat";
     input4.className = "txt-right";
     input4.disabled = true;
     tblData4.appendChild(input4);
@@ -337,7 +337,7 @@
     tblRow.appendChild(tblData5);
     let input5 = document.createElement("input");
     input5.type = "text";
-    input5.id = tblRow.id + "_pordr_amt";
+    input5.id = tblRow.id + "_purch_amt";
     input5.className = "txt-right";
     input5.disabled = true;
     tblData5.appendChild(input5);
@@ -365,25 +365,27 @@
     for (let ind = 1; ind < tblRowCount; ind++) {
       // console.log('addEvents', ind);
       // let inpSku = document.getElementById("tblr_" + ind + "_order_sku");
-      let inpQty = document.getElementById("tblr_" + ind + "_pordr_qty");
+      let inpQty = document.getElementById("tblr_" + ind + "_purch_qty");
       let btnDel = document.getElementById("tblr_" + ind).getElementsByTagName("button")[0];
       // inpSku.addEventListener('keyup', checkInput);
       inpQty.addEventListener('input', calculateAll);
       btnDel.addEventListener('click', removeRowTbl);
+      updateRowTbl("tblr_" + ind);
     }
   }
 
   const tblBody = document.getElementById("dl_tbl_body");
   var tblRowCount = <?php echo $data['prdcon'] + 1; ?>;
   addEvents();
+
   tblBody.appendChild(createTblRow(tblRowCount++));
 
-  function pordrEdited() {
-    console.log("pordrEdited");
+  function purchaseEdited() {
+    console.log("purchaseOrderEdited");
     location.href = urlroot;
   }
 
-  let editOrder = new FormHandler('edit_pordr', 'edit_pordr_msg', `${urlroot}editOrder`);
-  editOrder.setCallback(pordrEdited);
+  let editOrder = new FormHandler('edit_purch', 'edit_purch_msg', `${urlroot}editPurchase`);
+  editOrder.setCallback(purchaseEdited);
 </script>
 <?php include_once(APPROOT . '/views/includes/footer.php'); ?>
