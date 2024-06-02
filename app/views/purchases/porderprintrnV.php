@@ -65,12 +65,12 @@ $pdf->MultiCell(80, '', $data['vendr']['vend_phone'], $border, 'L', 0, 1, $x, $y
 $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(25, '', 'ORDER NO', $border, 'L', 0, 0, $pageWidth - 60, $y, true);
 $pdf->SetTextColor(0, 0, 0);
-$pdf->MultiCell(25, '', $data['pordr']['pordr_no'], $border, 'L', 0, 1, $pageWidth - 35, $y, true);
+$pdf->MultiCell(25, '', $data['purch']['purch_no'], $border, 'L', 0, 1, $pageWidth - 35, $y, true);
 
 $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(25, '', 'DATE', $border, 'L', 0, 0, $pageWidth - 60, $y + 7, true);
 $pdf->SetTextColor(0, 0, 0);
-$pdf->MultiCell(25, '', $data['pordr']['prch_date'], $border, 'L', 0, 1, $pageWidth - 35, $y + 7, true);
+$pdf->MultiCell(25, '', $data['purch']['prch_recev_date'], $border, 'L', 0, 1, $pageWidth - 35, $y + 7, true);
 
 $pdf->SetTextColor(0, 48, 207);
 $pdf->MultiCell(25, '', 'LOCATION', $border, 'L', 0, 0, $pageWidth - 60, $y + 14, true);
@@ -98,7 +98,7 @@ $pdf->SetFillColor(240, 240, 240);
 
 foreach ($data['ordprd'] as $item) {
   $pdf->MultiCell(110, '', $item['prodt_sku'] . ', ' . $item['prod_vend_prtno'], $border, 'L', $fill, 1, $x, $y, true);
-  $pdf->MultiCell(35, '', $item['pcpd_qty_receiv'], $border, 'R', $fill, 1, $x + 110, $y, true);
+  $pdf->MultiCell(35, '', $item['pcpd_recev_qty'], $border, 'R', $fill, 1, $x + 110, $y, true);
   $pdf->MultiCell(35, '', 'YES', $border, 'R', $fill, 1, $x + 145, $y, true);
 
   $y = $y + 6;
@@ -112,34 +112,34 @@ $fill = 1;
 // $pdf->SetTextColor(0, 48, 207);
 // $pdf->MultiCell(20, '', 'Sub Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 5, true);
 // $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_sub_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 5, true);
+// $pdf->MultiCell(30, '', number_format((float)$data['purch']['prch_sub_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 5, true);
 
 // $pdf->SetTextColor(0, 48, 207);
 // $pdf->MultiCell(20, '', 'Additional', $border, 'L', $fill, 1, $pageWidth - 60, $y + 10, true);
 // $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_charges'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 10, true);
+// $pdf->MultiCell(30, '', number_format((float)$data['purch']['prch_charges'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 10, true);
 
 // $pdf->SetFont('helvetica', 'B', 10);
 // $pdf->SetTextColor(0, 48, 207);
 // $pdf->MultiCell(20, '', 'Total', $border, 'L', $fill, 1, $pageWidth - 60, $y + 15, true);
 // $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 15, true);
+// $pdf->MultiCell(30, '', number_format((float)$data['purch']['prch_total'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 15, true);
 
 // $pdf->SetFont('helvetica', '', 10);
 // $pdf->SetTextColor(0, 48, 207);
 // $pdf->MultiCell(20, '', 'Paid', $border, 'L', $fill, 1, $pageWidth - 60, $y + 25, true);
 // $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_paid'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 25, true);
+// $pdf->MultiCell(30, '', number_format((float)$data['purch']['prch_paid'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 25, true);
 
 // $pdf->SetFont('helvetica', 'B', 10);
 // $pdf->SetTextColor(0, 48, 207);
 // $pdf->MultiCell(20, '', 'Balance', $border, 'L', $fill, 1, $pageWidth - 60, $y + 30, true);
 // $pdf->SetTextColor(0, 0, 0);
-// $pdf->MultiCell(30, '', number_format((float)$data['pordr']['prch_balance'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 30, true);
+// $pdf->MultiCell(30, '', number_format((float)$data['purch']['prch_balance'], 2), $border, 'R', $fill, 1, $pageWidth - 40, $y + 30, true);
 
 // force print dialog
 $js = 'print(true);';
 // set javascript
 $pdf->IncludeJS($js);
 //Close and output PDF document
-$pdf->Output($data['pordr']['pordr_no'] . '.pdf', 'I');
+$pdf->Output($data['purch']['purch_no'] . '.pdf', 'I');
