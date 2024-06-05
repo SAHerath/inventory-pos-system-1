@@ -188,6 +188,123 @@ class PurchaseM
     // no need to delete relavent rows of tabl_order_products because MySQL ondelete cascade function
   }
 
+  public function receive($param)
+  {
+    // var_dump($param);
+    // return;
+    try {
+      $this->db->beginTransaction();
+
+      $query = "UPDATE tabl_purchase SET prch_recev_user_code=:purchrecuser, prch_recev_date=:purchrecdate, prch_remark=:purchremark, prch_sub_total=:purchsubtot, prch_charges=:purchaddcha, prch_total=:purchtotal, prch_status=:purchstate WHERE prch_code = :purchid";
+
+      if ($this->db->runQuery($query, $param['purch'])) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 1 failed');
+      }
+
+      $query = "DELETE FROM tabl_purchase_products WHERE pcpd_prch_code = :purchid";
+      $para_arr = ['purchid' => $param['purch']['purchid']];
+      if ($this->db->runQuery($query, $para_arr)) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 2 failed');
+      }
+
+      $query = "INSERT INTO tabl_purchase_products (pcpd_prch_code, pcpd_prod_code, pcpd_unit_price, pcpd_order_qty, pcpd_recev_qty, pcpd_retrn_qty) 
+      VALUES(:purchid, :prodtid, :purch_rat, :purch_ord, :purch_rec, :purch_ret)";
+
+      foreach ($param['tblr'] as $para_arr) {
+        $para_arr['purchid'] = $param['purch']['purchid'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 3 failed');
+        }
+      }
+
+      // update stock
+      $query = "UPDATE tabl_stock SET stok_quantity = (stok_quantity + :purch_rec) WHERE stok_prod_code = :prodtid AND stok_loca_code = :purchlocat";
+
+      foreach ($param['tblr'] as $para_arr) {
+        $para_arr['purchlocat'] = $param['purch']['purchlocat'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 4 failed');
+        }
+      }
+
+      $this->db->endTransaction();
+      return true;
+    } catch (Exception $e) {
+      $this->db->cancelTransaction();
+      // echo $e->getMessage();
+      logger("PurchaseM: receive: {$e->getMessage()}", APP_ERROR);
+      return false;
+    }
+  }
+
+  public function return($param)
+  {
+    var_dump($param);
+    return;
+    try {
+      $this->db->beginTransaction();
+
+      $query = "UPDATE tabl_purchase SET prch_retrn_user_code=:purchretuser, prch_retrn_date=:purchretdate, prch_remark=:purchremark, prch_refund=:purchtotal, prch_status=:purchstate WHERE prch_code = :purchid";
+
+      if ($this->db->runQuery($query, $param['purch'])) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 1 failed');
+      }
+
+      $query = "DELETE FROM tabl_purchase_products WHERE pcpd_prch_code = :purchid";
+      $para_arr = ['purchid' => $param['purch']['purchid']];
+      if ($this->db->runQuery($query, $para_arr)) {
+        // $this->db->getResults(DB_COUNT);
+      } else {
+        throw new Exception('Query 2 failed');
+      }
+
+      $query = "INSERT INTO tabl_purchase_products (pcpd_prch_code, pcpd_prod_code, pcpd_unit_price, pcpd_order_qty, pcpd_recev_qty, pcpd_retrn_qty) 
+      VALUES(:purchid, :prodtid, :purch_rat, :purch_ord, :purch_rec, :purch_ret)";
+
+      foreach ($param['tblr'] as $para_arr) {
+        $para_arr['purchid'] = $param['purch']['purchid'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 3 failed');
+        }
+      }
+
+      // update stock
+      $query = "UPDATE tabl_stock SET stok_quantity = (stok_quantity - :purch_rec) WHERE stok_prod_code = :prodtid AND stok_loca_code = :purchlocat";
+
+      foreach ($param['tblr'] as $para_arr) {
+        $para_arr['purchlocat'] = $param['purch']['purchlocat'];
+
+        if ($this->db->runQuery($query, $para_arr)) {
+          // $this->db->getResults(DB_COUNT);
+        } else {
+          throw new Exception('Query 4 failed');
+        }
+      }
+
+      $this->db->endTransaction();
+      return true;
+    } catch (Exception $e) {
+      $this->db->cancelTransaction();
+      // echo $e->getMessage();
+      logger("PurchaseM: receive: {$e->getMessage()}", APP_ERROR);
+      return false;
+    }
+  }
 
   public function getRowCount($searchVal = null)
   {
