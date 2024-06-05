@@ -34,8 +34,7 @@
 
   <div class="message">
     <p>
-      <?php echo $data['err_msg'];
-      ?>
+      <?php echo $data['err_msg']; ?>
     </p>
   </div>
 </body>

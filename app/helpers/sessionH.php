@@ -28,9 +28,9 @@ function isLoggedIn()
 
 function isEnabled($module)   // checks whether module enabled
 {
-  // // if (isset($_SESSION['userpermi'])) {
-  //   return array_key_exists($module, $_SESSION['userpermi']);
-  // // }
+  // if (isset($_SESSION['userpermi'])) {
+  // return array_key_exists($module, $_SESSION['userpermi']);
+  // }
   return true;
 }
 

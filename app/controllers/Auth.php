@@ -60,14 +60,14 @@ class Auth extends Controller
     redirect('auth/index');
   }
 
-  public function error($errCode = null)
+  public function error($errMsg = null)
   {
     $data = [
       'title' => 'error',
-      'err_msg' => $errCode
+      'err_msg' => $errMsg
     ];
 
-    $this->view('authentication/error', $data);
+    $this->view('authentication/errorV', $data);
   }
 
   /*
