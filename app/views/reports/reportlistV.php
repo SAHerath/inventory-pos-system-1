@@ -54,6 +54,14 @@
                   <span>Report Description</span>
                 </div>
               </div>
+              <div class="tr">
+                <div class="td txt-center">
+                  <a class="btn green" href="<?php echo URLROOT; ?>reports/hello" style="width: max-content; height:max-content;">New Report</a>
+                </div>
+                <div class="td">
+                  <span>New Stock Report</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
