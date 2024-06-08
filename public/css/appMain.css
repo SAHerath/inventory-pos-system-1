@@ -4,11 +4,6 @@
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url(../font/Montserrat-Medium.ttf);
-}
-
-@font-face {
   font-family: 'Poppins';
   src: url(../font/Poppins-Regular.ttf);
 }
@@ -16,11 +11,6 @@
 @font-face {
   font-family: 'Roboto';
   src: url(../font/Roboto-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'Roboto_light';
-  src: url(../font/Roboto-Light.ttf);
 }
 
 @font-face {
@@ -253,11 +243,11 @@ a {
 }
 
 .header nav a:hover {
-  color: #e93bbd;
+  color: #ee41c3;
 }
 
 .header nav a:hover:not(.toggle-lg) {
-  border-bottom: 0.2rem solid #e93bbd;
+  border-bottom: 0.2rem solid #ee41c3;
 }
 
 /* Mobile-first side nav styles */
@@ -396,12 +386,12 @@ a {
 
 .aside-menu a.active {
   color: #fafafa;
-  background-color: #e93bbd;
+  background-color: #ee41c3;
 }
 
 .aside-menu a:hover:not(.active) {
-  color: #e93bbd;
-  border-left: 0.2rem solid #e93bbd;
+  color: #ee41c3;
+  border-left: 0.2rem solid #ee41c3;
 }
 
 .aside-menu i {

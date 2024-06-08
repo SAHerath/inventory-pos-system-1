@@ -4,11 +4,6 @@
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url(../font/Montserrat-Medium.ttf);
-}
-
-@font-face {
   font-family: 'Poppins';
   src: url(../font/Poppins-Regular.ttf);
 }
@@ -16,11 +11,6 @@
 @font-face {
   font-family: 'Roboto';
   src: url(../font/Roboto-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'Roboto_light';
-  src: url(../font/Roboto-Light.ttf);
 }
 
 @font-face {
@@ -1011,12 +1001,12 @@ a {
 
 .btn.orange {
   color: white;
-  background-color: #fc8a1f;
-  border: 0.125rem solid #fc8a1f;
+  background-color: #ee7c11;
+  border: 0.125rem solid #ee7c11;
 }
 
 .btn.orange:hover:not(:disabled) {
-  background-color: #ef7503;
+  background-color: #c8680e;
   border-color: #202020;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -1027,7 +1017,7 @@ a {
 }
 
 .btn.orange:active {
-  background-color: #994b02;
+  background-color: #773e09;
 }
 
 .btn.orange:disabled {
@@ -1178,12 +1168,12 @@ a {
 
 .btn-sm.orange {
   color: white;
-  background-color: #fc8a1f;
-  border: 0.125rem solid #fc8a1f;
+  background-color: #ee7c11;
+  border: 0.125rem solid #ee7c11;
 }
 
 .btn-sm.orange:hover:not(:disabled) {
-  background-color: #ef7503;
+  background-color: #c8680e;
   border-color: #202020;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -1194,7 +1184,7 @@ a {
 }
 
 .btn-sm.orange:active {
-  background-color: #994b02;
+  background-color: #773e09;
 }
 
 .btn-sm.orange:disabled {
@@ -1244,7 +1234,8 @@ a {
 }
 
 /******** heading *******/
-[class*="h-"] {
+.h-3 {
+  font-size: 2rem;
   font-weight: 500;
   text-transform: capitalize;
   -webkit-user-select: none;
@@ -1253,20 +1244,34 @@ a {
           user-select: none;
 }
 
-.h-3 {
-  font-size: 2rem;
-}
-
 .h-4 {
   font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .h-5 {
   font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .h-6 {
   font-size: 1.125rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 /******** margin *******/
