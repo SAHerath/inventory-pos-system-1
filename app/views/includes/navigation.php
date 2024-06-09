@@ -13,7 +13,7 @@
       </nav>   -->
   <nav>
     <!-- right navigation -->
-    <a class="" href="#">Notifications</a>
+    <!-- <a class="" href="#">Notifications</a> -->
     <div class="drop">
       <a class="" onclick="showDrop(this);">
         <?php if (isset($_SESSION['usercode'])) : ?>
@@ -93,10 +93,11 @@
         </a>
       <?php endif ?>
 
-      <div class="menu-drop">
+
+      <!-- <div class="menu-drop">
         <a class="menu-item">
-          <i class="menu-icon fas fa-shopping-cart"></i>
-          <span>Order</span>
+          <i class="menu-icon fas fa-cash-register"></i>
+          <span>Sales</span>
           <i class="drop-icon fas fa-caret-down"></i>
         </a>
         <div class="drop-content">
@@ -107,14 +108,43 @@
             Sales Order
           </a>
         </div>
-      </div>
+      </div> -->
 
-      <!-- <?php if (isEnabled('ordr')) : ?>
-        <a class="<?php echo ((strpos($data['title'], 'order') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>orders">
-          <i class="fas fa-shopping-cart"></i>
-          <span>Order</span>
+      <!-- <div class="menu-drop">
+        <a class="menu-item">
+          <i class="menu-icon fas fa-cart-plus"></i>
+          <span>Purchase</span>
+          <i class="drop-icon fas fa-caret-down"></i>
         </a>
-      <?php endif ?> -->
+        <div class="drop-content">
+          <a class="<?php echo ((strpos($data['title'], 'purchord') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases/add">
+            Add Purchase Order
+          </a>
+          <a class="<?php echo ((strpos($data['title'], 'purchord') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases/grn">
+            Grn Purchase Order
+          </a>
+          <a class="<?php echo ((strpos($data['title'], 'purchord') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases">
+            Manage Purchase Order
+          </a>
+        </div>
+      </div> -->
+
+
+      <?php if (isEnabled('ordr')) : ?>
+        <a class="menu-item <?php echo ((strpos($data['title'], 'order') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>orders">
+          <i class="menu-icon fas fa-cash-register"></i> <!-- fa-cubes-->
+          <span>Sales</span>
+        </a>
+      <?php endif ?>
+
+
+      <?php if (isEnabled('ordr')) : ?>
+        <a class="menu-item <?php echo ((strpos($data['title'], 'purchord') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases">
+          <i class="menu-icon fas fa-cart-plus"></i> <!-- fa-cubes-->
+          <span>Purchase</span>
+        </a>
+      <?php endif ?>
+
       <?php if (isEnabled('repo')) : ?>
         <a class="menu-item <?php echo ((strpos($data['title'], 'report') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>reports">
           <i class="menu-icon fas fa-chart-area"></i> <!-- fa-analytics -->
@@ -145,7 +175,7 @@
           <span>Settings</span>
         </a>
       <?php endif ?>
-      <div class="menu-drop">
+      <!-- <div class="menu-drop">
         <a class="menu-item">
           <i class="menu-icon fas fa-cubes"></i>
           <span>MyMenu</span>
@@ -156,7 +186,7 @@
           <a class="" href="#">sub_2</a>
           <a class="" href="#">menu_hi</a>
         </div>
-      </div>
+      </div> -->
     </nav>
     <div class="scroll-menu hide">
       <a class="" onclick="dashbCon.scrollUp();">
