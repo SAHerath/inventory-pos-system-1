@@ -3220,7 +3220,7 @@ select {
           appearance: none;
   font-size: 1rem;
   background-color: transparent;
-  background-image: url(../icon/fontawesome/svgs/solid/caret-down.svg);
+  background-image: url(../icon/fontawesome-free-5.15.2-web/svgs/solid/caret-down.svg);
   background-repeat: no-repeat;
   background-position: right 0.5rem top 50%;
   background-size: 0.75rem auto;

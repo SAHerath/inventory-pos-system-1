@@ -12,7 +12,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="<?php echo URLROOT; ?>icon/nawalankaent.ico">
   <title><?php echo SITENAME; ?></title>
 
-  <link rel="stylesheet" href="<?php echo URLROOT; ?>icon/fontawesome/css/all.css">
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>icon/fontawesome-free-5.15.2-web/css/all.min.css">
   <link rel="stylesheet" href="<?php echo URLROOT; ?>css/main.css">
   <!-- <link rel="stylesheet" href="<?php //echo URLROOT; 
                                     ?>css/bootstrap.css"> -->
