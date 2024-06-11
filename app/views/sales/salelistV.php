@@ -15,7 +15,7 @@
   </div>
   <div class="main-cards">
     <div class="row mb-2">
-      <a class="btn blue" href="<?php echo URLROOT; ?>orders/add" tabindex="0">Add New Sales Order</a>
+      <a class="btn blue" href="<?php echo URLROOT; ?>sales/add" tabindex="0">Add New Sales Order</a>
     </div>
     <div class="card">
       <div id="tbl_data_list">
@@ -213,7 +213,7 @@
     let btnView = document.createElement("a");
     btnView.className = "btn-sm green mr-md-1";
     btnView.title = "View Order";
-    btnView.onclick = viewSaleLoader;
+    btnView.onclick = viewSalesLoader;
     tblDataAct.appendChild(btnView);
     let icoView = document.createElement("i");
     icoView.className = "fas fa-eye";
@@ -243,14 +243,14 @@
   function displayData(result) {
     // console.log("Reload Dataset");
     tblBody.textContent = "";
-
+    // console.log(result);
     for (const row of result) {
       let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
     }
   }
 
-  let dataList = new DataList(`${urlroot}getOrderDataset`, displayData);
+  let dataList = new DataList(`${urlroot}getSalesDataset`, displayData);
   dataList.setControls("dl_prev", "dl_next");
   dataList.setDetail("dl_detail");
   dataList.setSortHeader("dl_sort_1", "dl_sort_2", "dl_sort_3");
