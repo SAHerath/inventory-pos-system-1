@@ -137,6 +137,13 @@
         </a>
       <?php endif ?>
 
+      <?php if (isEnabled('ordr')) : ?>
+        <a class="menu-item <?php echo ((strpos($data['title'], 'sale') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>sales">
+          <i class="menu-icon fas fa-cash-register"></i> <!-- fa-cubes-->
+          <span>Sales2</span>
+        </a>
+      <?php endif ?>
+
 
       <?php if (isEnabled('ordr')) : ?>
         <a class="menu-item <?php echo ((strpos($data['title'], 'purchord') !== false) ? 'active' : ''); ?>" href="<?php echo URLROOT; ?>purchases">
