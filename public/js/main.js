@@ -503,6 +503,7 @@ class FormHandler {
     let serverRes = await this.serverReq.fetchServer();
     // console.log(serverRes);
     if (serverRes["state"] == "success") {
+
       for (let id in serverRes["frm_msg"]) {
         const pElem = document.createElement("p");
         pElem.textContent = serverRes["frm_msg"][id];

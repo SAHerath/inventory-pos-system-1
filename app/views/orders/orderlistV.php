@@ -243,7 +243,6 @@
   function displayData(result) {
     // console.log("Reload Dataset");
     tblBody.textContent = "";
-
     for (const row of result) {
       let tblRow = createTblRow(row);
       tblBody.appendChild(tblRow);
